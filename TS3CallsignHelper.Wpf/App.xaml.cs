@@ -36,8 +36,7 @@ public partial class App : Application {
     var mainv = _host.Services.GetRequiredService<MainWindow>();
     var mainvm = _host.Services.GetRequiredService<MainViewModel>();
     mainv.Show();
-    mainvm.SetCanvas(mainv.uiBase);
-    mainvm.AddView(new CanvasContainerViewModel(mainvm, new CallsignInformationViewModel(), mainv.uiBase));
+    mainvm.AddView(new CanvasContainerViewModel(mainvm, new CallsignInformationViewModel()));
     
 
     base.OnStartup(e);

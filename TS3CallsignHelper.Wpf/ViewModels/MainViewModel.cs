@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
@@ -9,21 +10,17 @@ internal class MainViewModel : ViewModelBase {
   public event Action<ViewModelBase> ViewModelAdded;
   public event Action<ViewModelBase> ViewModelRemoved;
 
-  private readonly Dictionary<ViewModelBase, ContentControl> _activeViews;
-  public IEnumerable<ViewModelBase> ActiveViews => _activeViews.Keys;
+  private readonly ObservableCollection<ViewModelBase> _activeViews;
+  public IEnumerable<ViewModelBase> ActiveViews => _activeViews;
 
   private Canvas _canvas;
 
   public MainViewModel() {
-    _activeViews = new Dictionary<ViewModelBase, ContentControl>();
-  }
-
-  public void SetCanvas(Canvas canvas) {
-    _canvas = canvas;
+    _activeViews = new ObservableCollection<ViewModelBase>();
   }
 
   public void RemoveView(ViewModelBase view) {
-    _canvas.Children.Remove(_activeViews[view]);
+    //_canvas.Children.Remove(_activeViews[view]);
     _activeViews.Remove(view);
     ViewModelRemoved?.Invoke(view);
   }
@@ -31,8 +28,8 @@ internal class MainViewModel : ViewModelBase {
   public void AddView(ViewModelBase view) {
     var contentControl = new ContentControl();
     contentControl.Content = view;
-    _activeViews.Add(view, contentControl);
-    _canvas.Children.Add(contentControl);
+    _activeViews.Add(view);
+    //_canvas.Children.Add(contentControl);
     ViewModelAdded?.Invoke(view);
   }
 }

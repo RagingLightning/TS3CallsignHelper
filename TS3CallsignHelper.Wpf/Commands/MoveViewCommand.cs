@@ -6,28 +6,28 @@ using System.Windows.Input;
 using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf.Commands;
-internal class ResizeViewCommand {
+internal class MoveViewCommand {
 
   private CanvasContainerViewModel _viewModel;
 
   private Point? _origin;
-  private Point _size;
+  private Point _pos;
 
-  public ResizeViewCommand(CanvasContainerViewModel viewModel) {
+  public MoveViewCommand(CanvasContainerViewModel viewModel) {
     _viewModel = viewModel;
   }
 
   public void Start() {
     _origin = Mouse.GetPosition(null);
-    _size = new Point(_viewModel.Width, _viewModel.Height);
+    _pos = new Point(_viewModel.X, _viewModel.Y);
   }
 
   public void Step() {
     if (_origin == null) return;
     Point pos = Mouse.GetPosition(null);
     Vector delta = (Vector) (pos - _origin);
-    _viewModel.Width = _size.X + delta.X;
-    _viewModel.Height = _size.Y + delta.Y;
+    _viewModel.X = Math.Max(_pos.X + delta.X, 0);
+    _viewModel.Y = Math.Max(_pos.Y + delta.Y, 0);
   }
 
   public void Stop() {

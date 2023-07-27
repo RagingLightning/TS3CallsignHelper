@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:lb="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:vms="clr-namespace:TS3CallsignHelper.Wpf.ViewModels"
              xmlns:views="clr-namespace:TS3CallsignHelper.Wpf.Views"
              mc:Ignorable="d" 
@@ -14,6 +14,7 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontSize" Value="6"/>
         </Style>
         <Style x:Key="borderTxt" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
@@ -23,9 +24,6 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid Width="{Binding Width}" Height="{Binding Height}">
-        <lb:Interaction.Behaviors>
-            <lb:MouseDragElementBehavior/>
-        </lb:Interaction.Behaviors>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -36,25 +34,38 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
+        
         <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Content="{Binding CurrentViewModel}">
             
         </ContentControl>
-        <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="DarkGreen">
-            <Button DockPanel.Dock="Right" Width="25" Height="25" Content="X" Style="{StaticResource borderBtn}" Command="{Binding CloseCommand}"/>
-            <TextBlock DockPanel.Dock="Left" Height="25" FontSize="15" Text="{Binding ViewName}" Style="{StaticResource borderTxt}"/>
+        
+        <DockPanel x:Name="header" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="DarkGreen">
+            <behavior:Interaction.Triggers>
+                <behavior:EventTrigger EventName="PreviewMouseDown" SourceObject="{Binding ElementName=header}">
+                    <behavior:CallMethodAction TargetObject="{Binding MoveCommand}" MethodName="Start"/>
+                </behavior:EventTrigger>
+                <behavior:EventTrigger EventName="PreviewMouseMove" SourceObject="{Binding ElementName=header}">
+                    <behavior:CallMethodAction TargetObject="{Binding MoveCommand}" MethodName="Step"/>
+                </behavior:EventTrigger>
+                <behavior:EventTrigger EventName="PreviewMouseUp" SourceObject="{Binding ElementName=header}">
+                    <behavior:CallMethodAction TargetObject="{Binding MoveCommand}" MethodName="Stop"/>
+                </behavior:EventTrigger>
+            </behavior:Interaction.Triggers>
+            <Button DockPanel.Dock="Right" Width="10" Height="10" Content="X" Style="{StaticResource borderBtn}" Command="{Binding CloseCommand}"/>
+            <TextBlock DockPanel.Dock="Left" Height="10" FontSize="6" Text="{Binding ViewName}" Style="{StaticResource borderTxt}"/>
         </DockPanel>
-        <Button x:Name="resizeButton" Grid.Row="2" Grid.Column="2" Width="25" Height="25" Style="{StaticResource borderBtn}">
-            <lb:Interaction.Triggers>
-                <lb:EventTrigger EventName="PreviewMouseDown" SourceObject="{Binding ElementName=resizeButton}">
-                    <lb:CallMethodAction TargetObject="{Binding ResizeCommand}" MethodName="Start"/>
-                </lb:EventTrigger>
-                <lb:EventTrigger EventName="PreviewMouseMove" SourceObject="{Binding ElementName=resizeButton}">
-                    <lb:CallMethodAction TargetObject="{Binding ResizeCommand}" MethodName="Step"/>
-                </lb:EventTrigger>
-                <lb:EventTrigger EventName="PreviewMouseUp" SourceObject="{Binding ElementName=resizeButton}">
-                    <lb:CallMethodAction TargetObject="{Binding ResizeCommand}" MethodName="Stop"/>
-                </lb:EventTrigger>
-            </lb:Interaction.Triggers>
+        <Button x:Name="resizeButton" Grid.Row="2" Grid.Column="2" Width="10" Height="10" Style="{StaticResource borderBtn}">
+            <behavior:Interaction.Triggers>
+                <behavior:EventTrigger EventName="PreviewMouseDown" SourceObject="{Binding ElementName=resizeButton}">
+                    <behavior:CallMethodAction TargetObject="{Binding ResizeCommand}" MethodName="Start"/>
+                </behavior:EventTrigger>
+                <behavior:EventTrigger EventName="PreviewMouseMove" SourceObject="{Binding ElementName=resizeButton}">
+                    <behavior:CallMethodAction TargetObject="{Binding ResizeCommand}" MethodName="Step"/>
+                </behavior:EventTrigger>
+                <behavior:EventTrigger EventName="PreviewMouseUp" SourceObject="{Binding ElementName=resizeButton}">
+                    <behavior:CallMethodAction TargetObject="{Binding ResizeCommand}" MethodName="Stop"/>
+                </behavior:EventTrigger>
+            </behavior:Interaction.Triggers>
         </Button>
     </Grid>
 </UserControl>
