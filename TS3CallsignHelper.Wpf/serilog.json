@@ -1,0 +1,23 @@
+﻿{
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File", "Serilog.Enrichers.Thread" ],
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
+    },
+    "Enrich": [ "WithThreadID" ],
+    "WriteTo": {
+      "ConsoleSink": { "Name": "Console" },
+      "ClefSink": {
+        "Name": "File",
+        "Args": {
+          "path": "%temp%/TS3CallsignHelper/",
+          "formatter": "Serilog.Formatting.Compact.CompactJsonFormatter, Serilog.Formatting.Compact"
+        }
+      }
+    }
+  }
+}

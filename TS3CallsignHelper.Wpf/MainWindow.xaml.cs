@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
-using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf;
 /// <summary>

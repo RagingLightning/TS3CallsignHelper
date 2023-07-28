@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.Wpf", "TS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.Game", "TS3CallsignHelper.Game\TS3CallsignHelper.Game.csproj", "{B6EC6D5A-A447-4884-81B1-DF9E86323113}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.Game.Data", "TS3CallsignHelper.Game.Data\TS3CallsignHelper.Game.Data.csproj", "{C2A759DD-5A22-4302-B257-2889FD081901}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,13 +18,8 @@ Global
 		{F8838380-F8FF-48A4-B565-614B11446B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8838380-F8FF-48A4-B565-614B11446B60}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6EC6D5A-A447-4884-81B1-DF9E86323113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6EC6D5A-A447-4884-81B1-DF9E86323113}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6EC6D5A-A447-4884-81B1-DF9E86323113}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6EC6D5A-A447-4884-81B1-DF9E86323113}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2A759DD-5A22-4302-B257-2889FD081901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2A759DD-5A22-4302-B257-2889FD081901}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2A759DD-5A22-4302-B257-2889FD081901}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2A759DD-5A22-4302-B257-2889FD081901}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

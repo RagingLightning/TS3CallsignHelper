@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TS3CallsignHelper.Wpf": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

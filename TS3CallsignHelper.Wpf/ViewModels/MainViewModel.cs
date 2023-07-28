@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
@@ -6,6 +7,7 @@ using System.Windows.Controls;
 namespace TS3CallsignHelper.Wpf.ViewModels;
 internal class MainViewModel : ViewModelBase {
   public override string Name => "Main";
+  private readonly ILogger<MainViewModel> _logger;
 
   public event Action<ViewModelBase> ViewModelAdded;
   public event Action<ViewModelBase> ViewModelRemoved;
@@ -13,23 +15,22 @@ internal class MainViewModel : ViewModelBase {
   private readonly ObservableCollection<ViewModelBase> _activeViews;
   public IEnumerable<ViewModelBase> ActiveViews => _activeViews;
 
-  private Canvas _canvas;
-
-  public MainViewModel() {
+  public MainViewModel(ILogger<MainViewModel> logger) {
     _activeViews = new ObservableCollection<ViewModelBase>();
+    _logger = logger;
   }
 
-  public void RemoveView(ViewModelBase view) {
-    //_canvas.Children.Remove(_activeViews[view]);
+  public void RemoveView(CanvasContainerViewModel view) {
+    _logger.LogInformation("Closing {$view}", view.CurrentViewModel);
     _activeViews.Remove(view);
     ViewModelRemoved?.Invoke(view);
   }
 
-  public void AddView(ViewModelBase view) {
+  public void AddView(CanvasContainerViewModel view) {
+    _logger.LogInformation("Adding new {$view}", view.CurrentViewModel);
     var contentControl = new ContentControl();
     contentControl.Content = view;
     _activeViews.Add(view);
-    //_canvas.Children.Add(contentControl);
     ViewModelAdded?.Invoke(view);
   }
 }
