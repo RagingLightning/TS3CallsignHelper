@@ -14,7 +14,7 @@ internal static class HostConfigureExtensions {
       services.AddSingleton<NavigationStore>();
       services.AddSingleton(s => new OptionsStore(host.Configuration.GetValue<string>("OptionsFile"), s));
       //Commands
-      services.AddSingleton(s => new PayPalDonateCommand(host.Configuration.GetConnectionString("PayPalDonation")));
+      services.AddSingleton<PayPalDonateCommand>();
       //ViewModels
       services.AddSingleton<RootViewModel>();
     });

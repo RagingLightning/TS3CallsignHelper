@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows.Controls;
 using TS3CallsignHelper.Game.DTOs;
 using TS3CallsignHelper.Game.Stores;
@@ -17,14 +18,17 @@ internal class MainViewModel : ViewModelBase {
 
   public event Action<ViewModelBase> ViewModelAdded;
   public event Action<ViewModelBase> ViewModelRemoved;
-
+  
   private readonly ObservableCollection<ViewModelBase> _activeViews;
   public IEnumerable<ViewModelBase> ActiveViews => _activeViews;
 
   private readonly ObservableCollection<ViewConfigurationModel> _availableViews;
   public IEnumerable<ViewConfigurationModel> AvailableViews => _availableViews;
-
   public ViewConfigurationModel SelectedView { get; set; }
+
+  private readonly ObservableCollection<InterfaceLanguageModel> _availableLanguages;
+  public IEnumerable<InterfaceLanguageModel> AvailableLanguages => _availableLanguages;
+  public InterfaceLanguageModel SelectedLanguage { get; set; }
 
   private GameStateStore _gameStateStore;
 
@@ -41,8 +45,14 @@ internal class MainViewModel : ViewModelBase {
     _gameStateStore.GameInfoChanged += OnGameInfoChanged;
     _logger.LogTrace("{$Method} registered", nameof(OnGameInfoChanged));
 
-    _availableViews = new ObservableCollection<ViewConfigurationModel>();
-    _availableViews.Add(new ViewConfigurationModel("Callsign Information", new AddViewModelCommand(this, () => new CallsignInformationViewModel(serviceProvider))));
+    _availableViews = new ObservableCollection<ViewConfigurationModel> {
+      new ViewConfigurationModel("Callsign Information", new AddViewModelCommand(this, () => new CallsignInformationViewModel(serviceProvider)))
+    };
+
+    _availableLanguages = new ObservableCollection<InterfaceLanguageModel> {
+      new InterfaceLanguageModel("en_US", new SelectLanguageCommand(new CultureInfo("en_US"), serviceProvider)),
+      new InterfaceLanguageModel("de_DE", new SelectLanguageCommand(new CultureInfo("de_DE"), serviceProvider))
+    };
 
   }
 
