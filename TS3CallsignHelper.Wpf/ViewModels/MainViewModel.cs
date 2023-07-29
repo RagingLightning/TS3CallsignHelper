@@ -12,7 +12,7 @@ using TS3CallsignHelper.Wpf.Models;
 using TS3CallsignHelper.Wpf.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
-internal class MainViewModel : ViewModelBase {
+public class MainViewModel : ViewModelBase {
   public override string Name => "Main";
   private readonly ILogger<MainViewModel> _logger;
 
@@ -46,13 +46,12 @@ internal class MainViewModel : ViewModelBase {
     _logger.LogTrace("{$Method} registered", nameof(OnGameInfoChanged));
 
     _availableViews = new ObservableCollection<ViewConfigurationModel> {
-      new ViewConfigurationModel("Callsign Information", new AddViewModelCommand(this, () => new CallsignInformationViewModel(serviceProvider)))
+      new ViewConfigurationModel("Header_AddView_CallsignInformationView", new AddViewModelCommand(this, () => new CallsignInformationViewModel(serviceProvider)))
     };
 
-    _availableLanguages = new ObservableCollection<InterfaceLanguageModel> {
-      new InterfaceLanguageModel("en_US", new SelectLanguageCommand(new CultureInfo("en_US"), serviceProvider)),
-      new InterfaceLanguageModel("de_DE", new SelectLanguageCommand(new CultureInfo("de_DE"), serviceProvider))
-    };
+    _availableLanguages = new ObservableCollection<InterfaceLanguageModel>();
+    foreach (string lang in InterfaceLanguageModel.SupportedLanguages)
+      _availableLanguages.Add(new InterfaceLanguageModel(lang, new SelectLanguageCommand(new CultureInfo(lang), serviceProvider)));
 
   }
 

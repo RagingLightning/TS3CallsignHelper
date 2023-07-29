@@ -3,7 +3,7 @@ using TS3CallsignHelper.Wpf.Commands;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 
-internal class CanvasContainerViewModel : ViewModelBase {
+public class CanvasContainerViewModel : ViewModelBase {
   public override string Name => "Container";
 
   public ViewModelBase CurrentViewModel { get; }

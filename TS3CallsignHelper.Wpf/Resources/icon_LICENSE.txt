@@ -1,3 +1,7 @@
+addView:
+Licensed under CC BY-SA 3.0
+© PICOL @ iconfinder.com
+
 settings:
 Licensed under CC BY 4.0
 © Feather icons @ iconfinder.com

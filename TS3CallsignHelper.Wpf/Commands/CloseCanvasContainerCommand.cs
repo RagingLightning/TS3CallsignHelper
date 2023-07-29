@@ -1,7 +1,7 @@
 ﻿using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf.Commands;
-class CloseCanvasContainerCommand : CommandBase {
+public class CloseCanvasContainerCommand : CommandBase {
 
   private MainViewModel _mainModel;
   private CanvasContainerViewModel _viewModel;

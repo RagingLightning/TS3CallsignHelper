@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
-internal abstract class ViewModelBase : INotifyPropertyChanged {
+public abstract class ViewModelBase : INotifyPropertyChanged {
   public abstract string Name { get; }
 
   public event PropertyChangedEventHandler? PropertyChanged;

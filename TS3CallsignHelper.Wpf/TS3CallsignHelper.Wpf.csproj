@@ -9,8 +9,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Flags\de_DE.png" />
-	  <None Remove="Resources\Flags\en_US.png" />
+	  <None Remove="Resources\Flags\de-DE.png" />
+	  <None Remove="Resources\Flags\en-US.png" />
+	  <None Remove="Resources\icon_addView.png" />
 	  <None Remove="Resources\icon_donate.png" />
 	  <None Remove="Resources\icon_globe.png" />
 	  <None Remove="Resources\icon_settings.png" />
@@ -18,8 +19,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Resources\Flags\de_DE.png" />
-	  <Resource Include="Resources\Flags\en_US.png" />
+	  <Resource Include="Resources\Flags\de-DE.png" />
+	  <Resource Include="Resources\Flags\en-US.png" />
+	  <Resource Include="Resources\icon_addView.png" />
 	  <Resource Include="Resources\icon_donate.png" />
 	  <Resource Include="Resources\icon_globe.png" />
 	  <Resource Include="Resources\icon_settings.png" />
@@ -38,6 +40,7 @@
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	  <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
 	  <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+	  <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -45,23 +48,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="WpfLocalization">
-			<HintPath>Lib\WpfLocalization.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Lang\Translation.Designer.cs">
+		<Compile Update="Lang\MainView.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Translation.resx</DependentUpon>
+		  <DependentUpon>MainView.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Lang\Translation.resx">
+	  <EmbeddedResource Update="Lang\MainView.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Translation.Designer.cs</LastGenOutput>
+	    <LastGenOutput>MainView.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
 

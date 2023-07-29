@@ -5,16 +5,21 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using TS3CallsignHelper.Game.Extensions;
 using TS3CallsignHelper.Game.LogParsers;
 using TS3CallsignHelper.Game.Stores;
 using TS3CallsignHelper.Wpf.Commands;
 using TS3CallsignHelper.Wpf.Extensions;
+using TS3CallsignHelper.Wpf.Models;
 using TS3CallsignHelper.Wpf.Stores;
 using TS3CallsignHelper.Wpf.ViewModels;
+using WPFLocalizeExtension.Engine;
 
 namespace TS3CallsignHelper.Wpf;
 /// <summary>
@@ -87,6 +92,13 @@ public partial class App : Application {
       Log.Debug("Initializing the NavigationStore");
       var navigationStore = _host.Services.GetRequiredService<NavigationStore>();
       navigationStore.RootContent = new InitializationViewModel(_host.Services);
+
+      Log.Debug("Preparing Localization");
+      if (InterfaceLanguageModel.SupportedLanguages.Any(s => Thread.CurrentThread.CurrentUICulture.Name == s))
+        LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentUICulture;
+      else
+        LocalizeDictionary.Instance.Culture = new CultureInfo("en-US");
+      LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
 
       Log.Debug("Opening the main window");
       var mainWindow = _host.Services.GetRequiredService<MainWindow>();

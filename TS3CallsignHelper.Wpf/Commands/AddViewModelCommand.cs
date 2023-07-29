@@ -2,7 +2,7 @@
 using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf.Commands;
-internal class AddViewModelCommand : CommandBase {
+public class AddViewModelCommand : CommandBase {
 
   private readonly MainViewModel _mainViewModel;
   private Func<ViewModelBase> _creator;

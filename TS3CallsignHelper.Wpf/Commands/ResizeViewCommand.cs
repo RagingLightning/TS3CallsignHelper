@@ -6,7 +6,7 @@ using System.Windows.Input;
 using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf.Commands;
-internal class ResizeViewCommand {
+public class ResizeViewCommand {
 
   private CanvasContainerViewModel _viewModel;
 

@@ -6,7 +6,7 @@ using System.Windows.Input;
 using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf.Commands;
-internal class MoveViewCommand {
+public class MoveViewCommand {
 
   private CanvasContainerViewModel _viewModel;
 

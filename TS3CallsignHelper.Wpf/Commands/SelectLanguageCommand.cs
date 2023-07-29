@@ -2,8 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
-using System.Threading;
-using WpfLocalization;
+using WPFLocalizeExtension.Engine;
 
 namespace TS3CallsignHelper.Wpf.Commands;
 public class SelectLanguageCommand : CommandBase {
@@ -17,7 +16,6 @@ public class SelectLanguageCommand : CommandBase {
 
   public override void Execute(object? parameter) {
     _logger.LogDebug("Changing UI language to {Language}", _culture.Name);
-    Thread.CurrentThread.CurrentUICulture = _culture;
-    LocalizationManager.UpdateValues();
+    LocalizeDictionary.Instance.Culture = _culture;
   }
 }
