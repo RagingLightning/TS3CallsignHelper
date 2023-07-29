@@ -48,6 +48,8 @@ public partial class App : Application {
       .ReadFrom.Configuration(_serilogConfig.ApplyTimestamp())
       .CreateLogger();
 
+    AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(OnUnhandledException);
+
     Log.Information("Application initialization");
     try {
       _host = Host.CreateDefaultBuilder()
@@ -110,5 +112,10 @@ public partial class App : Application {
     _host.Dispose();
 
     base.OnExit(e);
+  }
+
+  private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e) {
+    _host.Dispose();
+    Log.Fatal((Exception) e.ExceptionObject, "An unhandled exception occurred");
   }
 }
