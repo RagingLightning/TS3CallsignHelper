@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TS3CallsignHelper.Game.Services;
 
 namespace TS3CallsignHelper.Game.LogParsers;
 internal class GameLogReader {
+  private readonly InitializationProgressService _initializationProgress;
 
   internal event Action? EndOfLog;
 
@@ -17,7 +14,9 @@ internal class GameLogReader {
 
   private Thread _reader;
 
-  internal GameLogReader(Action<string> parser) {
+  internal GameLogReader(Action<string> parser, InitializationProgressService initializationProgress) {
+    _initializationProgress = initializationProgress;
+
     _parser = parser;
     _logFileChanged = new AutoResetEvent(false);
   }
@@ -38,13 +37,17 @@ internal class GameLogReader {
   private void Run() {
     Thread.CurrentThread.Name = "Log Parsing Thread";
     Thread.CurrentThread.IsBackground = true;
+    _initializationProgress.StatusMessage = "Catching up on the game log...";
 
     var logStream = new FileStream(Path.Combine(_logPath, "Player.log"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
     using var logReader = new StreamReader(logStream);
     while (true) {
       var line = logReader.ReadLine();
-      if (line != null)
+      if (line != null) {
         _parser(line);
+        if (!_initializationProgress.Completed)
+          _initializationProgress.LogFileProgress = ((float) logStream.Position) / logStream.Length;
+      }
       else {
         EndOfLog?.Invoke();
         _logFileChanged.WaitOne(100);

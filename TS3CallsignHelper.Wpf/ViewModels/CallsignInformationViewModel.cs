@@ -1,68 +1,85 @@
-﻿using TS3CallsignHelper.Game.Models;
+﻿using Accessibility;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
+using TS3CallsignHelper.Game.Models;
 using TS3CallsignHelper.Game.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 class CallsignInformationViewModel : ViewModelBase {
   public override string Name => "Callsign Information";
+  private readonly ILogger _logger;
 
   private readonly GameStateStore _gameStateStore;
 
-  public CallsignInformationViewModel(GameStateStore gameStateStore) {
-    _gameStateStore = gameStateStore;
-    gameStateStore.CurrentAirplaneChanged += OnCurrentAirplaneChanged;
+  public CallsignInformationViewModel(IServiceProvider serviceProvider) {
+    _logger = serviceProvider.GetRequiredService<ILogger<CallsignInformationViewModel>>();
+
+    _logger.LogInformation("Initializing");
+    _gameStateStore = serviceProvider.GetRequiredService<GameStateStore>();
+
+    _logger.LogDebug("Registering event handlers");
+    _gameStateStore.CurrentAirplaneChanged += OnCurrentAirplaneChanged;
+    _logger.LogTrace("{$method} registered", nameof(OnCurrentAirplaneChanged));
+
+    _sayname = string.Empty;
+    _writename = string.Empty;
+    _weightClass = string.Empty;
   }
 
   public override void Dispose() {
-    base.Dispose();
-    
+    _logger.LogDebug("Unegistering event handlers");
     _gameStateStore.CurrentAirplaneChanged -= OnCurrentAirplaneChanged;
+    _logger.LogTrace("{$method} unregistered", nameof(OnCurrentAirplaneChanged));
   }
 
   private void OnCurrentAirplaneChanged() {
-    if (_gameStateStore.CurrentAirline == "GA") {
-      var ga = _gameStateStore.GetCurrentGaPlane();
-      AirlineCode = "GA ";
-      FlightNumber = ga.WriteName;
-      Callsign = AirportGa.FormatSayName(ga.SayName);
+    _logger.LogDebug("Received CurrentAirplaneChanged event");
+    if (_gameStateStore.CurrentPlaneIsAirline) {
+      var schedule = _gameStateStore.GetCurrentScheduleEntry();
+      Writename = schedule.Airline+schedule.FlightNumber;
+      Sayname = _gameStateStore.GetAirline(schedule.Airline).Callsign;
+      WeightClass = _gameStateStore.GetAirplaneType(schedule.AirplaneType).WeightClass.ToString();
     }
     else {
-      var airline = _gameStateStore.GetCurrentAirline();
-      AirlineCode = airline.Code;
-      FlightNumber = _gameStateStore.CurrentFlight;
-      Callsign = airline.Callsign;
+      var ga = _gameStateStore.GetCurrentGaPlane();
+      Writename = ga.WriteName;
+      Sayname = AirportGa.FormatSayName(ga.SayName);
+      WeightClass = _gameStateStore.GetAirplaneType(ga.AirplaneType).WeightClass.ToString();
+    }
+    _logger.LogDebug("New callsign info: {Callsign} / {WeightClass} for {Airplane}", Sayname, WeightClass, Writename);
+  }
+
+  private string _sayname;
+  public string Sayname {
+    get {
+      return _sayname;
+    }
+    set {
+      _sayname = value;
+      OnPropertyChanged(nameof(Sayname));
     }
   }
 
-  private string _callsign;
-  public string Callsign {
+  private string _writename;
+  public string Writename {
     get {
-      return _callsign;
+      return _writename;
     }
     set {
-      _callsign = value;
-      OnPropertyChanged(nameof(Callsign));
+      _writename = value;
+      OnPropertyChanged(nameof(Writename));
     }
   }
 
-  private string _airlineCode;
-  public string AirlineCode {
+  private string _weightClass;
+  public string WeightClass {
     get {
-      return _airlineCode;
+      return _weightClass;
     }
     set {
-      _airlineCode = value;
-      OnPropertyChanged(nameof(AirlineCode));
-    }
-  }
-
-  private string _flightNumber;
-  public string FlightNumber {
-    get {
-      return _flightNumber;
-    }
-    set {
-      _flightNumber = value;
-      OnPropertyChanged(nameof(FlightNumber));
+      _weightClass = value;
+      OnPropertyChanged(nameof(WeightClass));
     }
   }
 

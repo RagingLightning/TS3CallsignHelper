@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using TS3CallsignHelper.Game.Models;
+using TS3CallsignHelper.Game.DTOs;
 
 namespace TS3CallsignHelper.Game.LogParsers;
 internal partial class MetarEntryParser : IEntryParser {
   [GeneratedRegex(@"^(?<icao>[A-Z]{4}) (?<time>\d{6})[zZ] (?<auto>AUTO )?(?<wind>[0-9G])KT (?<var>[0-9V] )?(?<vis>.+) (?<temp>[\dM]+?)/(?<dew>[\dM]+?) (?<qnh>[AQ][\d.]+)$")]
   private partial Regex Metar();
+
   public object? Parse(string logLine) {
     logLine = logLine[18..].Trim();
 
     var groups = Metar().Match(logLine).Groups;
-    if (groups.Count == 1) return null;
+    if (groups.Count == 1) return logLine;
 
     return new Metar {
       Airport = groups["icao"].Value,

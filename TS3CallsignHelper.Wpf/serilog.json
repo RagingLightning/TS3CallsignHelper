@@ -9,8 +9,27 @@
       }
     },
     "Enrich": [ "WithThreadID" ],
+    "Destructure": [
+      {
+        "Name": "ToMaximumDepth",
+        "Args": { "maximumDestructuringDepth": 4 }
+      },
+      {
+        "Name": "ToMaximumStringLength",
+        "Args": { "maximumStringLength": 10 }
+      },
+      {
+        "Name": "ToMaximumCollectionCount",
+        "Args": { "maximumCollectionCount": 10 }
+      }
+    ],
     "WriteTo": {
-      "ConsoleSink": { "Name": "Console" },
+      "ConsoleSink": {
+        "Name": "Console",
+        "Args": {
+          "outputTemplate": "[{Timestamp:G} {Level:u3}] {Message:lj}     <s:{SourceContext}>{NewLine}{Exception}"
+        }
+      },
       "ClefSink": {
         "Name": "File",
         "Args": {

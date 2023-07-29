@@ -9,46 +9,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vms:CanvasContainerViewModel}">
-            <views:CanvasContainerView/>
+        <DataTemplate DataType="{x:Type vms:MainViewModel}">
+            <views:MainView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:InitializationViewModel}">
+            <views:InitializationView/>
         </DataTemplate>
     </Window.Resources>
-    <DockPanel>
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <TextBox Grid.Row="0" Grid.Column="0" Text="EGLL" MinWidth="40" TextAlignment="Center" Padding="5,0"/>
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="/" Width="20" TextAlignment="Center"/>
-            <TextBox Grid.Row="0" Grid.Column="2" Text="NyergesDesign" MinWidth="40" TextAlignment="Center" Padding="5,0"/>
-            <Button Grid.Row="0" Grid.Column="4" Content="settings"/>
-            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Fill="LightGray" Height="5"/>
-        </Grid>
-        <ItemsControl x:Name="canvasParent" ItemsSource="{Binding ActiveViews}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <ContentControl Content="{Binding}"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding X}" />
-                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-        </ItemsControl>
-    </DockPanel>
+    <ContentControl Content="{Binding RootContent}"/>
 </Window>

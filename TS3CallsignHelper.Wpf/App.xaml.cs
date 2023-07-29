@@ -1,15 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using TS3CallsignHelper.Game.Extensions;
 using TS3CallsignHelper.Game.LogParsers;
 using TS3CallsignHelper.Game.Stores;
+using TS3CallsignHelper.Wpf.Commands;
 using TS3CallsignHelper.Wpf.Extensions;
+using TS3CallsignHelper.Wpf.Stores;
 using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf;
@@ -17,58 +21,82 @@ namespace TS3CallsignHelper.Wpf;
 /// Interaction logic for App.xaml
 /// </summary>
 public partial class App : Application {
+  [DllImport("Kernel32")]
+  public static extern void AttachConsole();
+
+  [DllImport("Kernel32")]
+  public static extern void FreeConsole();
 
   private readonly IHost _host;
+  private IConfigurationRoot? _serilogConfig;
 
   public App() {
-    IConfigurationBuilder configBuilder = new ConfigurationBuilder();
-    if (File.Exists("serilog.json"))
-      configBuilder = configBuilder.AddJsonFile("serilog.json");
-    else
-      configBuilder.AddJsonStream(GetType().Assembly.GetManifestResourceStream(GetType().Namespace + ".serilog.json"));
-    var config = configBuilder.Build();
+    AttachConsole();
 
-    config.CleanFolder(3);
+    IConfigurationBuilder configBuilder = new ConfigurationBuilder();
+    if (File.Exists("serilog.json")) {
+      Console.WriteLine("using serilog.json");
+      Debug.WriteLine("using serilog.json");
+      configBuilder = configBuilder.AddJsonFile("serilog.json");
+    }
+    else {
+      configBuilder.AddJsonStream(GetType().Assembly.GetManifestResourceStream(GetType().Namespace + ".serilog.json"));
+    }
+    _serilogConfig = configBuilder.Build();
 
     Log.Logger = new LoggerConfiguration()
-      .ReadFrom.Configuration(config.ApplyTimestamp())
+      .ReadFrom.Configuration(_serilogConfig.ApplyTimestamp())
       .CreateLogger();
 
-
+    Log.Information("Application initialization");
     try {
       _host = Host.CreateDefaultBuilder()
             .UseSerilog()
-            .ConfigureGameStores()
+            .ConfigureGame()
+            .ConfigureWpf()
             .ConfigureServices((hostcontext, services) => {
-
+              //Log Parser
               services.AddSingleton<IGameLogParser, GameLogParserPlacesTwo>();
-
-              services.AddSingleton<MainViewModel>();
+              //Main Window
               services.AddSingleton(s => new MainWindow() {
-                DataContext = s.GetRequiredService<MainViewModel>()
+                DataContext = s.GetRequiredService<RootViewModel>()
               });
+
             })
             .Build();
     }
     catch (Exception ex) {
       Log.Fatal(ex, "An exception occurred during application initialization");
     }
-
-
-
   }
 
   protected override void OnStartup(StartupEventArgs e) {
+    Log.Information("Application startup");
     try {
       _host.Start();
 
-      var mainv = _host.Services.GetRequiredService<MainWindow>();
-      var mainvm = _host.Services.GetRequiredService<MainViewModel>();
-      mainv.Show();
-      mainvm.AddView(new CanvasContainerViewModel(mainvm, new CallsignInformationViewModel(_host.Services.GetRequiredService<GameStateStore>())));
+      var filesToKeep = _host.Services.GetRequiredService<OptionsStore>().BackupLogFiles;
+      Log.Verbose("Cleaning log folder to no more than {Backup} files", filesToKeep);
+      _serilogConfig?.CleanFolder(filesToKeep);
+
+      Log.Debug("Initializing OptionsStore");
+      var optionsStore = _host.Services.GetRequiredService<OptionsStore>();
+
+      Log.Debug("Initializing the NavigationStore");
+      var navigationStore = _host.Services.GetRequiredService<NavigationStore>();
+      navigationStore.RootContent = new InitializationViewModel(_host.Services);
+
+      Log.Debug("Opening the main window");
+      var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+      mainWindow.Show();
+
+      Log.Debug("Initializing GameStateStore");
+      var gameStateStore = _host.Services.GetRequiredService<GameStateStore>();
 
       var logParser = _host.Services.GetRequiredService<IGameLogParser>();
-      logParser.Init(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow"), "FeelThere Inc_\\Tower! Simulator 3"));
+      var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow"), "FeelThere Inc_\\Tower! Simulator 3");
+      Log.Debug("Starting log parser at {Path}", logFolder);
+      logParser.Init(logFolder);
       logParser.Start();
 
       base.OnStartup(e);

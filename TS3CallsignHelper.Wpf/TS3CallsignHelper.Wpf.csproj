@@ -11,6 +11,8 @@
 	<ItemGroup>
 	  <None Remove="appsettings.Development.json" />
 	  <None Remove="appsettings.json" />
+	  <None Remove="Ressources\icon_donate.png" />
+	  <None Remove="Ressources\icon_settings.png" />
 	  <None Remove="serilog.json" />
 	</ItemGroup>
 
@@ -19,19 +21,22 @@
 	  <EmbeddedResource Include="appsettings.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <Resource Include="Ressources\icon_donate.png" />
+	  <Resource Include="Ressources\icon_settings.png" />
 	  <EmbeddedResource Include="serilog.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	  <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
-	  <PackageReference Include="Serilog.Enrichers.CallerInfo" Version="1.0.1" />
 	  <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
 	</ItemGroup>
 
@@ -58,6 +63,10 @@
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>Translation.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Services\" />
 	</ItemGroup>
 
 </Project>

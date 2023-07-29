@@ -17,9 +17,9 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="AMERICAN" FontSize="64" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="AAL8192" FontSize="32" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"/>
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="HEAVY" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Sayname}" FontSize="64" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Writename}" FontSize="32" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding WeightClass}" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0"/>
         <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="5" Fill="LightGray"/>
         <Rectangle Grid.Row="2" Grid.Column="1" Width="5" Fill="LightGray"/>
     </Grid>

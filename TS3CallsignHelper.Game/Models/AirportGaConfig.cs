@@ -1,33 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using TS3CallsignHelper.Game.Exceptions;
+using TS3CallsignHelper.Game.Services;
 
 namespace TS3CallsignHelper.Game.Models;
 public partial class AirportGaConfig {
   [GeneratedRegex("^(?<q0>\"?)(?<writename>.+?)\\k<q0>,(?<q1>\"?)(?<sayname>.+?)\\k<q1>,(?<q2>\"?)(?<airplanetype>.+?)\\k<q2>,(?<q3>\"?)(?<from>[A-Z]{4})\\k<q3>,(?<q4>\"?)(?<to>[A-Z]{4})\\k<q4>,(?<q5>\"?)(?<arrival>[0-9:]*?)\\k<q5>,(?<q6>\"?)(?<departure>[0-9:]*?)\\k<q6>,(?<q7>\"?)(?<approachaltitude>[0-9]*?)\\k<q7>,(?<q8>\"?)(?<stopandgo>\\d)\\k<q8>,(?<q9>\"?)(?<touchandgo>\\d)\\k<q9>,(?<q10>\"?)(?<lowapproach>\\d)\\k<q10>,(?<q11>\"?)(?<special>.*?)\\k<q11>$")]
   private static partial Regex Parser();
+  private readonly ILogger<AirportGaConfig> _logger;
 
   public IEnumerable<AirportGa> GaPlanes => _gaPlanes.Values;
 
   private Dictionary<string, AirportGa> _gaPlanes;
 
-  public AirportGaConfig(string configPath) {
+  public AirportGaConfig(string configPath, IServiceProvider serviceProvider, InitializationProgressService initializationProgress) {
+    _logger = serviceProvider.GetRequiredService<ILogger<AirportGaConfig>>();
+
     _gaPlanes = new Dictionary<string, AirportGa>();
 
-    var configFile = File.Open(configPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-    using var reader = new StreamReader(configFile);
+    initializationProgress.StatusMessage = "Loading GA schedule...";
+    _logger.LogDebug("Loading ga schedule from {Config}", configPath);
+    var stream = File.Open(configPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+    using var reader = new StreamReader(stream);
     reader.ReadLine(); // first line contains headers
     while (reader.ReadLine() is string line) {
+      _logger.LogTrace("Loading ga flight from {Line}", line);
       var groups = Parser().Match(line).Groups;
       if (groups.Count == 1) throw new GaDefinitionFormatException(line);
 
-      _gaPlanes.Add(groups["writename"].Value,
-                    new AirportGa(groups["writename"].Value,
+      var callsign = groups["writename"].Value;
+      var airplane = new AirportGa(groups["writename"].Value,
                                   groups["sayname"].Value,
                                   groups["airplanetype"].Value,
                                   groups["from"].Value,
@@ -38,8 +42,12 @@ public partial class AirportGaConfig {
                                   groups["stopandgo"].Value,
                                   groups["touchandgo"].Value,
                                   groups["lowapproach"].Value,
-                                  groups["special"].Value));
+                                  groups["special"].Value);
+      _gaPlanes.Add(callsign, airplane);
+      _logger.LogDebug("Added ga schedule entry {@GaSchedule}", airplane);
+      initializationProgress.GaProgress = ((float) stream.Position) / stream.Length;
     }
+    initializationProgress.GaProgress = 1;
   }
 
   public bool TryGet(string code, out AirportGa ga) {

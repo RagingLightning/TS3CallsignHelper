@@ -52,4 +52,8 @@ internal class CanvasContainerViewModel : ViewModelBase {
     X = 0;
     Y = 0;
   }
+
+  public override void Dispose() {
+    CurrentViewModel.Dispose();
+  }
 }

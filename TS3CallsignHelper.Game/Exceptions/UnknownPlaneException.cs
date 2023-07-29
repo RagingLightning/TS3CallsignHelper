@@ -6,4 +6,6 @@ using System.Threading.Tasks;
 
 namespace TS3CallsignHelper.Game.Exceptions;
 internal class UnknownPlaneException : Exception {
+  public UnknownPlaneException(string? message) : base(message) {
+  }
 }

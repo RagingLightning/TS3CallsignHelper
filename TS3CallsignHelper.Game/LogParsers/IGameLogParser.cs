@@ -1,5 +1,5 @@
-﻿using TS3CallsignHelper.Game.Enums;
-using TS3CallsignHelper.Game.Models;
+﻿using TS3CallsignHelper.Game.DTOs;
+using TS3CallsignHelper.Game.Enums;
 
 namespace TS3CallsignHelper.Game.LogParsers;
 public interface IGameLogParser {
@@ -11,7 +11,7 @@ public interface IGameLogParser {
   public event Action<string>? NewActivePlane;
   public event Action<string, PlaneState>? NewPlaneState;
 
-  public void Init(string logFile);
+  public void Init(string logFolder);
   public ParserState GetState();
   public void Start();
   public void Stop();
