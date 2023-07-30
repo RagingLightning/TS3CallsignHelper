@@ -10,9 +10,9 @@ public interface IGameLogParser {
   public event Action<Metar>? MetarUpdated;
   public event Action<string>? NewActivePlane;
   public event Action<string, PlaneState>? NewPlaneState;
+  public ParserState State { get; }
 
   public void Init(string logFolder);
-  public ParserState GetState();
   public void Start();
   public void Stop();
 

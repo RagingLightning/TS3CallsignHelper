@@ -197,7 +197,7 @@ public class GameStateStore {
    * <exception cref="InvalidPlaneStateException"><paramref name="state"/> is not valid for <paramref name="airplane"/></exception>
    */
   public void SetPlaneState(string airplane, PlaneState state) {
-    if (!ValidatePlaneState(airplane, state))
+    if (_logParser.State != ParserState.INIT_CATCHUP && !ValidatePlaneState(airplane, state))
       throw new InvalidPlaneStateException(airplane, state);
     _logger.LogDebug("State of {Airplane} changed to {State}", airplane, state);
     _planeStates[airplane] = state;

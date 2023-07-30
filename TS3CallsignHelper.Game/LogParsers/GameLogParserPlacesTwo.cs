@@ -18,6 +18,8 @@ public class GameLogParserPlacesTwo : IGameLogParser {
   public event Action<string, PlaneState>? NewPlaneState;
 
   private ParserState _state;
+  public ParserState State => _state;
+
   private GameLogReader _reader;
 
   private ParserMode _mode;
@@ -71,8 +73,6 @@ public class GameLogParserPlacesTwo : IGameLogParser {
 
     _state = ParserState.RUNNING;
   }
-
-  public ParserState GetState() => _state;
 
   public void Start() {
     _reader.Start();
