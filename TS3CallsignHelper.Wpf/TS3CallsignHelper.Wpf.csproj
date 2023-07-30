@@ -12,8 +12,13 @@
 	  <None Remove="Resources\Flags\de-DE.png" />
 	  <None Remove="Resources\Flags\en-US.png" />
 	  <None Remove="Resources\icon_addView.png" />
+	  <None Remove="Resources\icon_closeContainer.png" />
+	  <None Remove="Resources\icon_decreaseScale.png" />
+	  <None Remove="Resources\icon_decreaseZIndex.png" />
 	  <None Remove="Resources\icon_donate.png" />
 	  <None Remove="Resources\icon_globe.png" />
+	  <None Remove="Resources\icon_increaseScale.png" />
+	  <None Remove="Resources\icon_increaseZIndex.png" />
 	  <None Remove="Resources\icon_resizeContainer.png" />
 	  <None Remove="Resources\icon_settings.png" />
 	  <None Remove="serilog.json" />
@@ -23,8 +28,13 @@
 	  <Resource Include="Resources\Flags\de-DE.png" />
 	  <Resource Include="Resources\Flags\en-US.png" />
 	  <Resource Include="Resources\icon_addView.png" />
+	  <Resource Include="Resources\icon_closeContainer.png" />
+	  <Resource Include="Resources\icon_decreaseScale.png" />
+	  <Resource Include="Resources\icon_decreaseZIndex.png" />
 	  <Resource Include="Resources\icon_donate.png" />
 	  <Resource Include="Resources\icon_globe.png" />
+	  <Resource Include="Resources\icon_increaseScale.png" />
+	  <Resource Include="Resources\icon_increaseZIndex.png" />
 	  <Resource Include="Resources\icon_resizeContainer.png" />
 	  <Resource Include="Resources\icon_settings.png" />
 	  <EmbeddedResource Include="serilog.json">
@@ -34,6 +44,7 @@
 
 	<ItemGroup>
 	  <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
+	  <PackageReference Include="MathConverter" Version="2.2.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />

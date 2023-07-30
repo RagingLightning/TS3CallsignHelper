@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:TS3CallsignHelper.Wpf.Views"
+             xmlns:views="clr-namespace:TS3CallsignHelper.Wpf.Views"
+             xmlns:vms="clr-namespace:TS3CallsignHelper.Wpf.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="450">
     <Grid Background="White">
@@ -17,10 +18,10 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Sayname}" FontSize="64" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Writename}" FontSize="32" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"/>
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding WeightClass}" FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0"/>
-        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="5" Fill="LightGray"/>
-        <Rectangle Grid.Row="2" Grid.Column="1" Width="5" Fill="LightGray"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Sayname}" FontSize="{Binding ConverterParameter=64*x, Path=(vms:ViewModelBase.ViewScale), Converter={StaticResource Math}}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Writename}" FontSize="{Binding ConverterParameter=32*x, Path=(vms:ViewModelBase.ViewScale), Converter={StaticResource Math}}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding WeightClass}" FontSize="{Binding ConverterParameter=32*x, Path=(vms:ViewModelBase.ViewScale), Converter={StaticResource Math}}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0"/>
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="{Binding ConverterParameter=5*x, Path=(vms:ViewModelBase.ViewScale), Converter={StaticResource Math}}" Fill="LightGray"/>
+        <Rectangle Grid.Row="2" Grid.Column="1" Width="{Binding ConverterParameter=5*x, Path=(vms:ViewModelBase.ViewScale), Converter={StaticResource Math}}" Fill="LightGray"/>
     </Grid>
 </UserControl>

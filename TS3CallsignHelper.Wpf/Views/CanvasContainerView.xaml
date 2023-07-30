@@ -13,7 +13,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style x:Key="borderBtn" TargetType="Button">
+        <Style x:Key="BorderButton" TargetType="Button">
             <Setter Property="Background" Value="DarkGreen"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="0"/>
@@ -34,8 +34,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="borderTxt" TargetType="TextBlock">
+        <Style x:Key="BorderText" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style x:Key="BorderTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="DarkGreen" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
         <DataTemplate DataType="{x:Type vms:CallsignInformationViewModel}">
             <views:CallsignInformationView/>
@@ -55,7 +59,31 @@
 
         <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Content="{Binding CurrentViewModel}"/>
 
-        <DockPanel x:Name="header" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="DarkGreen">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="DarkGreen">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Button Width="12" Height="12" Style="{StaticResource BorderButton}" Command="{Binding DecreaseScaleCommand}">
+                    <Image Source="/Resources/icon_decreaseScale.png"/>
+                </Button>
+                <TextBox Width="45" Height="15" Style="{StaticResource BorderTextBox}" FontSize="9" Text="{Binding ViewScale, Mode=OneWay}" IsEnabled="False"/>
+                <Button Width="15" Height="15" Style="{StaticResource BorderButton}" Command="{Binding IncreaseScaleCommand}">
+                    <Image Source="/Resources/icon_increaseScale.png"/>
+                </Button>
+                <Rectangle Width="3" Fill="White"/>
+                <Button Width="15" Height="15" Style="{StaticResource BorderButton}" Command="{Binding DecreaseZIndexCommand}">
+                    <Image Source="/Resources/icon_decreaseZIndex.png"/>
+                </Button>
+                <TextBox Width="45" Height="15" Style="{StaticResource BorderTextBox}" FontSize="9" Text="{Binding ZIndex, Mode=OneWay}" IsEnabled="False"/>
+                <Button Width="15" Height="15" Style="{StaticResource BorderButton}" Command="{Binding IncreaseZIndexCommand}">
+                    <Image Source="/Resources/icon_increaseZIndex.png"/>
+                </Button>
+                <Rectangle Width="3" Fill="White"/>
+            </StackPanel>
+            <TextBlock x:Name="header" Grid.Column="1" Height="15" FontSize="9" Text="{lex:Loc {Binding ViewName}}" Style="{StaticResource BorderText}">
             <behavior:Interaction.Triggers>
                 <behavior:EventTrigger EventName="PreviewMouseDown" SourceObject="{Binding ElementName=header}">
                     <behavior:CallMethodAction TargetObject="{Binding MoveCommand}" MethodName="Start"/>
@@ -67,10 +95,15 @@
                     <behavior:CallMethodAction TargetObject="{Binding MoveCommand}" MethodName="Stop"/>
                 </behavior:EventTrigger>
             </behavior:Interaction.Triggers>
-            <Button DockPanel.Dock="Right" Width="10" Height="10" Content="X" Style="{StaticResource borderBtn}" Command="{Binding CloseCommand}"/>
-            <TextBlock DockPanel.Dock="Left" Height="10" FontSize="6" Text="{lex:Loc {Binding ViewName}}" Style="{StaticResource borderTxt}"/>
-        </DockPanel>
-        <Button x:Name="resizeButton" Grid.Row="2" Grid.Column="2" Width="10" Height="10" Style="{StaticResource borderBtn}">
+            </TextBlock>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Rectangle Width="3" Fill="White"/>
+                <Button Width="15" Height="15" Style="{StaticResource BorderButton}" Command="{Binding CloseCommand}">
+                    <Image Source="/Resources/icon_closeContainer.png"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Button x:Name="resizeButton" Grid.Row="2" Grid.Column="2" Width="10" Height="10" Style="{StaticResource BorderButton}">
             <Image Source="/Resources/icon_resizeContainer.png"/>
             <behavior:Interaction.Triggers>
                 <behavior:EventTrigger EventName="PreviewMouseDown" SourceObject="{Binding ElementName=resizeButton}">

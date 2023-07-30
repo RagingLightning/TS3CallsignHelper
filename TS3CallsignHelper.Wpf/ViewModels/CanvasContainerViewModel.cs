@@ -9,7 +9,17 @@ public class CanvasContainerViewModel : ViewModelBase {
   public ViewModelBase CurrentViewModel { get; }
   public ResizeViewCommand ResizeCommand { get; }
   public MoveViewCommand MoveCommand { get; }
-  public CloseCanvasContainerCommand CloseCommand { get; }
+  public CommandBase CloseCommand { get; }
+  public CommandBase DecreaseScaleCommand => new CallFunctionCommand(() => {
+    CurrentViewModel.Scale -= 0.1;
+    OnPropertyChanged(nameof(ViewScale));
+    });
+  public CommandBase IncreaseScaleCommand => new CallFunctionCommand(() => {
+    CurrentViewModel.Scale += 0.1;
+    OnPropertyChanged(nameof(ViewScale));
+  });
+  public CommandBase DecreaseZIndexCommand => new CallFunctionCommand(() => ZIndex = Math.Min(0, ZIndex-1));
+  public CommandBase IncreaseZIndexCommand => new CallFunctionCommand(() => ZIndex += 1);
   public string ViewName {
     get {
       var name = CurrentViewModel.GetType().Name;
@@ -46,6 +56,19 @@ public class CanvasContainerViewModel : ViewModelBase {
     }
   }
   private double _height;
+
+  private int _zindex;
+  public int ZIndex {
+    get {
+      return _zindex;
+    }
+    set {
+      _zindex = value;
+      OnPropertyChanged(nameof(ZIndex));
+    }
+  }
+
+  public string ViewScale => $"{CurrentViewModel.Scale*100:.}%";
 
   public CanvasContainerViewModel(MainViewModel mainModel, ViewModelBase viewModel) {
     CurrentViewModel = viewModel;
