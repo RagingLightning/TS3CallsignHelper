@@ -1,6 +1,7 @@
 ﻿<Application x:Class="TS3CallsignHelper.Wpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:math="http://hexinnovation.com/math"
              xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Application.Resources>
         <!--#region ImageButton-->
@@ -290,5 +291,6 @@
             </Style.Triggers>
         </Style>
         <!--#endregion-->
+        <math:MathConverter x:Key="Math"/>
     </Application.Resources>
 </Application>

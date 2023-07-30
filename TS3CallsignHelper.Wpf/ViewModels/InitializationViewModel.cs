@@ -6,7 +6,6 @@ using TS3CallsignHelper.Wpf.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 internal class InitializationViewModel : ViewModelBase {
-  public override string Name => "Initialization";
   public override Type Translation => throw new NotImplementedException();
   private readonly IServiceProvider _serviceProvider;
 	private readonly NavigationStore _navigationStore;

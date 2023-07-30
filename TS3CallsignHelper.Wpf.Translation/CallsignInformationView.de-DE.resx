@@ -117,28 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Header_AddView" xml:space="preserve">
-    <value>Add Window</value>
-  </data>
-  <data name="Header_Airport" xml:space="preserve">
-    <value>Airport</value>
-  </data>
-  <data name="Header_Database" xml:space="preserve">
-    <value>Database</value>
-  </data>
-  <data name="Header_Donate" xml:space="preserve">
-    <value>Donate to RagingLightning via PayPal</value>
-  </data>
-  <data name="Header_Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="Header_Language_de-DE" xml:space="preserve">
-    <value>German (Deutsch, de-DE)</value>
-  </data>
-  <data name="Header_Language_en-US" xml:space="preserve">
-    <value>English (en-US)</value>
-  </data>
-  <data name="Header_Settings" xml:space="preserve">
-    <value>Settings</value>
+  <data name="Name" xml:space="preserve">
+    <value>Rufzeichen-Information</value>
   </data>
 </root>

@@ -22,14 +22,14 @@ namespace TS3CallsignHelper.Wpf.Translation {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class MainView {
+    public class CallsignInformationView {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MainView() {
+        internal CallsignInformationView() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace TS3CallsignHelper.Wpf.Translation {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TS3CallsignHelper.Wpf.Translation.MainView", typeof(MainView).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TS3CallsignHelper.Wpf.Translation.CallsignInformationView", typeof(CallsignInformationView).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,72 +63,9 @@ namespace TS3CallsignHelper.Wpf.Translation {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        public static string Header_AddView {
+        public static string Name {
             get {
-                return ResourceManager.GetString("Header_AddView", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        /// </summary>
-        public static string Header_Airport {
-            get {
-                return ResourceManager.GetString("Header_Airport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        /// </summary>
-        public static string Header_Database {
-            get {
-                return ResourceManager.GetString("Header_Database", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        /// </summary>
-        public static string Header_Donate {
-            get {
-                return ResourceManager.GetString("Header_Donate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        /// </summary>
-        public static string Header_Language {
-            get {
-                return ResourceManager.GetString("Header_Language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        /// </summary>
-        public static string Header_Language_de_DE {
-            get {
-                return ResourceManager.GetString("Header_Language_de-DE", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        /// </summary>
-        public static string Header_Language_en_US {
-            get {
-                return ResourceManager.GetString("Header_Language_en-US", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
-        /// </summary>
-        public static string Header_Settings {
-            get {
-                return ResourceManager.GetString("Header_Settings", resourceCulture);
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
     }

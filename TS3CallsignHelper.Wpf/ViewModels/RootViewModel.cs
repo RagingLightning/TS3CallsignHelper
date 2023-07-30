@@ -5,7 +5,6 @@ using TS3CallsignHelper.Wpf.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 internal class RootViewModel : ViewModelBase {
-  public override string Name => "Root";
   public override Type Translation => throw new NotImplementedException();
   private readonly ILogger<RootViewModel> _logger;
 

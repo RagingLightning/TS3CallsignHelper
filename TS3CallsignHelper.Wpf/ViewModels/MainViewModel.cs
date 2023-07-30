@@ -13,7 +13,6 @@ using TS3CallsignHelper.Wpf.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 public class MainViewModel : ViewModelBase {
-  public override string Name => "Main";
   public override Type Translation => typeof(Translation.MainView);
   private readonly ILogger<MainViewModel> _logger;
 
@@ -39,7 +38,7 @@ public class MainViewModel : ViewModelBase {
     _logger.LogTrace("{$Method} registered", nameof(OnGameInfoChanged));
 
     _availableViews = new ObservableCollection<ViewConfigurationModel> {
-      new ViewConfigurationModel("Header_AddView_CallsignInformationView", new AddViewModelCommand(this, () => new CallsignInformationViewModel(serviceProvider)))
+      new ViewConfigurationModel("CallsignInformationView:Name", new AddViewModelCommand(this, () => new CallsignInformationViewModel(serviceProvider)))
     };
 
     _availableLanguages = new ObservableCollection<InterfaceLanguageModel>();

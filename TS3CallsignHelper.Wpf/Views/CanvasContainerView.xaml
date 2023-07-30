@@ -6,6 +6,10 @@
              xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:vms="clr-namespace:TS3CallsignHelper.Wpf.ViewModels"
              xmlns:views="clr-namespace:TS3CallsignHelper.Wpf.Views"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:LocalizeDictionary.DesignCulture="en-US"
+             lex:ResxLocalizationProvider.DefaultAssembly="{Binding Path=(vms:ViewModelBase.TranslationAssembly)}"
+             lex:ResxLocalizationProvider.DefaultDictionary="{Binding Path=(vms:ViewModelBase.TranslationDictionary)}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -15,6 +19,20 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="FontWeight" Value="DemiBold"/>
             <Setter Property="FontSize" Value="6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Green" TargetName="Border" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         <Style x:Key="borderTxt" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
@@ -34,11 +52,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        
-        <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Content="{Binding CurrentViewModel}">
-            
-        </ContentControl>
-        
+
+        <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Content="{Binding CurrentViewModel}"/>
+
         <DockPanel x:Name="header" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="DarkGreen">
             <behavior:Interaction.Triggers>
                 <behavior:EventTrigger EventName="PreviewMouseDown" SourceObject="{Binding ElementName=header}">
@@ -52,9 +68,10 @@
                 </behavior:EventTrigger>
             </behavior:Interaction.Triggers>
             <Button DockPanel.Dock="Right" Width="10" Height="10" Content="X" Style="{StaticResource borderBtn}" Command="{Binding CloseCommand}"/>
-            <TextBlock DockPanel.Dock="Left" Height="10" FontSize="6" Text="{Binding ViewName}" Style="{StaticResource borderTxt}"/>
+            <TextBlock DockPanel.Dock="Left" Height="10" FontSize="6" Text="{lex:Loc {Binding ViewName}}" Style="{StaticResource borderTxt}"/>
         </DockPanel>
         <Button x:Name="resizeButton" Grid.Row="2" Grid.Column="2" Width="10" Height="10" Style="{StaticResource borderBtn}">
+            <Image Source="/Resources/icon_resizeContainer.png"/>
             <behavior:Interaction.Triggers>
                 <behavior:EventTrigger EventName="PreviewMouseDown" SourceObject="{Binding ElementName=resizeButton}">
                     <behavior:CallMethodAction TargetObject="{Binding ResizeCommand}" MethodName="Start"/>

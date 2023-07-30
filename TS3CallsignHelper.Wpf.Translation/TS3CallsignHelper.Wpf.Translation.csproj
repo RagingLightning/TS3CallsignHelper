@@ -7,18 +7,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="MainView.resx">
+			<LastGenOutput>MainView.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
 		<Compile Update="MainView.Designer.cs">
 			<DependentUpon>MainView.resx</DependentUpon>
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="MainView.resx">
-			<LastGenOutput>MainView.Designer.cs</LastGenOutput>
-			<Generator>PublicResXFileCodeGenerator</Generator>
-		</EmbeddedResource>
 		<EmbeddedResource Update="MainView.en-US.resx">
 			<SubType>Designer</SubType>
 			<DependentUpon>MainView.resx</DependentUpon>
@@ -30,6 +27,42 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="CallsignInformationView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>CallsignInformationView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<Compile Update="CallsignInformationView.Designer.cs">
+			<DependentUpon>CallsignInformationView.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+		<EmbeddedResource Update="CallsignInformationView.en-US.resx">
+			<SubType>Designer</SubType>
+			<DependentUpon>CallsignInformationView.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="CallsignInformationView.de-DE.resx">
+			<SubType>Designer</SubType>
+			<DependentUpon>CallsignInformationView.resx</DependentUpon>
+		</EmbeddedResource>
 	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="CanvasContainerView.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>CanvasContainerView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<Compile Update="CanvasContainerView.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>CanvasContainerView.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="CanvasContainerView.en-US.resx">
+			<SubType>Designer</SubType>
+			<DependentUpon>CanvasContainerView.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="CanvasContainerView.de-DE.resx">
+			<SubType>Designer</SubType>
+			<DependentUpon>CanvasContainerView.resx</DependentUpon>
+		</EmbeddedResource>	</ItemGroup>
 
 </Project>

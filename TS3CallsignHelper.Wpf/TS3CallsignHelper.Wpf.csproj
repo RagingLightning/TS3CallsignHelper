@@ -14,6 +14,7 @@
 	  <None Remove="Resources\icon_addView.png" />
 	  <None Remove="Resources\icon_donate.png" />
 	  <None Remove="Resources\icon_globe.png" />
+	  <None Remove="Resources\icon_resizeContainer.png" />
 	  <None Remove="Resources\icon_settings.png" />
 	  <None Remove="serilog.json" />
 	</ItemGroup>
@@ -24,6 +25,7 @@
 	  <Resource Include="Resources\icon_addView.png" />
 	  <Resource Include="Resources\icon_donate.png" />
 	  <Resource Include="Resources\icon_globe.png" />
+	  <Resource Include="Resources\icon_resizeContainer.png" />
 	  <Resource Include="Resources\icon_settings.png" />
 	  <EmbeddedResource Include="serilog.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>

@@ -4,14 +4,18 @@ using TS3CallsignHelper.Wpf.Commands;
 namespace TS3CallsignHelper.Wpf.ViewModels;
 
 public class CanvasContainerViewModel : ViewModelBase {
-  public override string Name => "Container";
-  public override Type Translation => throw new NotImplementedException();
+  public override Type Translation => typeof(Translation.CanvasContainerView);
 
   public ViewModelBase CurrentViewModel { get; }
   public ResizeViewCommand ResizeCommand { get; }
   public MoveViewCommand MoveCommand { get; }
   public CloseCanvasContainerCommand CloseCommand { get; }
-  public string ViewName => CurrentViewModel.Name;
+  public string ViewName {
+    get {
+      var name = CurrentViewModel.GetType().Name;
+      return $"{name.Remove(name.Length-5)}:Name";
+    }
+  }
   public double X {
     get => _x; set {
       _x = value;
