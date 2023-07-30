@@ -23,14 +23,6 @@ public class MainViewModel : ViewModelBase {
   private readonly ObservableCollection<ViewModelBase> _activeViews;
   public IEnumerable<ViewModelBase> ActiveViews => _activeViews;
 
-  private readonly ObservableCollection<ViewConfigurationModel> _availableViews;
-  public IEnumerable<ViewConfigurationModel> AvailableViews => _availableViews;
-  public ViewConfigurationModel SelectedView { get; set; }
-
-  private readonly ObservableCollection<InterfaceLanguageModel> _availableLanguages;
-  public IEnumerable<InterfaceLanguageModel> AvailableLanguages => _availableLanguages;
-  public InterfaceLanguageModel SelectedLanguage { get; set; }
-
   private GameStateStore _gameStateStore;
 
   public MainViewModel(IServiceProvider serviceProvider) {
@@ -52,7 +44,7 @@ public class MainViewModel : ViewModelBase {
 
     _availableLanguages = new ObservableCollection<InterfaceLanguageModel>();
     foreach (string lang in InterfaceLanguageModel.SupportedLanguages)
-      _availableLanguages.Add(new InterfaceLanguageModel(lang, new SelectLanguageCommand(new CultureInfo(lang), serviceProvider)));
+      _availableLanguages.Add(new InterfaceLanguageModel(lang, new SelectLanguageCommand(this, new CultureInfo(lang), serviceProvider)));
 
   }
 
@@ -78,9 +70,38 @@ public class MainViewModel : ViewModelBase {
     _activeViews.Add(container);
     ViewModelAdded?.Invoke(container);
   }
-
   public CommandBase DonateCommand { get; }
   public CommandBase SettingsCommand { get; }
+
+  private readonly ObservableCollection<ViewConfigurationModel> _availableViews;
+  public IEnumerable<ViewConfigurationModel> AvailableViews => _availableViews;
+  public ViewConfigurationModel SelectedView { get; set; }
+
+  private bool _viewSelectorOpen;
+  public bool ViewSelectorOpen {
+    get {
+      return _viewSelectorOpen;
+    }
+    set {
+      _viewSelectorOpen = value;
+      OnPropertyChanged(nameof(ViewSelectorOpen));
+    }
+  }
+
+  private readonly ObservableCollection<InterfaceLanguageModel> _availableLanguages;
+  public IEnumerable<InterfaceLanguageModel> AvailableLanguages => _availableLanguages;
+  public InterfaceLanguageModel SelectedLanguage { get; set; }
+
+  private bool _languageSelectorOpen;
+  public bool LanguageSelectorOpen {
+    get {
+      return _languageSelectorOpen;
+    }
+    set {
+      _languageSelectorOpen = value;
+      OnPropertyChanged(nameof(LanguageSelectorOpen));
+    }
+  }
 
   private string _currentAirport;
   public string CurrentAirport {

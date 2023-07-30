@@ -35,7 +35,7 @@
             </StackPanel>
             <Rectangle Grid.Row="0" Grid.Column="1" Fill="LightGray" Width="5" Margin="5,0"/>
             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
-                <ComboBox Style="{StaticResource ImageComboBox}" Width="20" Height="20" ItemsSource="{Binding AvailableViews}" SelectedItem="{Binding SelectedView, UpdateSourceTrigger=PropertyChanged}" ToolTip="{lex:Loc Header_AddView}">
+                <ComboBox Style="{StaticResource ImageComboBox}" Width="20" Height="20" ToolTip="{lex:Loc Header_AddView}" ItemsSource="{Binding AvailableViews}" SelectedItem="{Binding SelectedView, UpdateSourceTrigger=PropertyChanged}" IsDropDownOpen="{Binding ViewSelectorOpen, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.Background>
                         <ImageBrush ImageSource="/Resources/icon_addView.png"/>
                     </ComboBox.Background>
@@ -52,7 +52,7 @@
                         <ImageBrush ImageSource="/Resources/icon_donate.png"/>
                     </Button.Background>
                 </Button>
-                <ComboBox Style="{StaticResource ImageComboBox}" Width="20" Height="20" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage, UpdateSourceTrigger=PropertyChanged}" ToolTip="{lex:Loc Header_Language}" Margin="3,0">
+                <ComboBox Style="{StaticResource ImageComboBox}" Width="20" Height="20" ToolTip="{lex:Loc Header_Language}" Margin="3,0" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage, UpdateSourceTrigger=PropertyChanged}" IsDropDownOpen="{Binding LanguageSelectorOpen, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.Background>
                         <ImageBrush ImageSource="/Resources/icon_globe.png"/>
                     </ComboBox.Background>

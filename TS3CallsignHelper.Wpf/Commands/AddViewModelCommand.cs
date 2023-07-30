@@ -11,6 +11,7 @@ public class AddViewModelCommand : CommandBase {
     _creator = creator;
   }
   public override void Execute(object? parameter) {
-      _mainViewModel.AddView(_creator());
+    _mainViewModel.AddView(_creator());
+    _mainViewModel.ViewSelectorOpen = false;
   }
 }
