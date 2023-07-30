@@ -120,6 +120,24 @@
   <data name="Close" xml:space="preserve">
     <value />
   </data>
+  <data name="CurrentScale" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CurrentZIndex" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DecreaseScale" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DecreaseZIndex" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IncreaseScale" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IncreaseZIndex" xml:space="preserve">
+    <value />
+  </data>
   <data name="Name" xml:space="preserve">
     <value />
   </data>

@@ -120,6 +120,24 @@
   <data name="Close" xml:space="preserve">
     <value>Close window</value>
   </data>
+  <data name="CurrentScale" xml:space="preserve">
+    <value>Current window scale</value>
+  </data>
+  <data name="CurrentZIndex" xml:space="preserve">
+    <value>Current Z-Index</value>
+  </data>
+  <data name="DecreaseScale" xml:space="preserve">
+    <value>Decrease window scale</value>
+  </data>
+  <data name="DecreaseZIndex" xml:space="preserve">
+    <value>Move window down</value>
+  </data>
+  <data name="IncreaseScale" xml:space="preserve">
+    <value>Increase window scale</value>
+  </data>
+  <data name="IncreaseZIndex" xml:space="preserve">
+    <value>Move window up</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>&lt;Name&gt;</value>
   </data>

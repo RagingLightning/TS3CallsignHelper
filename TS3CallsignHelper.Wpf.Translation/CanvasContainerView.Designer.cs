@@ -72,6 +72,60 @@ namespace TS3CallsignHelper.Wpf.Translation {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
+        public static string CurrentScale {
+            get {
+                return ResourceManager.GetString("CurrentScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        public static string CurrentZIndex {
+            get {
+                return ResourceManager.GetString("CurrentZIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        public static string DecreaseScale {
+            get {
+                return ResourceManager.GetString("DecreaseScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        public static string DecreaseZIndex {
+            get {
+                return ResourceManager.GetString("DecreaseZIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        public static string IncreaseScale {
+            get {
+                return ResourceManager.GetString("IncreaseScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        public static string IncreaseZIndex {
+            get {
+                return ResourceManager.GetString("IncreaseZIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
         public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);

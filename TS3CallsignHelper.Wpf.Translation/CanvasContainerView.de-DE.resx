@@ -120,6 +120,24 @@
   <data name="Close" xml:space="preserve">
     <value>Ansicht schließen</value>
   </data>
+  <data name="CurrentScale" xml:space="preserve">
+    <value>Aktuelle Ansichtsskalierung</value>
+  </data>
+  <data name="CurrentZIndex" xml:space="preserve">
+    <value>Aktueller Z-Index</value>
+  </data>
+  <data name="DecreaseScale" xml:space="preserve">
+    <value>Ansicht verkleinern</value>
+  </data>
+  <data name="DecreaseZIndex" xml:space="preserve">
+    <value>Ansicht nach hinten</value>
+  </data>
+  <data name="IncreaseScale" xml:space="preserve">
+    <value>Ansicht vergrößern</value>
+  </data>
+  <data name="IncreaseZIndex" xml:space="preserve">
+    <value>Ansicht nach vorne</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>&lt;Name&gt;</value>
   </data>

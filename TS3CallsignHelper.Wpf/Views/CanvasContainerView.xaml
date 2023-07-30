@@ -66,19 +66,19 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <Button Width="12" Height="12" Style="{StaticResource BorderButton}" Command="{Binding DecreaseScaleCommand}">
+                <Button Width="12" Height="12" ToolTip="{lex:Loc DecreaseScale}" Style="{StaticResource BorderButton}" Command="{Binding DecreaseScaleCommand}">
                     <Image Source="/Resources/icon_decreaseScale.png"/>
                 </Button>
-                <TextBox Width="45" Height="15" Style="{StaticResource BorderTextBox}" FontSize="9" Text="{Binding ViewScale, Mode=OneWay}" IsEnabled="False"/>
-                <Button Width="15" Height="15" Style="{StaticResource BorderButton}" Command="{Binding IncreaseScaleCommand}">
+                <TextBox Width="45" Height="15" ToolTip="{lex:Loc CurrentScale}" Style="{StaticResource BorderTextBox}" FontSize="9" Text="{Binding ViewScale, Mode=OneWay}" IsEnabled="False"/>
+                <Button Width="15" Height="15" ToolTip="{lex:Loc IncreaseScale}" Style="{StaticResource BorderButton}" Command="{Binding IncreaseScaleCommand}">
                     <Image Source="/Resources/icon_increaseScale.png"/>
                 </Button>
                 <Rectangle Width="3" Fill="White"/>
-                <Button Width="15" Height="15" Style="{StaticResource BorderButton}" Command="{Binding DecreaseZIndexCommand}">
+                <Button Width="15" Height="15" ToolTip="{lex:Loc DecreaseZIndex}" Style="{StaticResource BorderButton}" Command="{Binding DecreaseZIndexCommand}">
                     <Image Source="/Resources/icon_decreaseZIndex.png"/>
                 </Button>
-                <TextBox Width="45" Height="15" Style="{StaticResource BorderTextBox}" FontSize="9" Text="{Binding ZIndex, Mode=OneWay}" IsEnabled="False"/>
-                <Button Width="15" Height="15" Style="{StaticResource BorderButton}" Command="{Binding IncreaseZIndexCommand}">
+                <TextBox Width="45" Height="15" ToolTip="{lex:Loc CurrentZIndex}" Style="{StaticResource BorderTextBox}" FontSize="9" Text="{Binding ZIndex, Mode=OneWay}" IsEnabled="False"/>
+                <Button Width="15" Height="15" ToolTip="{lex:Loc IncreaseZIndex}" Style="{StaticResource BorderButton}" Command="{Binding IncreaseZIndexCommand}">
                     <Image Source="/Resources/icon_increaseZIndex.png"/>
                 </Button>
                 <Rectangle Width="3" Fill="White"/>
