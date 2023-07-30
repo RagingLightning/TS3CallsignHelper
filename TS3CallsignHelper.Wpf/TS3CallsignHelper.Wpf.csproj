@@ -45,21 +45,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\TS3CallsignHelper.Game\TS3CallsignHelper.Game.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Lang\MainView.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>MainView.resx</DependentUpon>
-		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Update="Lang\MainView.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>MainView.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+	  <ProjectReference Include="..\TS3CallsignHelper.Wpf.Translation\TS3CallsignHelper.Wpf.Translation.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

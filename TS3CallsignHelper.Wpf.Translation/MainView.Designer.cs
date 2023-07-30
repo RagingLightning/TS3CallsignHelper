@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TS3CallsignHelper.Wpf.Lang {
+namespace TS3CallsignHelper.Wpf.Translation {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class MainView {
+    public class MainView {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace TS3CallsignHelper.Wpf.Lang {
         ///   Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TS3CallsignHelper.Wpf.Lang.MainView", typeof(MainView).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TS3CallsignHelper.Wpf.Translation.MainView", typeof(MainView).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         ///   Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        internal static string Header_AddView {
+        public static string Header_AddView {
             get {
                 return ResourceManager.GetString("Header_AddView", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        internal static string Header_AddView_CallsignInformationView {
+        public static string Header_AddView_CallsignInformationView {
             get {
                 return ResourceManager.GetString("Header_AddView_CallsignInformationView", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        internal static string Header_Airport {
+        public static string Header_Airport {
             get {
                 return ResourceManager.GetString("Header_Airport", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        internal static string Header_Database {
+        public static string Header_Database {
             get {
                 return ResourceManager.GetString("Header_Database", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        internal static string Header_Donate {
+        public static string Header_Donate {
             get {
                 return ResourceManager.GetString("Header_Donate", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        internal static string Header_Language {
+        public static string Header_Language {
             get {
                 return ResourceManager.GetString("Header_Language", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        internal static string Header_Language_de_DE {
+        public static string Header_Language_de_DE {
             get {
                 return ResourceManager.GetString("Header_Language_de-DE", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        internal static string Header_Language_en_US {
+        public static string Header_Language_en_US {
             get {
                 return ResourceManager.GetString("Header_Language_en-US", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace TS3CallsignHelper.Wpf.Lang {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
-        internal static string Header_Settings {
+        public static string Header_Settings {
             get {
                 return ResourceManager.GetString("Header_Settings", resourceCulture);
             }

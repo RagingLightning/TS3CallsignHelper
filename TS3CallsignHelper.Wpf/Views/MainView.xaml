@@ -7,8 +7,8 @@
              xmlns:vms="clr-namespace:TS3CallsignHelper.Wpf.ViewModels"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:LocalizeDictionary.DesignCulture="en-US"
-             lex:ResxLocalizationProvider.DefaultAssembly="TS3CallsignHelper.Wpf"
-             lex:ResxLocalizationProvider.DefaultDictionary="MainView"
+             lex:ResxLocalizationProvider.DefaultAssembly="{Binding Path=(vms:ViewModelBase.TranslationAssembly)}"
+             lex:ResxLocalizationProvider.DefaultDictionary="{Binding Path=(vms:ViewModelBase.TranslationDictionary)}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>

@@ -1,10 +1,11 @@
-﻿using System.Windows.Controls;
+﻿using System;
 using TS3CallsignHelper.Wpf.Commands;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 
 public class CanvasContainerViewModel : ViewModelBase {
   public override string Name => "Container";
+  public override Type Translation => throw new NotImplementedException();
 
   public ViewModelBase CurrentViewModel { get; }
   public ResizeViewCommand ResizeCommand { get; }

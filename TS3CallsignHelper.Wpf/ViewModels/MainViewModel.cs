@@ -14,6 +14,7 @@ using TS3CallsignHelper.Wpf.Stores;
 namespace TS3CallsignHelper.Wpf.ViewModels;
 public class MainViewModel : ViewModelBase {
   public override string Name => "Main";
+  public override Type Translation => typeof(Translation.MainView);
   private readonly ILogger<MainViewModel> _logger;
 
   public event Action<ViewModelBase> ViewModelAdded;

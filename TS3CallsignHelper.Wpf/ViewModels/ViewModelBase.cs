@@ -1,8 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 public abstract class ViewModelBase : INotifyPropertyChanged {
   public abstract string Name { get; }
+  public abstract Type Translation { get; }
+
+  public string? TranslationAssembly => Translation.Assembly.FullName;
+  public string? TranslationDictionary => Translation.Name;
 
   public event PropertyChangedEventHandler? PropertyChanged;
 

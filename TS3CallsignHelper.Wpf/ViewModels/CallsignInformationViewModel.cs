@@ -8,6 +8,7 @@ using TS3CallsignHelper.Game.Stores;
 namespace TS3CallsignHelper.Wpf.ViewModels;
 class CallsignInformationViewModel : ViewModelBase {
   public override string Name => "Callsign Information";
+  public override Type Translation => throw new NotImplementedException();
   private readonly ILogger _logger;
 
   private readonly GameStateStore _gameStateStore;
