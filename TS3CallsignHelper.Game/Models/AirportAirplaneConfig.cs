@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -12,7 +13,7 @@ public partial class AirportAirplaneConfig {
   private static partial Regex Parser();
   private readonly ILogger<AirportAirplaneConfig> _logger;
 
-  public IEnumerable<AirportAirplane> Airplanes => _airplanes.Values;
+  public ImmutableDictionary<string, AirportAirplane> Airplanes => _airplanes.ToImmutableDictionary();
 
   private readonly Dictionary<string, AirportAirplane> _airplanes;
   public AirportAirplaneConfig(string configPath, IServiceProvider serviceProvider, InitializationProgressService initializationProgress) {

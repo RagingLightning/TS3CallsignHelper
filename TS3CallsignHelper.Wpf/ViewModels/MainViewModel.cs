@@ -13,8 +13,11 @@ using TS3CallsignHelper.Wpf.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 public class MainViewModel : ViewModelBase {
+  private IServiceProvider _serviceProvider;
+  private ILogger<MainViewModel> _logger;
   public override Type Translation => typeof(Translation.MainView);
-  private readonly ILogger<MainViewModel> _logger;
+  public override double InitialWidth => throw new NotImplementedException();
+  public override double InitialHeight => throw new NotImplementedException();
 
   public event Action<ViewModelBase> ViewModelAdded;
   public event Action<ViewModelBase> ViewModelRemoved;
@@ -25,6 +28,7 @@ public class MainViewModel : ViewModelBase {
   private GameStateStore _gameStateStore;
 
   public MainViewModel(IServiceProvider serviceProvider) {
+    _serviceProvider = serviceProvider;
     _logger = serviceProvider.GetRequiredService<ILogger<MainViewModel>>();
     _gameStateStore = serviceProvider.GetRequiredService<GameStateStore>();
 
@@ -34,11 +38,12 @@ public class MainViewModel : ViewModelBase {
     SettingsCommand = new NavigateCommand(() => throw new NotImplementedException(), serviceProvider.GetRequiredService<NavigationStore>());
 
     _logger.LogDebug("Registering event handlers");
-    _gameStateStore.GameInfoChanged += OnGameInfoChanged;
-    _logger.LogTrace("{$Method} registered", nameof(OnGameInfoChanged));
+    _gameStateStore.GameSessionStarted += OnGameSessionStarted;
+    _logger.LogTrace("{Method} registered", nameof(OnGameSessionStarted));
 
     _availableViews = new ObservableCollection<ViewConfigurationModel> {
-      new ViewConfigurationModel("CallsignInformationView:Name", new AddViewModelCommand(this, () => new CallsignInformationViewModel(serviceProvider)))
+      new ViewConfigurationModel("CallsignInformationView:Name", new AddViewModelCommand(this, () => new CallsignInformationViewModel(_gameStateStore, serviceProvider))),
+      new ViewConfigurationModel("FrequencyInfoView:Name", new AddViewModelCommand(this, () => new FrequencyInfoViewModel(_gameStateStore, serviceProvider)))
     };
 
     _availableLanguages = new ObservableCollection<InterfaceLanguageModel>();
@@ -49,8 +54,8 @@ public class MainViewModel : ViewModelBase {
 
   public override void Dispose() {
     _logger.LogDebug("Unegistering event handlers");
-    _gameStateStore.GameInfoChanged -= OnGameInfoChanged;
-    _logger.LogTrace("{$Method} unregistered", nameof(OnGameInfoChanged));
+    _gameStateStore.GameSessionStarted -= OnGameSessionStarted;
+    _logger.LogTrace("{Method} unregistered", nameof(OnGameSessionStarted));
   }
 
   public void RemoveView(CanvasContainerViewModel viewContainer) {
@@ -124,7 +129,7 @@ public class MainViewModel : ViewModelBase {
     }
   }
 
-  private void OnGameInfoChanged(GameInfo info) {
+  private void OnGameSessionStarted(GameInfo info) {
     _logger.LogDebug("Recieved GameInfoChanged event for {@GameInfo}", info);
     CurrentAirport = info.AirportICAO ?? string.Empty;
     CurrentDatabase = info.DatabaseFolder ?? string.Empty;

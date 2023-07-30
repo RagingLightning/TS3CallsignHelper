@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using TS3CallsignHelper.Game.DTOs;
 using TS3CallsignHelper.Game.Enums;
@@ -15,25 +16,104 @@ public class GameStateStore {
   private readonly IServiceProvider _serviceProvider;
   private readonly ILogger<GameStateStore> _logger;
 
-  public event Action CurrentAirplaneChanged;
+  public event Action<string> CurrentAirplaneChanged;
   public event Action<string, PlaneState> PlaneStateChanged;
   public event Action<PlayerPosition, bool> ActivePositionsChanged;
-  public event Action<GameInfo> GameInfoChanged;
+  public event Action<GameInfo> GameSessionStarted;
+  public event Action GameSessionEnded;
 
-  public bool CurrentPlaneIsAirline { get {
-      if (_airportAirlineConfig is null) throw new InvalidOperationException();
-      return _airportAirlineConfig.Contains(_currentAirplane[..3]);
+  public bool CurrentPlaneIsAirline {
+    get {
+      if (_airportAirlineConfig is null) {
+        _logger.LogWarning("No airlines have been loaded");
+        throw new InvalidOperationException();
+      }
+      return _airportAirlineConfig.Contains(CurrentAirplane[..3]);
     }
   }
 
   private AirportAirlineConfig? _airportAirlineConfig;
+  public ImmutableDictionary<string, AirportAirline>? Airlines {
+    get {
+      if (_airportAirlineConfig == null) {
+        _logger.LogWarning("No airlines have been loaded");
+        return null;
+      }
+      return _airportAirlineConfig.Airlines;
+    }
+  }
+
   private AirportFrequencyConfig? _airportFrequencyConfig;
+  public ImmutableList<AirportFrequency>? DepartureFrequencies {
+    get {
+      if (_airportFrequencyConfig == null) {
+        _logger.LogWarning("No frequencies have been loaded");
+        return null;
+      }
+      return _airportFrequencyConfig.DepartureFrequencies;
+    }
+  }
+  public ImmutableList<AirportFrequency>? TowerFrequencies {
+    get {
+      if (_airportFrequencyConfig == null) {
+        _logger.LogWarning("No frequencies have been loaded");
+        return null;
+      }
+      return _airportFrequencyConfig.TowerFrequencies;
+    }
+  }
+  public ImmutableList<AirportFrequency>? GroundFrequencies {
+    get {
+      if (_airportFrequencyConfig == null) {
+        _logger.LogWarning("No frequencies have been loaded");
+        return null;
+      }
+      return _airportFrequencyConfig.GroundFrequencies;
+    }
+  }
+
   private AirportGaConfig? _airportGaConfig;
+  public ImmutableDictionary<string, AirportGa>? GaPlanes {
+    get {
+      if (_airportGaConfig == null) {
+        _logger.LogWarning("No ga planes have been loaded");
+        return null;
+      }
+      return _airportGaConfig.GaPlanes;
+    }
+  }
+
   private AirportScheduleConfig? _airportScheduleConfig;
+  public ImmutableDictionary<string, AirportScheduleEntry>? Schedule {
+    get {
+      if (_airportScheduleConfig == null) {
+        _logger.LogWarning("No schedule has been loaded");
+        return null;
+      }
+      return _airportScheduleConfig.Schedule;
+    }
+  }
 
   private AirportAirplaneConfig? _airportAirplaneConfig;
+  public ImmutableDictionary<string, AirportAirplane>? Airplanes {
+    get {
+      if (_airportAirplaneConfig == null) {
+        _logger.LogWarning("No airplanes have been loaded");
+        return null;
+      }
+      return _airportAirplaneConfig.Airplanes;
+    }
+  }
 
   private string _currentAirplane;
+  public string CurrentAirplane {
+    get => _currentAirplane;
+    private set {
+      _currentAirplane = value;
+      _logger.LogDebug("Raising CurrentAirplaneChanged");
+      CurrentAirplaneChanged?.Invoke(value);
+    }
+  }
   private readonly Dictionary<string, PlaneState> _planeStates;
   private readonly List<PlayerPosition> _activePositions;
 
@@ -52,131 +132,34 @@ public class GameStateStore {
 
     _logger.LogDebug("Registering log reader event handlers");
     _logParser.InstallDirDetermined += OnInstallDirDetermined;
-    _logger.LogTrace("{$Method} registered", nameof(OnInstallDirDetermined));
+    _logger.LogTrace("{Method} registered", nameof(OnInstallDirDetermined));
     _logParser.GameSessionSarted += OnGameSessionStarted;
-    _logger.LogTrace("{$Method} registered", nameof(OnGameSessionStarted));
+    _logger.LogTrace("{Method} registered", nameof(OnGameSessionStarted));
     _logParser.GameSessionEnded += OnGameSessionEnded;
-    _logger.LogTrace("{$Method} registered", nameof(OnGameSessionEnded));
+    _logger.LogTrace("{Method} registered", nameof(OnGameSessionEnded));
     _logParser.NewPlaneState += OnNewPlaneState;
-    _logger.LogTrace("{$Method} registered", nameof(OnNewPlaneState));
+    _logger.LogTrace("{Method} registered", nameof(OnNewPlaneState));
     _logParser.NewActivePlane += OnNewActivePlane;
-    _logger.LogTrace("{$Method} registered", nameof(OnNewActivePlane));
+    _logger.LogTrace("{Method} registered", nameof(OnNewActivePlane));
   }
 
   public void Dispose() {
-    _logger.LogInformation("Disposing");
     _logger.LogDebug("Unregistering log reader event handlers");
     _logParser.InstallDirDetermined -= OnInstallDirDetermined;
-    _logger.LogTrace("{$Method} unregistered", nameof(OnInstallDirDetermined));
+    _logger.LogTrace("{Method} unregistered", nameof(OnInstallDirDetermined));
     _logParser.GameSessionSarted -= OnGameSessionStarted;
-    _logger.LogTrace("{$Method} unregistered", nameof(OnGameSessionStarted));
+    _logger.LogTrace("{Method} unregistered", nameof(OnGameSessionStarted));
     _logParser.GameSessionEnded -= OnGameSessionEnded;
-    _logger.LogTrace("{$Method} unregistered", nameof(OnGameSessionEnded));
+    _logger.LogTrace("{Method} unregistered", nameof(OnGameSessionEnded));
     _logParser.NewPlaneState -= OnNewPlaneState;
-    _logger.LogTrace("{$Method} unregistered", nameof(OnNewPlaneState));
+    _logger.LogTrace("{Method} unregistered", nameof(OnNewPlaneState));
     _logParser.NewActivePlane -= OnNewActivePlane;
-    _logger.LogTrace("{$Method} registered", nameof(OnNewActivePlane));
-  }
-
-  private void OnInstallDirDetermined(string installDir) {
-    _logger.LogDebug("Recieved InstallDirDetermined event for {Installation}", installDir);
-    if (!string.IsNullOrEmpty(_installationPath))
-      _logger.LogWarning("Installation directory was changed during runtime! {OldInstallation} -> {NewInstallation}", _installationPath, installDir);
-    else
-      _logger.LogInformation("Tower Simulator installation directory: {Installation}", installDir);
-    _installationPath = installDir;
-  }
-
-  private void OnGameSessionStarted(GameInfo info) {
-    _logger.LogDebug("Recieved GameSessionStarted event for {@GameInfo}", info);
-    _currentAirplane = "";
-    _planeStates.Clear();
-
-    if (string.IsNullOrEmpty(_installationPath)) {
-      _logger.LogError("Tower Simulator installation not located yet");
-      throw new IncompleteGameInfoException("Installation");
-    }
-    if (string.IsNullOrEmpty(info.AirportICAO)) {
-      _logger.LogError("Game info is missing ICAO code of airport");
-      throw new IncompleteGameInfoException(nameof(info.AirportICAO));
-    }
-    if (string.IsNullOrEmpty(info.DatabaseFolder)) {
-      _logger.LogError("Game info is missing selected database");
-      throw new IncompleteGameInfoException(nameof(info.DatabaseFolder));
-    }
-    if (string.IsNullOrEmpty(info.AirplaneSetFolder)) {
-      _logger.LogError("Game info is missing selected airplane set");
-      throw new IncompleteGameInfoException(nameof(info.AirplaneSetFolder));
-    }
-    var databaseFolder = Path.Combine(_installationPath, "Airports", info.AirportICAO, "databases", info.DatabaseFolder);
-    var airplaneSetFolder = Path.Combine(_installationPath, "Airplanes", info.AirplaneSetFolder);
-
-    _logger.LogInformation("Starting new game session for {Airport} / {Database}", info.AirportICAO, info.DatabaseFolder);
-    var initializationProgress = _serviceProvider.GetRequiredService<InitializationProgressService>();
-    _airportAirlineConfig = new AirportAirlineConfig(Path.Combine(databaseFolder, "airlines.csv"), _serviceProvider, initializationProgress);
-    _airportFrequencyConfig = new AirportFrequencyConfig(Path.Combine(databaseFolder, "freq.csv"), _serviceProvider, initializationProgress);
-    _airportGaConfig = new AirportGaConfig(Path.Combine(databaseFolder, "ga.csv"), _serviceProvider, initializationProgress);
-    _airportScheduleConfig = new AirportScheduleConfig(Path.Combine(databaseFolder, "schedule.csv"), _serviceProvider, initializationProgress);
-    _airportAirplaneConfig = new AirportAirplaneConfig(airplaneSetFolder, _serviceProvider, initializationProgress);
-    initializationProgress.Completed = true;
-
-    _logger.LogDebug("Raising GameInfoChanged event");
-    GameInfoChanged?.Invoke(info);
-  }
-
-  private void OnGameSessionEnded() {
-    _logger.LogDebug("Received GameSessionEnded event");
-    _currentAirplane = "";
-    _planeStates.Clear();
-    _airportAirlineConfig = null;
-    _airportFrequencyConfig = null;
-    _airportGaConfig = null;
-    _airportScheduleConfig = null;
-    _airportAirplaneConfig = null;
-  }
-
-  private void OnNewPlaneState(string airplane, PlaneState state) {
-    _logger.LogDebug("Recieved NewPlaneState event for {Airplane}, new state: {State}", airplane, state);
-    SetPlaneState(airplane, state);
+    _logger.LogTrace("{Method} registered", nameof(OnNewActivePlane));
   }
 
   private void OnNewActivePlane(string airplane) {
     _logger.LogDebug("Recieved NewActivePlane event for {Airplane}", airplane);
-    _currentAirplane = airplane;
-    _logger.LogDebug("Raising CurrentAirplaneChanged");
-    CurrentAirplaneChanged?.Invoke();
-  }
-
-  public AirportGa GetCurrentGaPlane() {
-    if (_airportGaConfig is null) {
-      _logger.LogWarning("No game session is running");
-      throw new InvalidOperationException();
-    }
-    if (CurrentPlaneIsAirline) {
-      _logger.LogWarning("Current airplane {Airplane} is not a GA plane", _currentAirplane);
-      throw new InvalidPlaneTypeException();
-    }
-    if (!_airportGaConfig.TryGet(_currentAirplane, out var plane)) {
-      _logger.LogWarning("Current airplane {Airplane} is unknown", _currentAirplane);
-      throw new UnknownPlaneException(_currentAirplane);
-    }
-    return plane;
-  }
-
-  public AirportScheduleEntry GetCurrentScheduleEntry() {
-    if (_airportScheduleConfig is null) {
-      _logger.LogWarning("No game session is running");
-      throw new InvalidOperationException();
-    }
-    if (!CurrentPlaneIsAirline) {
-      _logger.LogWarning("Current airplane {Airplane} is GA and has no schedule entry", _currentAirplane);
-      throw new InvalidPlaneTypeException();
-    }
-    if (!_airportScheduleConfig.TryGet(_currentAirplane, out var entry)) {
-      _logger.LogWarning("Current airplane {Airplane} has no known schedule", _currentAirplane);
-      throw new UnknownPlaneException(_currentAirplane);
-    }
-    return entry;
+    CurrentAirplane = airplane;
   }
 
   /**
@@ -229,24 +212,69 @@ public class GameStateStore {
     }
   }
 
-  public AirportAirplane GetAirplaneType(string typeCode) {
-    if (_airportAirplaneConfig is null) {
-      _logger.LogWarning("No airplane types have been loaded");
-      throw new InvalidOperationException();
-    }
-    if (_airportAirplaneConfig.TryGet(typeCode, out var airplane)) return airplane;
-    _logger.LogWarning("{AirplaneType} is not defined in airplane set", typeCode);
-    throw new UnknownPlaneTypeException(typeCode);
+  private void OnInstallDirDetermined(string installDir) {
+    _logger.LogDebug("Recieved {Event} with {Installation}", nameof(OnInstallDirDetermined)[2..], installDir);
+    if (!string.IsNullOrEmpty(_installationPath))
+      _logger.LogWarning("Installation directory was changed during runtime! {OldInstallation} -> {NewInstallation}", _installationPath, installDir);
+    else
+      _logger.LogInformation("Tower Simulator installation directory: {Installation}", installDir);
+    _installationPath = installDir;
   }
 
-  public AirportAirline GetAirline(string airlineCode) {
-    if (_airportAirlineConfig is null) {
-      _logger.LogWarning("No airlines have been loaded");
-      throw new InvalidOperationException();
+  private void OnGameSessionStarted(GameInfo info) {
+    _logger.LogDebug("Recieved {Event} with {@GameInfo}", nameof(OnGameSessionStarted)[2..], info);
+    CurrentAirplane = "";
+    _planeStates.Clear();
+
+    if (string.IsNullOrEmpty(_installationPath)) {
+      _logger.LogError("Tower Simulator installation not located yet");
+      throw new IncompleteGameInfoException("Installation");
     }
-    if (_airportAirlineConfig.TryGet(airlineCode, out var airline)) return airline;
-    _logger.LogWarning("{Airline} is not defined", airlineCode);
-    throw new UnknownPlaneTypeException(airlineCode);
+    if (string.IsNullOrEmpty(info.AirportICAO)) {
+      _logger.LogError("Game info is missing ICAO code of airport");
+      throw new IncompleteGameInfoException(nameof(info.AirportICAO));
+    }
+    if (string.IsNullOrEmpty(info.DatabaseFolder)) {
+      _logger.LogError("Game info is missing selected database");
+      throw new IncompleteGameInfoException(nameof(info.DatabaseFolder));
+    }
+    if (string.IsNullOrEmpty(info.AirplaneSetFolder)) {
+      _logger.LogError("Game info is missing selected airplane set");
+      throw new IncompleteGameInfoException(nameof(info.AirplaneSetFolder));
+    }
+    var databaseFolder = Path.Combine(_installationPath, "Airports", info.AirportICAO, "databases", info.DatabaseFolder);
+    var airplaneSetFolder = Path.Combine(_installationPath, "Airplanes", info.AirplaneSetFolder);
+
+    _logger.LogInformation("Starting new game session for {Airport} / {Database}", info.AirportICAO, info.DatabaseFolder);
+    var initializationProgress = _serviceProvider.GetRequiredService<InitializationProgressService>();
+    _airportAirlineConfig = new AirportAirlineConfig(Path.Combine(databaseFolder, "airlines.csv"), _serviceProvider, initializationProgress);
+    _airportFrequencyConfig = new AirportFrequencyConfig(Path.Combine(databaseFolder, "freq.csv"), _serviceProvider, initializationProgress);
+    _airportGaConfig = new AirportGaConfig(Path.Combine(databaseFolder, "ga.csv"), _serviceProvider, initializationProgress);
+    _airportScheduleConfig = new AirportScheduleConfig(Path.Combine(databaseFolder, "schedule.csv"), _serviceProvider, initializationProgress);
+    _airportAirplaneConfig = new AirportAirplaneConfig(airplaneSetFolder, _serviceProvider, initializationProgress);
+    initializationProgress.Completed = true;
+
+    _logger.LogDebug("Raising {Event}", nameof(GameSessionStarted));
+    GameSessionStarted?.Invoke(info);
+  }
+
+  private void OnGameSessionEnded() {
+    _logger.LogDebug("Received {Event}", nameof(OnGameSessionEnded)[2..]);
+    CurrentAirplane = "";
+    _planeStates.Clear();
+    _airportAirlineConfig = null;
+    _airportFrequencyConfig = null;
+    _airportGaConfig = null;
+    _airportScheduleConfig = null;
+    _airportAirplaneConfig = null;
+
+    _logger.LogDebug("Raising {Event}", nameof(GameSessionEnded));
+    GameSessionEnded?.Invoke();
+  }
+
+  private void OnNewPlaneState(string airplane, PlaneState state) {
+    _logger.LogDebug("Recieved {Event} for {Airplane}, new state: {State}", nameof(OnNewPlaneState)[2..],airplane, state);
+    SetPlaneState(airplane, state);
   }
 
   /**

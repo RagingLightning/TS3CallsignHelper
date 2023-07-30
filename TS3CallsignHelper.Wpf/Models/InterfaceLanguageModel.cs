@@ -12,7 +12,7 @@ public class InterfaceLanguageModel {
   public string Tooltip => $"Header_Language_{Name}";
   public CommandBase Selector { get; }
   public ImageBrush Flag => new ImageBrush {
-    ImageSource = new BitmapImage(new Uri($"pack://application:,,,/{GetType().Assembly.FullName};component/Resources/Flags/{Name}.png"))
+    ImageSource = new BitmapImage(new Uri($"pack://application:,,,/Resources/Flags/{Name}.png"))
   };
 
   public InterfaceLanguageModel(string name, CommandBase selector) {

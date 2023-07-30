@@ -63,6 +63,27 @@
 		<EmbeddedResource Update="CanvasContainerView.de-DE.resx">
 			<SubType>Designer</SubType>
 			<DependentUpon>CanvasContainerView.resx</DependentUpon>
-		</EmbeddedResource>	</ItemGroup>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="FrequencyInfoView.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>FrequencyInfoView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<Compile Update="FrequencyInfoView.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>FrequencyInfoView.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="FrequencyInfoView.en-US.resx">
+			<SubType>Designer</SubType>
+			<DependentUpon>FrequencyInfoView.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="FrequencyInfoView.de-DE.resx">
+			<SubType>Designer</SubType>
+			<DependentUpon>FrequencyInfoView.resx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
 
 </Project>

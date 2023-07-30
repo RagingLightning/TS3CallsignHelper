@@ -6,6 +6,8 @@ using TS3CallsignHelper.Wpf.Stores;
 namespace TS3CallsignHelper.Wpf.ViewModels;
 internal class RootViewModel : ViewModelBase {
   public override Type Translation => throw new NotImplementedException();
+  public override double InitialWidth => throw new NotImplementedException();
+  public override double InitialHeight => throw new NotImplementedException();
   private readonly ILogger<RootViewModel> _logger;
 
   private readonly NavigationStore _navigationStore;
@@ -19,7 +21,7 @@ internal class RootViewModel : ViewModelBase {
 
     _logger.LogDebug("Registering event handlers");
     _navigationStore.RootContentChanged += OnRootContentChanged;
-    _logger.LogTrace("{$Method} registered", nameof(OnRootContentChanged));
+    _logger.LogTrace("{Method} registered", nameof(OnRootContentChanged));
 
   }
 
@@ -31,7 +33,7 @@ internal class RootViewModel : ViewModelBase {
 
     _logger.LogDebug("Unegistering event handlers");
     _navigationStore.RootContentChanged -= OnRootContentChanged;
-    _logger.LogTrace("{$Method} unregistered", nameof(OnRootContentChanged));
+    _logger.LogTrace("{Method} unregistered", nameof(OnRootContentChanged));
     
   }
 }

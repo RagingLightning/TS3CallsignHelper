@@ -44,22 +44,32 @@
         <DataTemplate DataType="{x:Type vms:CallsignInformationViewModel}">
             <views:CallsignInformationView/>
         </DataTemplate>
+        <LinearGradientBrush x:Key="FrameBackground">
+            <LinearGradientBrush.RelativeTransform>
+                <RotateTransform Angle="90" CenterX="0.5" CenterY="0.5"/>
+            </LinearGradientBrush.RelativeTransform>
+            <GradientStop Color="DarkGreen" Offset="0"/>
+            <GradientStop Color="Green" Offset="0.5"/>
+            <GradientStop Color="DarkGreen" Offset="1"/>
+        </LinearGradientBrush>
     </UserControl.Resources>
-    <Grid Width="{Binding Width}" Height="{Binding Height}">
+    <Grid Width="{Binding Width}" Height="{Binding Height}" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="2"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="2"/>
         </Grid.ColumnDefinitions>
 
         <ContentControl Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Content="{Binding CurrentViewModel}"/>
 
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="DarkGreen">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Background="{StaticResource FrameBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -83,7 +93,7 @@
                 </Button>
                 <Rectangle Width="3" Fill="White"/>
             </StackPanel>
-            <TextBlock x:Name="header" Grid.Column="1" Height="15" FontSize="9" Text="{lex:Loc {Binding ViewName}}" Style="{StaticResource BorderText}">
+            <TextBlock x:Name="header" Grid.Column="1" Height="15" FontSize="9" Text="{lex:Loc {Binding ViewName}}" Style="{StaticResource BorderText}" TextAlignment="Center">
             <behavior:Interaction.Triggers>
                 <behavior:EventTrigger EventName="PreviewMouseDown" SourceObject="{Binding ElementName=header}">
                     <behavior:CallMethodAction TargetObject="{Binding MoveCommand}" MethodName="Start"/>
@@ -103,7 +113,7 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <Button x:Name="resizeButton" Grid.Row="2" Grid.Column="2" Width="10" Height="10" Style="{StaticResource BorderButton}">
+        <Button x:Name="resizeButton" Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Width="10" Height="10" Style="{StaticResource BorderButton}" >
             <Image Source="/Resources/icon_resizeContainer.png"/>
             <behavior:Interaction.Triggers>
                 <behavior:EventTrigger EventName="PreviewMouseDown" SourceObject="{Binding ElementName=resizeButton}">
@@ -117,5 +127,9 @@
                 </behavior:EventTrigger>
             </behavior:Interaction.Triggers>
         </Button>
+
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Width="2" Fill="{StaticResource FrameBackground}"/>
+        <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Height="2" Fill="{StaticResource FrameBackground}"/>
+        <Rectangle Grid.Row="1" Grid.Column="3" Width="2" Fill="{StaticResource FrameBackground}"/>
     </Grid>
 </UserControl>

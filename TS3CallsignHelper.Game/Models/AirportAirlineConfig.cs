@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using TS3CallsignHelper.Game.Exceptions;
 using TS3CallsignHelper.Game.Services;
@@ -11,7 +12,7 @@ public partial class AirportAirlineConfig {
   private readonly ILogger<AirportAirlineConfig> _logger;
   private readonly InitializationProgressService _initializationProgress;
 
-  public IEnumerable<AirportAirline> Airlines => _airlines.Values;
+  public ImmutableDictionary<string, AirportAirline> Airlines => _airlines.ToImmutableDictionary();
 
   private Dictionary<string, AirportAirline> _airlines;
 

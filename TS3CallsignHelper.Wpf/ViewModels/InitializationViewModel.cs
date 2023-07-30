@@ -7,6 +7,8 @@ using TS3CallsignHelper.Wpf.Stores;
 namespace TS3CallsignHelper.Wpf.ViewModels;
 internal class InitializationViewModel : ViewModelBase {
   public override Type Translation => throw new NotImplementedException();
+  public override double InitialWidth => throw new NotImplementedException();
+  public override double InitialHeight => throw new NotImplementedException();
   private readonly IServiceProvider _serviceProvider;
 	private readonly NavigationStore _navigationStore;
 	private readonly InitializationProgressService _initializationProgressService;

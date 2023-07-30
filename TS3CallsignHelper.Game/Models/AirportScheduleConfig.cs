@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.IO;
+using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using TS3CallsignHelper.Game.Exceptions;
 using TS3CallsignHelper.Game.Services;
@@ -11,7 +11,7 @@ public partial class AirportScheduleConfig {
   private static partial Regex Parser();
   private readonly ILogger<AirportScheduleConfig> _logger;
 
-  public IEnumerable<AirportScheduleEntry> Schedule => _schedule.Values;
+  public ImmutableDictionary<string, AirportScheduleEntry> Schedule => _schedule.ToImmutableDictionary();
 
   private Dictionary<string, AirportScheduleEntry> _schedule;
 

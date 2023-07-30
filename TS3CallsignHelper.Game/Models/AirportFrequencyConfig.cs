@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.IO;
+using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using TS3CallsignHelper.Game.Exceptions;
 using TS3CallsignHelper.Game.Services;
@@ -11,9 +11,9 @@ public partial class AirportFrequencyConfig {
   private static partial Regex Parser();
   private readonly ILogger<AirportFrequencyConfig> _logger;
 
-  public IEnumerable<AirportFrequency> DepartureFrequencies => _departureFrequencies;
-  public IEnumerable<AirportFrequency> TowerFrequencies => _towerFrequencies;
-  public IEnumerable<AirportFrequency> GroundFrequencies => _groundFrequencies;
+  public ImmutableList<AirportFrequency> DepartureFrequencies => _departureFrequencies.ToImmutableList();
+  public ImmutableList<AirportFrequency> TowerFrequencies => _towerFrequencies.ToImmutableList();
+  public ImmutableList<AirportFrequency> GroundFrequencies => _groundFrequencies.ToImmutableList();
 
   private readonly List<AirportFrequency> _departureFrequencies;
   private readonly List<AirportFrequency> _towerFrequencies;

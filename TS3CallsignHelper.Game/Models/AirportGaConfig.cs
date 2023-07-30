@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Collections.Immutable;
 using System.IO;
 using System.Text.RegularExpressions;
 using TS3CallsignHelper.Game.Exceptions;
@@ -11,7 +12,7 @@ public partial class AirportGaConfig {
   private static partial Regex Parser();
   private readonly ILogger<AirportGaConfig> _logger;
 
-  public IEnumerable<AirportGa> GaPlanes => _gaPlanes.Values;
+  public ImmutableDictionary<string, AirportGa> GaPlanes => _gaPlanes.ToImmutableDictionary();
 
   private Dictionary<string, AirportGa> _gaPlanes;
 

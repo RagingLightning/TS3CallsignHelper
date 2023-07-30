@@ -5,6 +5,8 @@ namespace TS3CallsignHelper.Wpf.ViewModels;
 
 public class CanvasContainerViewModel : ViewModelBase {
   public override Type Translation => typeof(Translation.CanvasContainerView);
+  public override double InitialWidth => throw new NotImplementedException();
+  public override double InitialHeight => throw new NotImplementedException();
 
   public ViewModelBase CurrentViewModel { get; }
   public ResizeViewCommand ResizeCommand { get; }
@@ -75,8 +77,8 @@ public class CanvasContainerViewModel : ViewModelBase {
     CloseCommand = new CloseCanvasContainerCommand(mainModel, this);
     ResizeCommand = new ResizeViewCommand(this);
     MoveCommand = new MoveViewCommand(this);
-    Width = 450;
-    Height = 150;
+    Width = viewModel.InitialWidth;
+    Height = viewModel.InitialHeight;
     X = 0;
     Y = 0;
   }

@@ -292,5 +292,6 @@
         </Style>
         <!--#endregion-->
         <math:MathConverter x:Key="Math"/>
+        <FontFamily x:Key="DSEG7Classic">pack://application:,,,/Resources/Fonts/#Noto Sans</FontFamily>
     </Application.Resources>
 </Application>
