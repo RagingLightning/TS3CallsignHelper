@@ -13,10 +13,10 @@ using TS3CallsignHelper.Wpf.Models;
 namespace TS3CallsignHelper.Wpf.ViewModels;
 class FrequencyInfoViewModel : ViewModelBase {
   private readonly ILogger<FrequencyInfoViewModel>? _logger;
-  private readonly GameStateStore _gameStateStore;
+  private readonly IGameStateStore _gameStateStore;
   public override Type Translation => typeof(Translation.FrequencyInfoView);
-  public override double InitialWidth => 450;
-  public override double InitialHeight => 150;
+  public override double InitialWidth => 600;
+  public override double InitialHeight => 120;
 
   private ObservableCollection<FrequencyModel> _groundFrequencies;
   private ObservableCollection<FrequencyModel> _towerFrequencies;
@@ -26,7 +26,7 @@ class FrequencyInfoViewModel : ViewModelBase {
   public IEnumerable<FrequencyModel> TowerFrequencies => _towerFrequencies;
   public IEnumerable<FrequencyModel> DepartureFrequencies => _departureFrequencies;
 
-  public FrequencyInfoViewModel(GameStateStore gameStateStore) {
+  public FrequencyInfoViewModel(IGameStateStore gameStateStore) {
     _logger = LoggingService.GetLogger<FrequencyInfoViewModel>();
 
     _logger?.LogInformation("Initializing");
@@ -42,6 +42,10 @@ class FrequencyInfoViewModel : ViewModelBase {
     _gameStateStore.GameSessionEnded += OnGameSessionEnded;
     _logger?.LogTrace("{Method} registered", nameof(OnGameSessionEnded));
 
+    if (_gameStateStore.CurrentGameInfo is GameInfo info) {
+      _logger?.LogDebug("Initial frequency population");
+      OnGameSessionStarted(info);  
+    }
   }
 
   public override void Dispose() {
@@ -55,13 +59,13 @@ class FrequencyInfoViewModel : ViewModelBase {
   }
 
   private void OnGameSessionStarted(GameInfo info) {
-    IEnumerable<FrequencyModel>? groundFrequencies = _gameStateStore.FrequencyConfig?.GroundFrequencies.Select(i => new FrequencyModel(i.Value, false));
+    IEnumerable<FrequencyModel>? groundFrequencies = _gameStateStore.FrequencyConfig?.GroundFrequencies.Select(i => new FrequencyModel(this, i.Value, false));
     if (groundFrequencies != null)
       _groundFrequencies.AddRange(groundFrequencies);
-    IEnumerable<FrequencyModel>? towerFrequencies = _gameStateStore.FrequencyConfig?.TowerFrequencies.Select(i => new FrequencyModel(i.Value, false));
+    IEnumerable<FrequencyModel>? towerFrequencies = _gameStateStore.FrequencyConfig?.TowerFrequencies.Select(i => new FrequencyModel(this, i.Value, false));
     if (towerFrequencies != null)
       _towerFrequencies.AddRange(towerFrequencies);
-    IEnumerable<FrequencyModel>? departureFrequencies = _gameStateStore.FrequencyConfig?.DepartureFrequencies.Select(i => new FrequencyModel(i.Value, false));
+    IEnumerable<FrequencyModel>? departureFrequencies = _gameStateStore.FrequencyConfig?.DepartureFrequencies.Select(i => new FrequencyModel(this, i.Value, false));
     if (departureFrequencies != null)
       _departureFrequencies.AddRange(departureFrequencies);
   }

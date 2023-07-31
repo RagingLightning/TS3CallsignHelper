@@ -24,6 +24,8 @@ public class IGameStateStore {
   public IAirportGaConfig? GaConfig { get; protected set; }
   public IScheduleConfig? ScheduleConfig { get; protected set; }
 
+  public GameInfo? CurrentGameInfo { get; protected set; }
+
   public virtual ImmutableDictionary<string, PlaneState> PlaneStates => _planeStates.ToImmutableDictionary();
 
   protected readonly Dictionary<string, PlaneState> _planeStates;

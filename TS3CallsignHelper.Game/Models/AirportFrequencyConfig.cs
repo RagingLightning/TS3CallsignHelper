@@ -28,8 +28,17 @@ public partial class AirportFrequencyConfig : IAirportFrequencyConfig{
       if (!MakeFrequency(groups, out var frequency)) continue;
 
       switch (frequency.Type) {
-
+        case AirportFrequencyType.DEPARTURE:
+          _departureFrequencies.Add(frequency.Frequency, frequency);
+          break;
+        case AirportFrequencyType.TOWER:
+          _towerFrequencies.Add(frequency.Frequency, frequency);
+          break;
+        case AirportFrequencyType.GROUND:
+          _groundFrequencies.Add(frequency.Frequency, frequency);
+          break;
       }
+      _logger?.LogDebug("Added frequency {@Frequency}", frequency);
       initializationProgress.FrequencyProgress = ((float) stream.Position) / stream.Length;
     }
     initializationProgress.FrequencyProgress = 1;

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:TS3CallsignHelper.Wpf.Views"
+             xmlns:vms="clr-namespace:TS3CallsignHelper.Wpf.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="450">
     <UserControl.Resources>
@@ -16,17 +17,18 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="121.9" TextAlignment="Center" FontSize="10" FontFamily="{StaticResource DSEG7Classic}"/>
-                <Rectangle Grid.Row="0" Grid.Column="1" Width="1" Fill="LightGray"/>
-                <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Name}" TextAlignment="Center" FontSize="10"/>
-                <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="1" Fill="LightGray"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Area}" TextAlignment="Center" FontSize="7"/>
-                <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Height="3" Fill="LightGray"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="888 . 888" TextAlignment="Center" FontSize="{Binding ConverterParameter=14*x, Path=ViewModel.Scale, Converter={StaticResource Math}}" FontFamily="{StaticResource DSEG7Classic}" Foreground="#ddd"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Frequency}" TextAlignment="Center" FontSize="{Binding ConverterParameter=14*x, Path=ViewModel.Scale, Converter={StaticResource Math}}" FontFamily="{StaticResource DSEG7Classic}" Foreground="DarkGreen"/>
+                <Rectangle Grid.Row="0" Grid.Column="1" Width="{Binding ConverterParameter=1*x, Path=ViewModel.Scale, Converter={StaticResource Math}}" Fill="LightGray"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Name}" TextAlignment="Center" FontSize="{Binding ConverterParameter=10*x, Path=ViewModel.Scale, Converter={StaticResource Math}}"/>
+                <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="{Binding ConverterParameter=1*x, Path=ViewModel.Scale, Converter={StaticResource Math}}" Fill="LightGray"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Area}" TextAlignment="Center" FontSize="{Binding ConverterParameter=7*x, Path=ViewModel.Scale, Converter={StaticResource Math}}"/>
+                <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Height="{Binding ConverterParameter=3*x, Path=ViewModel.Scale, Converter={StaticResource Math}}" Fill="LightGray"/>
             </Grid>
         </DataTemplate>
         <Style x:Key="FrequencyContainerStyle" TargetType="ListViewItem">
@@ -55,16 +57,16 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="GROUND" TextAlignment="Center" FontSize="20"/>
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="TOWER" TextAlignment="Center" FontSize="20"/>
-        <TextBlock Grid.Row="0" Grid.Column="4" Text="DEPARTURE" TextAlignment="Center" FontSize="20"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="GROUND" TextAlignment="Center" FontSize="{Binding ConverterParameter=20*x, Path=(vms:ViewModelBase.Scale), Converter={StaticResource Math}}"/>
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="TOWER" TextAlignment="Center" FontSize="{Binding ConverterParameter=20*x, Path=(vms:ViewModelBase.Scale), Converter={StaticResource Math}}"/>
+        <TextBlock Grid.Row="0" Grid.Column="4" Text="DEPARTURE" TextAlignment="Center" FontSize="{Binding ConverterParameter=20*x, Path=(vms:ViewModelBase.Scale), Converter={StaticResource Math}}"/>
 
-        <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Width="5" ResizeBehavior="PreviousAndNext" Background="LightGray"/>
-        <GridSplitter Grid.Row="0" Grid.Column="3" Grid.RowSpan="3" Width="5" ResizeBehavior="PreviousAndNext" Background="LightGray"/>
-        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Height="5" Fill="LightGray"/>
+        <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Width="{Binding ConverterParameter=5*x, Path=(vms:ViewModelBase.Scale), Converter={StaticResource Math}}" ResizeBehavior="PreviousAndNext" Background="LightGray"/>
+        <GridSplitter Grid.Row="0" Grid.Column="3" Grid.RowSpan="3" Width="{Binding ConverterParameter=5*x, Path=(vms:ViewModelBase.Scale), Converter={StaticResource Math}}" ResizeBehavior="PreviousAndNext" Background="LightGray"/>
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Height="{Binding ConverterParameter=5*x, Path=(vms:ViewModelBase.Scale), Converter={StaticResource Math}}" Fill="LightGray"/>
 
-        <ListView Grid.Row="2" Grid.Column="0" Style="{StaticResource FrequencyListStyle}" ItemsSource="{Binding GroundFrequencies}" d:ItemsSource="{d:SampleData}"/>
-        <ListView Grid.Row="2" Grid.Column="2" Style="{StaticResource FrequencyListStyle}" ItemsSource="{Binding TowerFrequencies}" d:ItemsSource="{d:SampleData}"/>
-        <ListView Grid.Row="2" Grid.Column="4" Style="{StaticResource FrequencyListStyle}" ItemsSource="{Binding DepartureFrequencies}" d:ItemsSource="{d:SampleData}"/>
+        <ListView Grid.Row="2" Grid.Column="0" Style="{StaticResource FrequencyListStyle}" ItemsSource="{Binding GroundFrequencies}"/>
+        <ListView Grid.Row="2" Grid.Column="2" Style="{StaticResource FrequencyListStyle}" ItemsSource="{Binding TowerFrequencies}"/>
+        <ListView Grid.Row="2" Grid.Column="4" Style="{StaticResource FrequencyListStyle}" ItemsSource="{Binding DepartureFrequencies}"/>
     </Grid>
 </UserControl>

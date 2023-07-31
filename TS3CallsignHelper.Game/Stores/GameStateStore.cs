@@ -43,7 +43,7 @@ public class GameStateStore : IGameStateStore {
     _initializationProgressService = initializationProgressService;
   }
 
-  public void Dispose() {
+  public override void Dispose() {
     _logger?.LogDebug("Unregistering log reader event handlers");
     _logParser.InstallDirDetermined -= OnInstallDirDetermined;
     _logger?.LogTrace("{Method} unregistered", nameof(OnInstallDirDetermined));
@@ -145,12 +145,14 @@ public class GameStateStore : IGameStateStore {
 
     _initializationProgressService.Completed = true;
 
+    CurrentGameInfo = info;
     _logger?.LogDebug("Raising {Event}", nameof(GameSessionStarted));
     RaiseGameSessionStarted(info);
   }
 
   private void OnGameSessionEnded() {
     _logger?.LogDebug("Received {Event}", nameof(OnGameSessionEnded)[2..]);
+    CurrentGameInfo = null;
     CurrentAirplane = "";
     _planeStates.Clear();
     AirlineConfig = null;
