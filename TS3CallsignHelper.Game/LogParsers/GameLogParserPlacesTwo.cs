@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TS3CallsignHelper.Game.DTOs;
+using TS3CallsignHelper.Common.DTOs;
 using TS3CallsignHelper.Game.Enums;
 using TS3CallsignHelper.Game.Services;
 
@@ -130,9 +130,9 @@ public class GameLogParserPlacesTwo : IGameLogParser {
   }
 
   private void ParseGameEnd(string logLine) {
-    _currentGame = null;
-    _currentMetar = null;
-    _planeStates.Clear();
+    //_currentGame = null;
+    //_currentMetar = null;
+    //_planeStates.Clear();
     if (_state == ParserState.RUNNING) {
       _logger.LogTrace("Raising GameSessionEnded");
       GameSessionEnded?.Invoke();
@@ -181,6 +181,6 @@ public class GameLogParserPlacesTwo : IGameLogParser {
   }
 
   private void ParseAcapelaTTS(string logLine) {
-
+    _acapelaPlane = null;
   }
 }

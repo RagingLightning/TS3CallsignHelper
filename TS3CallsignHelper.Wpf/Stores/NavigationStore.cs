@@ -2,12 +2,12 @@
 using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf.Stores;
-internal class NavigationStore {
+public class NavigationStore {
 
-  public event Action RootContentChanged;
+  public event Action? RootContentChanged;
 
-  private ViewModelBase _rootContent;
-  public ViewModelBase RootContent {
+  private ViewModelBase? _rootContent;
+  public ViewModelBase? RootContent {
     get => _rootContent;
     set {
       if (_rootContent is ViewModelBase)

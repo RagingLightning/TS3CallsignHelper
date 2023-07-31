@@ -2,62 +2,50 @@
 using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
+using TS3CallsignHelper.Common.DTOs;
+using TS3CallsignHelper.Common.Services;
 using TS3CallsignHelper.Game.Exceptions;
 using TS3CallsignHelper.Game.Services;
 
 namespace TS3CallsignHelper.Game.Models;
-public partial class AirportAirlineConfig {
+public partial class AirportAirlineConfig : IAirportAirlineConfig {
   [GeneratedRegex("^(?<q0>\"?)(?<airline>[A-Z]{3})\\k<q0>,(?<q1>\"?)(?<callsign>.+?)\\k<q1>,(?<q2>\"?)(?<name>.+?)\\k<q2>,(?<q3>\"?)(?<country>.+?)\\k<q3>$")]
   private static partial Regex Parser();
-  private readonly ILogger<AirportAirlineConfig> _logger;
-  private readonly InitializationProgressService _initializationProgress;
 
-  public ImmutableDictionary<string, AirportAirline> Airlines => _airlines.ToImmutableDictionary();
-
-  private Dictionary<string, AirportAirline> _airlines;
-
-  public AirportAirlineConfig(string configPath, IServiceProvider serviceProvider, InitializationProgressService initializationProgress) {
-    _logger = serviceProvider.GetRequiredService<ILogger<AirportAirlineConfig>>();
-
-    _airlines = new Dictionary<string, AirportAirline>();
+  public AirportAirlineConfig(string configPath, InitializationProgressService initializationProgress) {
+    var logger = LoggingService.GetLogger<AirportAirlineConfig>();
 
     initializationProgress.StatusMessage = "Loading airlines...";
-    _logger.LogDebug("Loading airlines from {Config}", configPath);
+    logger?.LogDebug("Loading airlines from {Config}", configPath);
     var stream = File.Open(configPath, FileMode.Open, FileAccess.Read, FileShare.Read);
     using var reader = new StreamReader(stream);
     reader.ReadLine(); // first line contains headers
     while (reader.ReadLine() is string line) {
-      _logger.LogTrace("Loading airline from {Line}", line);
+      logger?.LogTrace("Loading airline from {Line}", line);
       var groups = Parser().Match(line).Groups;
       if (groups.Count == 1) throw new AirlineDefinitionFormatException(line);
-
-      var code = groups["airline"].Value;
-      var airline = new AirportAirline(groups["airline"].Value, groups["callsign"].Value, groups["name"].Value, groups["country"].Value);
-      _airlines.Add(code, airline);
-      _logger.LogDebug("Added Airline {@Airline}", airline);
+      if (!MakeAirline(groups, out var airline)) continue;
+      _airlines.Add(airline.Code, airline);
+      logger?.LogDebug("Added Airline {@Airline}", airline);
       initializationProgress.AirlineProgess = ((float) stream.Position) / stream.Length;
     }
     initializationProgress.AirlineProgess = 1;
   }
 
-  public bool Contains(string code) => _airlines.ContainsKey(code);
+  private bool MakeAirline(GroupCollection groups, out AirportAirline result) {
+    result = new AirportAirline();
 
-  public bool TryGet(string code, out AirportAirline airline) {
-    return _airlines.TryGetValue(code, out airline);
+    var code = groups["airline"].Value;
+    var callsign = groups["callsign"].Value;
+    var name = groups["name"].Value;
+    var country = groups["country"].Value;
+
+    result.Code = code;
+    result.Callsign = callsign;
+    result.Name = name;
+    result.Country = country;
+    return true;
   }
 }
 
-public class AirportAirline {
 
-  public string Code { get; }
-  public string Callsign { get; }
-  public string Name { get; }
-  public string Country { get; }
-
-  public AirportAirline(string airline, string callsign, string name, string country) {
-    Code = airline;
-    Callsign = callsign;
-    Name = name;
-    Country = country;
-  }
-}

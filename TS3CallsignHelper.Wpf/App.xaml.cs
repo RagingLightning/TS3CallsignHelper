@@ -11,10 +11,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
+using TS3CallsignHelper.Common.Services;
 using TS3CallsignHelper.Game.Extensions;
 using TS3CallsignHelper.Game.LogParsers;
+using TS3CallsignHelper.Game.Services;
 using TS3CallsignHelper.Game.Stores;
-using TS3CallsignHelper.Wpf.Commands;
 using TS3CallsignHelper.Wpf.Extensions;
 using TS3CallsignHelper.Wpf.Models;
 using TS3CallsignHelper.Wpf.Stores;
@@ -81,6 +82,7 @@ public partial class App : Application {
     Log.Information("Application startup");
     try {
       _host.Start();
+      LoggingService.Initialize(_host.Services);
 
       var filesToKeep = _host.Services.GetRequiredService<OptionsStore>().BackupLogFiles;
       Log.Verbose("Cleaning log folder to no more than {Backup} files", filesToKeep);
@@ -89,9 +91,12 @@ public partial class App : Application {
       Log.Debug("Initializing OptionsStore");
       var optionsStore = _host.Services.GetRequiredService<OptionsStore>();
 
-      Log.Debug("Initializing the NavigationStore");
+      Log.Debug("Initializing GameStateStore");
+      var gameStateStore = _host.Services.GetRequiredService<GameStateStore>();
+
+      Log.Debug("Initializing NavigationStore");
       var navigationStore = _host.Services.GetRequiredService<NavigationStore>();
-      navigationStore.RootContent = new InitializationViewModel(_host.Services);
+      navigationStore.RootContent = new InitializationViewModel(navigationStore, _host.Services.GetRequiredService<InitializationProgressService>(), gameStateStore);
 
       Log.Debug("Preparing Localization");
       if (InterfaceLanguageModel.SupportedLanguages.Any(s => Thread.CurrentThread.CurrentUICulture.Name == s))
@@ -103,9 +108,6 @@ public partial class App : Application {
       Log.Debug("Opening the main window");
       var mainWindow = _host.Services.GetRequiredService<MainWindow>();
       mainWindow.Show();
-
-      Log.Debug("Initializing GameStateStore");
-      var gameStateStore = _host.Services.GetRequiredService<GameStateStore>();
 
       var logParser = _host.Services.GetRequiredService<IGameLogParser>();
       var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow"), "FeelThere Inc_\\Tower! Simulator 3");

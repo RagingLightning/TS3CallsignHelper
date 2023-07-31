@@ -1,22 +1,28 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Logging;
 using System;
-using TS3CallsignHelper.Game.DTOs;
+using TS3CallsignHelper.Common.DTOs;
+using TS3CallsignHelper.Common.Services;
 using TS3CallsignHelper.Game.Services;
+using TS3CallsignHelper.Game.Stores;
 using TS3CallsignHelper.Wpf.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 internal class InitializationViewModel : ViewModelBase {
+	private readonly ILogger<InitializationViewModel>? _logger;
+	private readonly NavigationStore _navigationStore;
+	private readonly InitializationProgressService _initializationProgressService;
+	private readonly GameStateStore _gameStateStore;
   public override Type Translation => throw new NotImplementedException();
   public override double InitialWidth => throw new NotImplementedException();
   public override double InitialHeight => throw new NotImplementedException();
-  private readonly IServiceProvider _serviceProvider;
-	private readonly NavigationStore _navigationStore;
-	private readonly InitializationProgressService _initializationProgressService;
 
-	public InitializationViewModel(IServiceProvider serviceProvider) {
-		_serviceProvider = serviceProvider;
-		_navigationStore = serviceProvider.GetRequiredService<NavigationStore>();
-		_initializationProgressService = serviceProvider.GetRequiredService<InitializationProgressService>();
+	public InitializationViewModel(NavigationStore navigationStore, InitializationProgressService initializationProgressService, GameStateStore gameStateStore) {
+		_logger = LoggingService.GetLogger<InitializationViewModel>();
+		_navigationStore = navigationStore;
+		_initializationProgressService = initializationProgressService;
+		_gameStateStore = gameStateStore;
+
+		_logger?.LogInformation("{LoadingState}", "Loading...");
 		Progress = "0%";
 		Status = "Loading...";
 
@@ -29,20 +35,23 @@ internal class InitializationViewModel : ViewModelBase {
 
 	private void OnProgressChanged(Progress progress) {
 		if (progress.Completed) {
-			_navigationStore.RootContent = new MainViewModel(_serviceProvider);
+			_logger?.LogInformation("{LoadingState}", "Loading complete");
+			_navigationStore.RootContent = new MainViewModel(_gameStateStore, _navigationStore);
 			Dispose();
 		}
 
 		Progress = $"{progress.Value * 100:0.00}%";
+		if (progress.Status != Status)
+			_logger?.LogInformation("{LoadingState}", progress.Status);
 		Status = progress.Status;
 		Details = progress.Details;
 		
 	}
 
-	private string _progress;
+	private string? _progress;
 	public string Progress {
 		get {
-			return _progress;
+			return _progress ?? string.Empty;
 		}
 		set {
 			_progress = value;
@@ -50,10 +59,10 @@ internal class InitializationViewModel : ViewModelBase {
 		}
 	}
 
-	private string _status;
+	private string? _status;
 	public string Status {
 		get {
-			return _status;
+			return _status ?? string.Empty;
 		}
 		set {
 			_status = value;
@@ -61,10 +70,10 @@ internal class InitializationViewModel : ViewModelBase {
 		}
 	}
 
-	private string _details;
+	private string? _details;
 	public string Details {
 		get {
-			return _details;
+			return _details ?? string.Empty;
 		}
 		set {
 			_details = value;

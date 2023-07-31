@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TS3CallsignHelper.Wpf.Commands;
 using TS3CallsignHelper.Wpf.Stores;
 using TS3CallsignHelper.Wpf.ViewModels;
 
@@ -13,8 +12,6 @@ internal static class HostConfigureExtensions {
       //Stores
       services.AddSingleton<NavigationStore>();
       services.AddSingleton(s => new OptionsStore(host.Configuration.GetValue<string>("OptionsFile"), s));
-      //Commands
-      services.AddSingleton<PayPalDonateCommand>();
       //ViewModels
       services.AddSingleton<RootViewModel>();
     });

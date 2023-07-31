@@ -1,4 +1,4 @@
-﻿namespace TS3CallsignHelper.Game.DTOs;
+﻿namespace TS3CallsignHelper.Common.DTOs;
 public class Progress {
   public string Status { get; set; }
   public string Details { get; set; }

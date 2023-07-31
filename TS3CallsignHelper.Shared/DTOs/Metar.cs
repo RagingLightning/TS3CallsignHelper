@@ -1,4 +1,4 @@
-﻿namespace TS3CallsignHelper.Game.DTOs;
+﻿namespace TS3CallsignHelper.Common.DTOs;
 public class Metar
 {
     public string? Airport { get; set; }
@@ -23,5 +23,5 @@ public class Wind
 public class Pressure
 {
     public char Unit { get; set; }
-    public float Value { get; set; }
+    public double Value { get; set; }
 }

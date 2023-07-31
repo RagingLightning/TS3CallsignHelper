@@ -9,6 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="appsettings.json" />
 	  <None Remove="Resources\Flags\de-DE.png" />
 	  <None Remove="Resources\Flags\en-US.png" />
 	  <None Remove="Resources\Fonts\DSEG7Classic-BoldItalic.ttf" />
@@ -26,6 +27,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Resource Include="appsettings.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Resource>
 	  <Resource Include="Resources\Flags\de-DE.png" />
 	  <Resource Include="Resources\Flags\en-US.png" />
 	  <Resource Include="Resources\icon_addView.png" />
@@ -51,7 +55,6 @@
 	  <PackageReference Include="MathConverter" Version="2.2.0" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -62,6 +65,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\TS3CallsignHelper.Game\TS3CallsignHelper.Game.csproj" />
+	  <ProjectReference Include="..\TS3CallsignHelper.Shared\TS3CallsignHelper.Common.csproj" />
 	  <ProjectReference Include="..\TS3CallsignHelper.Wpf.Translation\TS3CallsignHelper.Wpf.Translation.csproj" />
 	</ItemGroup>
 
@@ -70,9 +74,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="appsettings.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
 	  <None Update="Resources\Fonts\DSEG7-License.txt">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </None>

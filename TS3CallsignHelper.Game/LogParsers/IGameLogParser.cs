@@ -1,4 +1,4 @@
-﻿using TS3CallsignHelper.Game.DTOs;
+﻿using TS3CallsignHelper.Common.DTOs;
 using TS3CallsignHelper.Game.Enums;
 
 namespace TS3CallsignHelper.Game.LogParsers;

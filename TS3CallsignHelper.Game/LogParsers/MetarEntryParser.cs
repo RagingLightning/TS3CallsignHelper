@@ -1,16 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using TS3CallsignHelper.Game.DTOs;
+using TS3CallsignHelper.Common.DTOs;
 
 namespace TS3CallsignHelper.Game.LogParsers;
 internal partial class MetarEntryParser : IEntryParser {
-  [GeneratedRegex(@"^(?<icao>[A-Z]{4}) (?<time>\d{6})[zZ] (?<auto>AUTO )?(?<wind>[0-9G])KT (?<var>[0-9V] )?(?<vis>.+) (?<temp>[\dM]+?)/(?<dew>[\dM]+?) (?<qnh>[AQ][\d.]+)$")]
+  [GeneratedRegex(@"^(?<icao>[A-Z]{4}) (?<time>\d{6})[zZ] (?<auto>AUTO )?(?<wind>[0-9G]+?)KT (?<var>[0-9V] )?(?<vis>.+) (?<temp>[\dM]+?)/(?<dew>[\dM]+?) (?<qnh>[AQ][\d.]+)$")]
   private partial Regex Metar();
 
   public object? Parse(string logLine) {
@@ -19,21 +13,27 @@ internal partial class MetarEntryParser : IEntryParser {
     var groups = Metar().Match(logLine).Groups;
     if (groups.Count == 1) return logLine;
 
+    var airport = groups["icao"].Value;
+    var reportTime = ParseReportTime(groups["time"].Value);
+    var automatic = groups["auto"].Value != string.Empty;
+    var winds = ParseWind(groups["wind"].Value, groups["var"].Value.Trim());
+    var temperature = ParseTemperature(groups["temp"].Value);
+    var dewpoint = ParseTemperature(groups["dew"].Value);
+    var qnh = ParsePressure(groups["qnh"].Value);
     return new Metar {
-      Airport = groups["icao"].Value,
-      ReportTime = ParseReportTime(groups["time"].Value),
-      Automatic = !string.IsNullOrEmpty(groups["auto"].Value),
-      Winds = ParseWind(groups["dir"].Value, groups["mag"].Value.Trim()),
-      Temperature = ParseTemperature(groups["temp"].Value),
-      Dewpoint = ParseTemperature(groups["dew"].Value),
-      Qnh = ParsePressure(groups["qnh"].Value)
+      Airport = airport,
+      ReportTime = reportTime,
+      Automatic = automatic,
+      Winds = winds,
+      Temperature = temperature,
+      Dewpoint = dewpoint,
+      Qnh = qnh
     };
   }
 
   private DateTime? ParseReportTime(string value) {
-    int hour = int.Parse(value[2..2]);
-    int minute = int.Parse(value[4..2]);
-    return DateTime.Parse($"{hour}:{minute}:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+    value += DateTime.UtcNow.ToString("MMyyyy") + "00";
+    return DateTime.ParseExact(value, "ddHHmmMMyyyyss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
   }
 
   private Wind ParseWind(string winds, string variable) {
@@ -44,18 +44,18 @@ internal partial class MetarEntryParser : IEntryParser {
       wind.VariableTo = int.Parse(variable[4..]);
     }
     wind.Direction = int.Parse(winds[..3]);
-    wind.Magnitude = int.Parse(winds[3..2]);
+    wind.Magnitude = int.Parse(winds[3..5]);
     if (winds.Contains('G'))
-      wind.Gusts = int.Parse(winds[6..2]);
+      wind.Gusts = int.Parse(winds[6..8]);
 
     return wind;
   }
 
   private int ParseTemperature(string value) {
-    throw new NotImplementedException();
+    return int.Parse(value);
   }
 
   private Pressure ParsePressure(string value) {
-    throw new NotImplementedException();
+    return new Pressure { Unit = value.ToCharArray()[0], Value = double.Parse(value[1..]) };
   }
 }

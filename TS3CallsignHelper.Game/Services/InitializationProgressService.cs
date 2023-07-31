@@ -1,4 +1,4 @@
-﻿using TS3CallsignHelper.Game.DTOs;
+﻿using TS3CallsignHelper.Common.DTOs;
 
 namespace TS3CallsignHelper.Game.Services;
 public class InitializationProgressService {

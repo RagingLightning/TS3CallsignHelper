@@ -10,8 +10,12 @@
   <ItemGroup>
     <PackageReference Include="Hjson" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TS3CallsignHelper.Shared\TS3CallsignHelper.Common.csproj" />
   </ItemGroup>
 
 </Project>

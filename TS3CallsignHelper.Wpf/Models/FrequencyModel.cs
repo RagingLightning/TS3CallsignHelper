@@ -1,4 +1,4 @@
-﻿using TS3CallsignHelper.Game.Models.Raw;
+﻿using TS3CallsignHelper.Common.DTOs;
 
 namespace TS3CallsignHelper.Wpf.Models;
 public class FrequencyModel {
@@ -14,7 +14,7 @@ public class FrequencyModel {
 
   public FrequencyModel(AirportFrequency frequency, bool useSayNames) {
     Frequency = frequency.Frequency;
-    Name = useSayNames ? frequency.SayName : frequency.WriteName;
+    Name = useSayNames ? frequency.Sayname : frequency.Writename;
     Area = frequency.ControlArea;
   }
 }
