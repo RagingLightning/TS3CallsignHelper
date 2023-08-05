@@ -1,5 +1,5 @@
 ﻿using Hjson;
-using TS3CallsignHelper.Common.DTOs;
+using TS3CallsignHelper.Api;
 
 namespace TS3CallsignHelper.Game.LogParsers;
 internal partial class GameStartEntryParser : IEntryParser {

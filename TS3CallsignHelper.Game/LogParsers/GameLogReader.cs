@@ -2,7 +2,7 @@
 
 namespace TS3CallsignHelper.Game.LogParsers;
 internal class GameLogReader {
-  private readonly InitializationProgressService _initializationProgress;
+  private readonly IInitializationProgressService _initializationProgress;
 
   internal event Action? EndOfLog;
 
@@ -14,7 +14,7 @@ internal class GameLogReader {
 
   private Thread _reader;
 
-  internal GameLogReader(Action<string> parser, InitializationProgressService initializationProgress) {
+  internal GameLogReader(Action<string> parser, IInitializationProgressService initializationProgress) {
     _initializationProgress = initializationProgress;
 
     _parser = parser;

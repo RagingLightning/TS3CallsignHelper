@@ -1,14 +1,17 @@
 ﻿using System;
+using TS3CallsignHelper.Api;
 using TS3CallsignHelper.Wpf.Commands;
+using TS3CallsignHelper.Wpf.Views;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 
-public class CanvasContainerViewModel : ViewModelBase {
+public class CanvasContainerViewModel : IViewModel {
   public override Type Translation => typeof(Translation.CanvasContainerView);
+  public override Type View => typeof(CanvasContainerView);
   public override double InitialWidth => throw new NotImplementedException();
   public override double InitialHeight => throw new NotImplementedException();
 
-  public ViewModelBase CurrentViewModel { get; }
+  public IViewModel CurrentViewModel { get; }
   public ResizeViewCommand ResizeCommand { get; }
   public MoveViewCommand MoveCommand { get; }
   public CommandBase CloseCommand { get; }
@@ -24,8 +27,7 @@ public class CanvasContainerViewModel : ViewModelBase {
   public CommandBase IncreaseZIndexCommand => new CallFunctionCommand(() => ZIndex += 1);
   public string ViewName {
     get {
-      var name = CurrentViewModel.GetType().Name;
-      return $"{name.Remove(name.Length-5)}:Name";
+      return $"{CurrentViewModel.TranslationAssembly}:{CurrentViewModel.TranslationDictionary}:Name";
     }
   }
   public double X {
@@ -72,7 +74,7 @@ public class CanvasContainerViewModel : ViewModelBase {
 
   public string ViewScale => $"{CurrentViewModel.Scale*100:.}%";
 
-  public CanvasContainerViewModel(MainViewModel mainModel, ViewModelBase viewModel) {
+  public CanvasContainerViewModel(MainViewModel mainModel, IViewModel viewModel) {
     CurrentViewModel = viewModel;
     CloseCommand = new CloseCanvasContainerCommand(mainModel, this);
     ResizeCommand = new ResizeViewCommand(this);

@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
 using System.Diagnostics;
@@ -11,13 +9,15 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
-using TS3CallsignHelper.Common.Services;
-using TS3CallsignHelper.Game.Extensions;
+using TS3CallsignHelper.Api;
+using TS3CallsignHelper.Api.Stores;
+using TS3CallsignHelper.Api.Logging;
 using TS3CallsignHelper.Game.LogParsers;
 using TS3CallsignHelper.Game.Services;
 using TS3CallsignHelper.Game.Stores;
 using TS3CallsignHelper.Wpf.Extensions;
 using TS3CallsignHelper.Wpf.Models;
+using TS3CallsignHelper.Wpf.Services;
 using TS3CallsignHelper.Wpf.Stores;
 using TS3CallsignHelper.Wpf.ViewModels;
 using WPFLocalizeExtension.Engine;
@@ -27,14 +27,14 @@ namespace TS3CallsignHelper.Wpf;
 /// Interaction logic for App.xaml
 /// </summary>
 public partial class App : Application {
-  [DllImport("Kernel32")]
-  public static extern void AttachConsole();
+  [LibraryImport("Kernel32")]
+  private static partial void AttachConsole();
 
-  [DllImport("Kernel32")]
-  public static extern void FreeConsole();
+  [LibraryImport("Kernel32")]
+  private static partial void FreeConsole();
 
-  private readonly IHost _host;
-  private IConfigurationRoot? _serilogConfig;
+  private readonly IHost? _host;
+  private readonly IConfigurationRoot? _serilogConfig;
 
   public App() {
     AttachConsole();
@@ -43,10 +43,12 @@ public partial class App : Application {
     if (File.Exists("serilog.json")) {
       Console.WriteLine("using serilog.json");
       Debug.WriteLine("using serilog.json");
-      configBuilder = configBuilder.AddJsonFile("serilog.json");
+      configBuilder.AddJsonFile("serilog.json");
     }
     else {
+#pragma warning disable CS8604 // Mögliches Nullverweisargument.
       configBuilder.AddJsonStream(GetType().Assembly.GetManifestResourceStream(GetType().Namespace + ".serilog.json"));
+#pragma warning restore CS8604 // Mögliches Nullverweisargument.
     }
     _serilogConfig = configBuilder.Build();
 
@@ -60,17 +62,6 @@ public partial class App : Application {
     try {
       _host = Host.CreateDefaultBuilder()
             .UseSerilog()
-            .ConfigureGame()
-            .ConfigureWpf()
-            .ConfigureServices((hostcontext, services) => {
-              //Log Parser
-              services.AddSingleton<IGameLogParser, GameLogParserPlacesTwo>();
-              //Main Window
-              services.AddSingleton(s => new MainWindow() {
-                DataContext = s.GetRequiredService<RootViewModel>()
-              });
-
-            })
             .Build();
     }
     catch (Exception ex) {
@@ -81,39 +72,58 @@ public partial class App : Application {
   protected override void OnStartup(StartupEventArgs e) {
     Log.Information("Application startup");
     try {
+      if (_host is null) throw new Exception(".Net hosting failed to initialize");
       _host.Start();
-      LoggingService.Initialize(_host.Services);
+      DependencyStore dependencyStore = new DependencyStore();
+      dependencyStore.Add<ILoggerService>(new LoggerService(_host.Services));
 
-      var filesToKeep = _host.Services.GetRequiredService<OptionsStore>().BackupLogFiles;
+      Log.Debug("Initializing OptionsStore");
+      var optionsStore = dependencyStore.Add<OptionsStore>(new OptionsStore("Options.json", dependencyStore));
+
+      var filesToKeep = optionsStore.BackupLogFiles;
       Log.Verbose("Cleaning log folder to no more than {Backup} files", filesToKeep);
       _serilogConfig?.CleanFolder(filesToKeep);
 
-      Log.Debug("Initializing OptionsStore");
-      var optionsStore = _host.Services.GetRequiredService<OptionsStore>();
+      dependencyStore.Add<IInitializationProgressService>(new InitializationProgressService());
+
+      Log.Debug("Initializing AirportDataStore");
+      dependencyStore.Add<IAirportAirlineService>(new AirportAirlineService(dependencyStore));
+      dependencyStore.Add<IAirportAirplaneService>(new AirportAirplaneService(dependencyStore));
+      dependencyStore.Add<IAirportFrequencyService>(new AirportFrequencyService(dependencyStore));
+      dependencyStore.Add<IAirportGaService>(new AirportGaService(dependencyStore));
+      dependencyStore.Add<IAirportScheduleService>(new AirportScheduleService(dependencyStore));
+      dependencyStore.Add<IAirportDataStore>(new AirportDataStore(dependencyStore));
+
+      Log.Debug("Initializing GameLogParser");
+      var gameLogParser = dependencyStore.Add<IGameLogParser>(new GameLogParserPlacesTwo(dependencyStore));
 
       Log.Debug("Initializing GameStateStore");
-      var gameStateStore = _host.Services.GetRequiredService<GameStateStore>();
+      dependencyStore.Add<IGameStateStore>(new GameStateStore(dependencyStore));
 
       Log.Debug("Initializing NavigationStore");
-      var navigationStore = _host.Services.GetRequiredService<NavigationStore>();
-      navigationStore.RootContent = new InitializationViewModel(navigationStore, _host.Services.GetRequiredService<InitializationProgressService>(), gameStateStore);
+      var navigationStore = dependencyStore.Add<NavigationStore>(new NavigationStore());
+      navigationStore.RootContent = new InitializationViewModel(dependencyStore);
 
       Log.Debug("Preparing Localization");
+      LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
       if (InterfaceLanguageModel.SupportedLanguages.Any(s => Thread.CurrentThread.CurrentUICulture.Name == s))
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentUICulture;
       else
         LocalizeDictionary.Instance.Culture = new CultureInfo("en-US");
-      LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
+
+      Log.Debug("Loading Modules");
+      dependencyStore.Add<IViewStore>(new ViewStore());
+      var moduleStore = dependencyStore.Add(new ModuleStore(dependencyStore));
+      moduleStore.LoadModules();
 
       Log.Debug("Opening the main window");
-      var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+      var mainWindow = new MainWindow() { DataContext = new RootViewModel(dependencyStore) };
       mainWindow.Show();
 
-      var logParser = _host.Services.GetRequiredService<IGameLogParser>();
       var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow"), "FeelThere Inc_\\Tower! Simulator 3");
       Log.Debug("Starting log parser at {Path}", logFolder);
-      logParser.Init(logFolder);
-      logParser.Start();
+      gameLogParser.Init(logFolder);
+      gameLogParser.Start();
 
       base.OnStartup(e);
     }
@@ -123,13 +133,13 @@ public partial class App : Application {
   }
 
   protected override void OnExit(ExitEventArgs e) {
-    _host.Dispose();
+    _host?.Dispose();
 
     base.OnExit(e);
   }
 
   private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e) {
-    _host.Dispose();
+    _host?.Dispose();
     Log.Fatal((Exception) e.ExceptionObject, "An unhandled exception occurred");
   }
 }

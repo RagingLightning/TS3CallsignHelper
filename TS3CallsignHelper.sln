@@ -9,7 +9,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.Game", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.Wpf.Translation", "TS3CallsignHelper.Wpf.Translation\TS3CallsignHelper.Wpf.Translation.csproj", "{427046A0-9FC9-4ACA-8A37-B1B3564670E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TS3CallsignHelper.Common", "TS3CallsignHelper.Shared\TS3CallsignHelper.Common.csproj", "{C6E01094-FA73-4241-8FC7-6D757056618D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projektmappenelemente", "Projektmappenelemente", "{6ADBB7C2-6D8A-4BF1-9C25-168909FDC9F5}"
+	ProjectSection(SolutionItems) = preProject
+		.runsettings = .runsettings
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.Game.Tests", "TS3CallsignHelper.Game.Tests\TS3CallsignHelper.Game.Tests.csproj", "{F723FEFD-CAE4-4788-A9BB-21BEEEEED334}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.API", "TS3CallsignHelper.Api\TS3CallsignHelper.API.csproj", "{E583EAB5-3EFE-41BE-B60C-9A6A436C1A3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TS3CallsignHelper.Modules", "TS3CallsignHelper.Modules\TS3CallsignHelper.Modules.csproj", "{249C27D3-0356-4BAA-8573-57AD37C2B6EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +38,18 @@ Global
 		{427046A0-9FC9-4ACA-8A37-B1B3564670E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{427046A0-9FC9-4ACA-8A37-B1B3564670E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{427046A0-9FC9-4ACA-8A37-B1B3564670E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6E01094-FA73-4241-8FC7-6D757056618D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6E01094-FA73-4241-8FC7-6D757056618D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6E01094-FA73-4241-8FC7-6D757056618D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6E01094-FA73-4241-8FC7-6D757056618D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F723FEFD-CAE4-4788-A9BB-21BEEEEED334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F723FEFD-CAE4-4788-A9BB-21BEEEEED334}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F723FEFD-CAE4-4788-A9BB-21BEEEEED334}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F723FEFD-CAE4-4788-A9BB-21BEEEEED334}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E583EAB5-3EFE-41BE-B60C-9A6A436C1A3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E583EAB5-3EFE-41BE-B60C-9A6A436C1A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E583EAB5-3EFE-41BE-B60C-9A6A436C1A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E583EAB5-3EFE-41BE-B60C-9A6A436C1A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{249C27D3-0356-4BAA-8573-57AD37C2B6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{249C27D3-0356-4BAA-8573-57AD37C2B6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{249C27D3-0356-4BAA-8573-57AD37C2B6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{249C27D3-0356-4BAA-8573-57AD37C2B6EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

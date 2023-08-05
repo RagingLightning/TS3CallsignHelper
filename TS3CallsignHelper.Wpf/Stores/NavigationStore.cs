@@ -1,16 +1,16 @@
 ﻿using System;
-using TS3CallsignHelper.Wpf.ViewModels;
+using TS3CallsignHelper.Api;
 
 namespace TS3CallsignHelper.Wpf.Stores;
 public class NavigationStore {
 
   public event Action? RootContentChanged;
 
-  private ViewModelBase? _rootContent;
-  public ViewModelBase? RootContent {
+  private IViewModel? _rootContent;
+  public IViewModel? RootContent {
     get => _rootContent;
     set {
-      if (_rootContent is ViewModelBase)
+      if (_rootContent is IViewModel)
         _rootContent.Dispose();
       _rootContent = value;
       RootContentChanged?.Invoke();

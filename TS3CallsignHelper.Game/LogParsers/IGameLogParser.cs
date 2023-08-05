@@ -1,9 +1,11 @@
-﻿using TS3CallsignHelper.Common.DTOs;
+﻿using TS3CallsignHelper.Api;
+using TS3CallsignHelper.Api.Events;
 using TS3CallsignHelper.Game.Enums;
 
 namespace TS3CallsignHelper.Game.LogParsers;
 public interface IGameLogParser {
 
+  public event LogLineReadEventHandler? LogLineRead;
   public event Action<string>? InstallDirDetermined;
   public event Action<GameInfo>? GameSessionSarted;
   public event Action? GameSessionEnded;

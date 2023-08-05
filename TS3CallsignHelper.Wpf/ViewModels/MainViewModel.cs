@@ -3,49 +3,65 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
-using TS3CallsignHelper.Common.DTOs;
-using TS3CallsignHelper.Common.Services;
-using TS3CallsignHelper.Game.Stores;
+using TS3CallsignHelper.Api;
+using TS3CallsignHelper.Api.Dependencies;
+using TS3CallsignHelper.Api.Events;
+using TS3CallsignHelper.Api.Exceptions;
+using TS3CallsignHelper.Api.Logging;
+using TS3CallsignHelper.Api.Stores;
 using TS3CallsignHelper.Wpf.Commands;
 using TS3CallsignHelper.Wpf.Models;
+using TS3CallsignHelper.Wpf.Services;
 using TS3CallsignHelper.Wpf.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
-public class MainViewModel : ViewModelBase {
+public class MainViewModel : IViewModel {
   private readonly ILogger<MainViewModel>? _logger;
-  private readonly GameStateStore _gameStateStore;
+  private readonly IGameStateStore _gameStateStore;
   public override Type Translation => typeof(Translation.MainView);
+  public override Type View => typeof(Views.MainView);
   public override double InitialWidth => throw new NotImplementedException();
   public override double InitialHeight => throw new NotImplementedException();
 
-  public event Action<ViewModelBase>? ViewModelAdded;
-  public event Action<ViewModelBase>? ViewModelRemoved;
-  
-  private readonly ObservableCollection<ViewModelBase> _activeViews;
-  public IEnumerable<ViewModelBase> ActiveViews => _activeViews;
+  public event Action<IViewModel>? ViewModelAdded;
+  public event Action<IViewModel>? ViewModelRemoved;
 
-  public MainViewModel(GameStateStore gameStateStore, NavigationStore navigationStore) {
-    _logger = LoggingService.GetLogger<MainViewModel>();
-    _gameStateStore = gameStateStore;
+  private readonly ObservableCollection<IViewModel> _activeViews;
+  public IEnumerable<IViewModel> ActiveViews => _activeViews;
 
-    _activeViews = new ObservableCollection<ViewModelBase>();
+  public MainViewModel(IDependencyStore dependencyStore) {
+    _logger = dependencyStore.TryGet<ILoggerService>()?.GetLogger<MainViewModel>() ?? throw new MissingDependencyException(typeof(ILoggerService));
+    _gameStateStore = dependencyStore.TryGet<IGameStateStore>() ?? throw new MissingDependencyException(typeof(IGameStateStore));
+    var navigationStore = dependencyStore.TryGet<NavigationStore>() ?? throw new MissingDependencyException(typeof(NavigationStore));
+    var viewStore = dependencyStore.TryGet<IViewStore>() ?? throw new MissingDependencyException(typeof(IViewStore));
+
+    _activeViews = new ObservableCollection<IViewModel>();
 
     DonateCommand = new PayPalDonateCommand();
     SettingsCommand = new NavigateCommand(() => throw new NotImplementedException(), navigationStore);
 
+    SetGroundPosCommand = new SetPositionCommand(_gameStateStore, PlayerPosition.Ground);
+    SetTowerPosCommand = new SetPositionCommand(_gameStateStore, PlayerPosition.Tower);
+    SetDeparturePosCommand = new SetPositionCommand(_gameStateStore, PlayerPosition.Departure);
+
     _logger?.LogDebug("Registering event handlers");
     _gameStateStore.GameSessionStarted += OnGameSessionStarted;
     _logger?.LogTrace("{Method} registered", nameof(OnGameSessionStarted));
+    _gameStateStore.GameSessionEnded += OnGameSessionEnded;
+    _logger?.LogTrace("{Method} registered", nameof(OnGameSessionEnded));
 
-    _availableViews = new ObservableCollection<ViewConfigurationModel> {
-      new ViewConfigurationModel("CallsignInformationView:Name", new AddViewModelCommand(this, () => new CallsignInformationViewModel(_gameStateStore))),
-      new ViewConfigurationModel("FrequencyInfoView:Name", new AddViewModelCommand(this, () => new FrequencyInfoViewModel(_gameStateStore)))
-    };
+    _availableViews = new ObservableCollection<ViewConfigurationModel>();
+    foreach (var view in viewStore.RegisteredViews) {
+      (object key, DataTemplate template) = DataTemplateService.CreateTemplate(view.ViewModelType, view.ViewType);
+      Application.Current.Resources.Add(key, template);
+      _availableViews.Add(new ViewConfigurationModel($"{view.TranslationAssembly}:{view.TranslationDictionary}:Name", new AddViewModelCommand(this, view.ViewModelType, dependencyStore)));
+    }
 
     _availableLanguages = new ObservableCollection<InterfaceLanguageModel>();
     foreach (string lang in InterfaceLanguageModel.SupportedLanguages)
-      _availableLanguages.Add(new InterfaceLanguageModel(lang, new SelectLanguageCommand(this, new CultureInfo(lang))));
+      _availableLanguages.Add(new InterfaceLanguageModel(lang, new SelectLanguageCommand(this, new CultureInfo(lang), dependencyStore)));
 
   }
 
@@ -62,17 +78,21 @@ public class MainViewModel : ViewModelBase {
     viewContainer.Dispose();
   }
 
-  public void AddView(ViewModelBase view) {
+  public void AddView(IViewModel view) {
     _logger?.LogInformation("Adding new {$view}", view);
 
     var container = new CanvasContainerViewModel(this, view);
-    var contentControl = new ContentControl();
-    contentControl.Content = container;
+    var contentControl = new ContentControl {
+      Content = container
+    };
     _activeViews.Add(container);
     ViewModelAdded?.Invoke(container);
   }
   public CommandBase DonateCommand { get; }
   public CommandBase SettingsCommand { get; }
+  public CommandBase SetGroundPosCommand { get; }
+  public CommandBase SetTowerPosCommand { get; }
+  public CommandBase SetDeparturePosCommand { get; }
 
   private readonly ObservableCollection<ViewConfigurationModel> _availableViews;
   public IEnumerable<ViewConfigurationModel> AvailableViews => _availableViews;
@@ -126,10 +146,14 @@ public class MainViewModel : ViewModelBase {
     }
   }
 
-  private void OnGameSessionStarted(GameInfo info) {
-    _logger?.LogDebug("Recieved GameInfoChanged event for {@GameInfo}", info);
-    CurrentAirport = info.AirportICAO ?? string.Empty;
-    CurrentDatabase = info.DatabaseFolder ?? string.Empty;
+  private void OnGameSessionStarted(GameSessionStartedEventArgs args) {
+    _logger?.LogDebug("Recieved GameInfoChanged event for {@GameInfo}", args.Info);
+    CurrentAirport = args.Info.AirportICAO ?? string.Empty;
+    CurrentDatabase = args.Info.DatabaseFolder ?? string.Empty;
+  }
+
+  private void OnGameSessionEnded() {
+    CurrentAirport = string.Empty; CurrentDatabase = string.Empty;
   }
 
 }

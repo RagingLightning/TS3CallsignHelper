@@ -1,7 +1,7 @@
-﻿using TS3CallsignHelper.Common.DTOs;
+﻿using TS3CallsignHelper.Game.DTO;
 
 namespace TS3CallsignHelper.Game.Services;
-public class InitializationProgressService {
+public class InitializationProgressService : IInitializationProgressService {
 
   public event Action<Progress>? ProgressChanged;
 
@@ -77,8 +77,8 @@ public class InitializationProgressService {
     }
   }
 
-  private string _statusMessage;
-  private string _details;
+  private string _statusMessage = string.Empty;
+  private string _details = string.Empty;
   private bool _completed;
   private float _logFileProgress;
   private float _airlineProgress;

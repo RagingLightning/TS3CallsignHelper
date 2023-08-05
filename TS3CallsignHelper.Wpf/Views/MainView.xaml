@@ -4,26 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:TS3CallsignHelper.Wpf.Views"
-             xmlns:vms="clr-namespace:TS3CallsignHelper.Wpf.ViewModels"
+             xmlns:api="clr-namespace:TS3CallsignHelper.Api;assembly=TS3CallsignHelper.Api"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:LocalizeDictionary.DesignCulture="en-US"
-             lex:ResxLocalizationProvider.DefaultAssembly="{Binding Path=(vms:ViewModelBase.TranslationAssembly)}"
-             lex:ResxLocalizationProvider.DefaultDictionary="{Binding Path=(vms:ViewModelBase.TranslationDictionary)}"
+             lex:ResxLocalizationProvider.DefaultAssembly="{Binding Path=(api:IViewModel.TranslationAssembly)}"
+             lex:ResxLocalizationProvider.DefaultDictionary="{Binding Path=(api:IViewModel.TranslationDictionary)}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <DataTemplate DataType="{x:Type vms:CanvasContainerViewModel}">
-            <views:CanvasContainerView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vms:FrequencyInfoViewModel}">
-            <views:FrequencyInfoView/>
-        </DataTemplate>
-    </UserControl.Resources>
+    <!--<UserControl.Resources>-->
+    <!--    <DataTemplate DataType="{x:Type vms:CanvasContainerViewModel}">-->
+    <!--        <views:CanvasContainerView/>-->
+    <!--    </DataTemplate>-->
+    <!--    <DataTemplate DataType="{x:Type vms:FrequencyInfoViewModel}">-->
+    <!--        <views:FrequencyInfoView/>-->
+    <!--    </DataTemplate>-->
+    <!--    <DataTemplate DataType="{x:Type vms:PlaneStateViewModel}">-->
+    <!--        <views:PlaneStateView/>-->
+    <!--    </DataTemplate>-->
+    <!--</UserControl.Resources>-->
     <DockPanel>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
@@ -50,6 +54,11 @@
                 </ComboBox>
             </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal">
+                <CheckBox Content="Ground" VerticalAlignment="Center" Command="{Binding SetGroundPosCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Margin="5,0"/>
+                <CheckBox Content="Tower" VerticalAlignment="Center" Command="{Binding SetTowerPosCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Margin="5,0"/>
+                <!--<CheckBox Content="Ground" VerticalAlignment="Center" Command="SetDeparturePosCommand" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"/>-->
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Horizontal">
                 <Button Width="20" Height="20" ToolTip="{lex:Loc Header_Donate}" Command="{Binding DonateCommand}" Margin="3,0">
                     <Image Source="/Resources/icon_donate.png"/>
                 </Button>

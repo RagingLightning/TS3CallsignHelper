@@ -1,14 +1,14 @@
 ﻿using System;
+using TS3CallsignHelper.Api;
 using TS3CallsignHelper.Wpf.Stores;
-using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf.Commands;
 internal class NavigateCommand : CommandBase {
 
   private readonly NavigationStore _navigationStore;
-  private readonly Func<ViewModelBase> _createViewModel;
+  private readonly Func<IViewModel> _createViewModel;
 
-  public NavigateCommand(Func<ViewModelBase> createViewModel, NavigationStore navigationStore) {
+  public NavigateCommand(Func<IViewModel> createViewModel, NavigationStore navigationStore) {
     _navigationStore = navigationStore;
     _createViewModel = createViewModel;
   }

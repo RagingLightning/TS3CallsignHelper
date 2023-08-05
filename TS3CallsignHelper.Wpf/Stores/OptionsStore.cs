@@ -1,20 +1,20 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
+using TS3CallsignHelper.Api.Dependencies;
+using TS3CallsignHelper.Wpf.Services;
 
 namespace TS3CallsignHelper.Wpf.Stores;
 internal class OptionsStore {
-  private ILogger<OptionsStore> _logger;
+  private ILogger<OptionsStore>? _logger;
 
   private Entries _entries;
   private string _filePath;
   private bool _skipAutosave = false;
 
-  public OptionsStore(string path, IServiceProvider serviceProvider) {
-    _logger = serviceProvider.GetRequiredService<ILogger<OptionsStore>>();
+  public OptionsStore(string path, IDependencyStore dependencyStore) {
+    _logger = dependencyStore.TryGet<LoggerService>()?.GetLogger<OptionsStore>();
     _filePath = path;
 
     if (File.Exists(_filePath)) {

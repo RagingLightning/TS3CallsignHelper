@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Globalization;
-using TS3CallsignHelper.Common.Services;
+using TS3CallsignHelper.Api.Dependencies;
+using TS3CallsignHelper.Wpf.Services;
 using TS3CallsignHelper.Wpf.ViewModels;
 using WPFLocalizeExtension.Engine;
 
@@ -10,8 +11,8 @@ public class SelectLanguageCommand : CommandBase {
   private readonly MainViewModel _mainViewModel;
   private readonly CultureInfo _culture;
 
-  public SelectLanguageCommand(MainViewModel mainViewModel, CultureInfo culture) {
-    _logger = LoggingService.GetLogger<SelectLanguageCommand>();
+  public SelectLanguageCommand(MainViewModel mainViewModel, CultureInfo culture, IDependencyStore dependencyStore) {
+    _logger = dependencyStore.TryGet<LoggerService>()?.GetLogger<SelectLanguageCommand>();
     _mainViewModel = mainViewModel;
     _culture = culture;
   }

@@ -5,6 +5,7 @@
 		<TargetFramework>net7.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Platforms>AnyCPU</Platforms>
 	</PropertyGroup>
 
@@ -60,17 +61,15 @@
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	  <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
 	  <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+	  <PackageReference Include="System.ComponentModel.Composition" Version="7.0.0" />
 	  <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\TS3CallsignHelper.Api\TS3CallsignHelper.API.csproj" />
 	  <ProjectReference Include="..\TS3CallsignHelper.Game\TS3CallsignHelper.Game.csproj" />
-	  <ProjectReference Include="..\TS3CallsignHelper.Shared\TS3CallsignHelper.Common.csproj" />
+	  <ProjectReference Include="..\TS3CallsignHelper.Modules\TS3CallsignHelper.Modules.csproj" />
 	  <ProjectReference Include="..\TS3CallsignHelper.Wpf.Translation\TS3CallsignHelper.Wpf.Translation.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Services\" />
 	</ItemGroup>
 
 	<ItemGroup>

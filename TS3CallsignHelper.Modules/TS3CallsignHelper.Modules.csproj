@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MathConverter" Version="2.2.0" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="7.0.0" />
+    <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TS3CallsignHelper.Api\TS3CallsignHelper.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="CallsignInfo\Translation\CallsignInfoModule.Designer.cs">
+      <DependentUpon>CallsignInfoModule.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="CallsignInfo\Views\CallsignInfoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="FrequencyInfo\Translation\FrequencyInfoModule.Designer.cs">
+      <DependentUpon>FrequencyInfoModule.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="FrequencyInfo\Views\FrequencyInfoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="PlaneState\Translation\PlaneStateModule.Designer.cs">
+      <DependentUpon>PlaneStateModule.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="PlaneState\Views\PlaneStateView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="CallsignInfo\Translation\CallsignInfoModule.resx">
+      <LastGenOutput>CallsignInfoModule.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FrequencyInfo\Translation\FrequencyInfoModule.resx">
+      <LastGenOutput>FrequencyInfoModule.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PlaneState\Translation\PlaneStateModule.de-DE.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PlaneState\Translation\PlaneStateModule.en-US.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PlaneState\Translation\PlaneStateModule.resx">
+      <LastGenOutput>PlaneStateModule.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

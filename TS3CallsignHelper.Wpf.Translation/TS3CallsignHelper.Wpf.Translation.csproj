@@ -4,6 +4,7 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<AssemblyName>$(MSBuildProjectName)</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -67,22 +68,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="FrequencyInfoView.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>FrequencyInfoView.Designer.cs</LastGenOutput>
+		<EmbeddedResource Update="PlaneStateView.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>PlaneStateView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<Compile Update="FrequencyInfoView.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>FrequencyInfoView.resx</DependentUpon>
+		<Compile Update="PlaneStateView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>PlaneStateView.resx</DependentUpon>
 		</Compile>
-		<EmbeddedResource Update="FrequencyInfoView.en-US.resx">
+		<EmbeddedResource Update="PlaneStateView.en-US.resx">
 			<SubType>Designer</SubType>
-			<DependentUpon>FrequencyInfoView.resx</DependentUpon>
+			<DependentUpon>PlaneStateView.resx</DependentUpon>
 		</EmbeddedResource>
-		<EmbeddedResource Update="FrequencyInfoView.de-DE.resx">
+		<EmbeddedResource Update="PlaneStateView.de-DE.resx">
 			<SubType>Designer</SubType>
-			<DependentUpon>FrequencyInfoView.resx</DependentUpon>
+			<DependentUpon>PlaneStateView.resx</DependentUpon>
 		</EmbeddedResource>
 	</ItemGroup>
 

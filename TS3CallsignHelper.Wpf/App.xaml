@@ -2,6 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:math="http://hexinnovation.com/math"
+             xmlns:views="clr-namespace:TS3CallsignHelper.Wpf.Views"
+             xmlns:vms="clr-namespace:TS3CallsignHelper.Wpf.ViewModels"
              xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Application.Resources>
         <!--#region ImageButton-->
@@ -292,6 +294,8 @@
         </Style>
         <!--#endregion-->
         <math:MathConverter x:Key="Math"/>
-        <FontFamily x:Key="DSEG7Classic">pack://application:,,,/Resources/Fonts/DSEG7Classic-BoldItalic.ttf#DSEG7 Classic</FontFamily>
+        <DataTemplate DataType="{x:Type vms:CanvasContainerViewModel}">
+            <views:CanvasContainerView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

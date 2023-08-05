@@ -4,12 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:vms="clr-namespace:TS3CallsignHelper.Wpf.ViewModels"
+             xmlns:api="clr-namespace:TS3CallsignHelper.Api;assembly=TS3CallsignHelper.Api"
              xmlns:views="clr-namespace:TS3CallsignHelper.Wpf.Views"
+             xmlns:vms="clr-namespace:TS3CallsignHelper.Wpf.ViewModels"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:LocalizeDictionary.DesignCulture="en-US"
-             lex:ResxLocalizationProvider.DefaultAssembly="{Binding Path=(vms:ViewModelBase.TranslationAssembly)}"
-             lex:ResxLocalizationProvider.DefaultDictionary="{Binding Path=(vms:ViewModelBase.TranslationDictionary)}"
+             lex:ResxLocalizationProvider.DefaultAssembly="{Binding Path=(api:IViewModel.TranslationAssembly)}"
+             lex:ResxLocalizationProvider.DefaultDictionary="{Binding Path=(api:IViewModel.TranslationDictionary)}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -41,9 +42,6 @@
             <Setter Property="Background" Value="DarkGreen" />
             <Setter Property="Foreground" Value="White" />
         </Style>
-        <DataTemplate DataType="{x:Type vms:CallsignInformationViewModel}">
-            <views:CallsignInformationView/>
-        </DataTemplate>
         <LinearGradientBrush x:Key="FrameBackground">
             <LinearGradientBrush.RelativeTransform>
                 <RotateTransform Angle="90" CenterX="0.5" CenterY="0.5"/>
