@@ -7,7 +7,7 @@ using TS3CallsignHelper.API.Exceptions;
 using TS3CallsignHelper.API.Logging;
 using TS3CallsignHelper.API.Stores;
 
-namespace TS3CallsignHelper.Modules.CallsignInfo;
+namespace TS3CallsignHelper.Modules.CallsignInformation;
 class CallsignInfoViewModel : IViewModel
 {
     private readonly ILogger? _logger;

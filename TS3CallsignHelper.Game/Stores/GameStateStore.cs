@@ -80,7 +80,12 @@ public class GameStateStore : IGameStateStore {
 
   public void StartGame(GameInfo info) {
     _logger?.LogDebug("Starting game session {@GameInfo}", info);
-    _initializationProgressService.Details = $"Loading Game session {info.AirportICAO}@{info.StartHour}:00 / {info.DatabaseFolder}";
+    _initializationProgressService.Details = $"{info.AirportICAO}/{info.DatabaseFolder} @ {info.StartHour}:00";
+    _initializationProgressService.AirplaneProgress = 0;
+    _initializationProgressService.AirlineProgess = 0;
+    _initializationProgressService.FrequencyProgress = 0;
+    _initializationProgressService.GaProgress = 0;
+    _initializationProgressService.ScheduleProgress = 0;
     CurrentAirplane = "";
     _planeStates.Clear();
 
@@ -103,7 +108,7 @@ public class GameStateStore : IGameStateStore {
 
     _logger?.LogInformation("Starting new game session for {Airport} / {Database}", info.AirportICAO, info.DatabaseFolder);
     _airportDataStore.Load(_installationPath, info);
-    _initializationProgressService.StatusMessage = "Catching up on the game log...";
+    _initializationProgressService.StatusMessage = "State_LogFile";
 
     CurrentGameInfo = info;
     _logger?.LogDebug("Raising {Event}", nameof(GameSessionStarted));
@@ -145,11 +150,13 @@ public class GameStateStore : IGameStateStore {
   /// <param name="stateInfo">state to validate</param>
   /// <returns><c>true</c>, if the assignment is valid, <c>false</c> otherwise</returns>
   private bool ValidatePlaneState(string airplane, PlaneStateInfo stateInfo) {
+    if (stateInfo.State == PlaneState.UNKNOWN)
+      return !_planeStates.ContainsKey(airplane) || _planeStates[airplane].State == PlaneState.UNKNOWN;
     foreach (var position in _playerPositions) {
       if (stateInfo.State.Is(position) && (_planeStates.ContainsKey(airplane) || stateInfo.State.IsInitial(position)))
         return true;
     }
-    _logger?.LogWarning("Airplane {Airplane} state {State} is not valid with {@Positions} selected", airplane, stateInfo, _playerPositions);
+    _logger?.LogWarning("Airplane {Airplane} state {@State} is not valid with {@Positions} selected", airplane, stateInfo, _playerPositions);
     return false;
   }
 

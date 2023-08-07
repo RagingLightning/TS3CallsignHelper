@@ -3,7 +3,7 @@ using TS3CallsignHelper.API;
 using TS3CallsignHelper.API.Dependencies;
 using TS3CallsignHelper.API.Exceptions;
 
-namespace TS3CallsignHelper.Modules.CallsignInfo;
+namespace TS3CallsignHelper.Modules.CallsignInformation;
 [Export(typeof(ICallsignHelperModule))]
 [ExportMetadata("Name", "Callsign Info Module")]
 public class CallsignInfoModule : ICallsignHelperModule {

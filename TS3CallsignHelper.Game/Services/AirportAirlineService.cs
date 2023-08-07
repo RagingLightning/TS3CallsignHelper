@@ -28,7 +28,7 @@ public partial class AirportAirlineService : IAirportAirlineService {
 
     var airlines = new Dictionary<string, AirportAirline>();
 
-    _initializationProgressService.StatusMessage = "Loading airlines...";
+    _initializationProgressService.StatusMessage = "State_Airlines";
 
     var airport = info.AirportICAO ?? throw new IncompleteGameInfoException(info, nameof(info.AirportICAO));
     var database = info.DatabaseFolder ?? throw new IncompleteGameInfoException(info, nameof(info.DatabaseFolder));

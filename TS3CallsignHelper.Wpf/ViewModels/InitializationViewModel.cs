@@ -14,7 +14,7 @@ internal class InitializationViewModel : IViewModel {
   private readonly NavigationStore _navigationStore;
   private readonly IInitializationProgressService _initializationProgressService;
   private readonly IDependencyStore _dependencyStore;
-  public override Type Translation => throw new NotImplementedException();
+  public override Type Translation => typeof(Translation.InitializationView);
   public override Type View => throw new NotImplementedException();
   public override double InitialWidth => throw new NotImplementedException();
   public override double InitialHeight => throw new NotImplementedException();
@@ -32,9 +32,9 @@ internal class InitializationViewModel : IViewModel {
     _initializationProgressService = dependencyStore.TryGet<IInitializationProgressService>() ?? throw new MissingDependencyException(typeof(IInitializationProgressService));
     _dependencyStore = dependencyStore;
 
-    _logger?.LogInformation("{LoadingState}", "Loading...");
+    _logger?.LogInformation("{LoadingState}", "State_LogFile");
     Progress = "0%";
-    Status = "Loading...";
+    Status = "State_LogFile";
 
     _initializationProgressService.ProgressChanged += OnProgressChanged;
   }
@@ -45,7 +45,7 @@ internal class InitializationViewModel : IViewModel {
 
   private void OnProgressChanged(Progress progress) {
     if (progress.Completed) {
-      _logger?.LogInformation("{LoadingState}", "Loading complete");
+      _logger?.LogInformation("{LoadingState}", "Complete");
       _navigationStore.RootContent = new MainViewModel(_dependencyStore);
       Dispose();
     }
@@ -87,6 +87,9 @@ internal class InitializationViewModel : IViewModel {
     set {
       _details = value;
       OnPropertyChanged(nameof(Details));
+      OnPropertyChanged(nameof(HasDetails));
     }
   }
+
+  public bool HasDetails => !string.IsNullOrEmpty(_details);
 }

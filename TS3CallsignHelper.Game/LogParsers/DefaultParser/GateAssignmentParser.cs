@@ -31,12 +31,12 @@ internal class GateAssignmentParser : ILogEntryParser {
       var gate = logLine.Split(" => Terminal locked: ")[1];
 
       var planeState = _gameStateStore.PlaneStates.GetValueOrDefault(plane, new PlaneStateInfo());
-      planeState.Gate = gate;
+      planeState.Gate = gate.Replace("gate_", "Gate ");
       _gameStateStore.SetPlaneState(plane, planeState);
 
       if (_restarters.TryGetValue(plane, out var child)) {
         var childState = _gameStateStore.PlaneStates.GetValueOrDefault(child, new PlaneStateInfo());
-        childState.Gate = gate;
+        childState.Gate = gate.Replace("gate_", "Gate "); ;
         _gameStateStore.SetPlaneState(child, childState);
       }
     }
@@ -46,7 +46,7 @@ internal class GateAssignmentParser : ILogEntryParser {
       var gate = logLine.Split(" te: ")[1].Split(" * ")[0];
 
       var planeState = _gameStateStore.PlaneStates.GetValueOrDefault(plane, new PlaneStateInfo());
-      planeState.Gate = gate;
+      planeState.Gate = gate.Replace("gate_", "Gate "); ;
       _gameStateStore.SetPlaneState(plane, planeState);
     }
   }

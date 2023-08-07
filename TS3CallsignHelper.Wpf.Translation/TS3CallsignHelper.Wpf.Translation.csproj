@@ -8,10 +8,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="InitializationView.de-DE.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
 		<EmbeddedResource Update="MainView.resx">
 			<LastGenOutput>MainView.Designer.cs</LastGenOutput>
 			<Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
+		<Compile Update="InitializationView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>InitializationView.resx</DependentUpon>
+		</Compile>
 		<Compile Update="MainView.Designer.cs">
 			<DependentUpon>MainView.resx</DependentUpon>
 			<DesignTime>True</DesignTime>
@@ -48,22 +56,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="PlaneStateView.resx">
+		<EmbeddedResource Update="InitializationView.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
-		  <LastGenOutput>PlaneStateView.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<Compile Update="PlaneStateView.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>PlaneStateView.resx</DependentUpon>
-		</Compile>
-		<EmbeddedResource Update="PlaneStateView.en-US.resx">
-			<SubType>Designer</SubType>
-			<DependentUpon>PlaneStateView.resx</DependentUpon>
-		</EmbeddedResource>
-		<EmbeddedResource Update="PlaneStateView.de-DE.resx">
-			<SubType>Designer</SubType>
-			<DependentUpon>PlaneStateView.resx</DependentUpon>
+		  <LastGenOutput>InitializationView.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 

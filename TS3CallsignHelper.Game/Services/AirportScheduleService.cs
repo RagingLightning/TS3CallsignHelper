@@ -28,7 +28,7 @@ public partial class AirportScheduleService : IAirportScheduleService {
 
     var schedule = new Dictionary<string, AirportScheduleEntry>();
 
-    _initializationProgressService.StatusMessage = "Loading schedule...";
+    _initializationProgressService.StatusMessage = "State_Schedule";
 
     var airport = info.AirportICAO ?? throw new IncompleteGameInfoException(info, nameof(info.AirportICAO));
     var database = info.DatabaseFolder ?? throw new IncompleteGameInfoException(info, nameof(info.DatabaseFolder));

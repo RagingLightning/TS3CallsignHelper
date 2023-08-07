@@ -22,12 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="CallsignInfo\Translation\CallsignInfoModule.Designer.cs">
+    <Compile Update="CallsignInformation\Translation\CallsignInfoModule.Designer.cs">
       <DependentUpon>CallsignInfoModule.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="CallsignInfo\CallsignInfoView.xaml.cs">
+    <Compile Update="CallsignInformation\CallsignInfoView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="FrequencyInformation\Translation\FrequencyInfoModule.Designer.cs">
@@ -49,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="CallsignInfo\Translation\CallsignInfoModule.resx">
+    <EmbeddedResource Update="CallsignInformation\Translation\CallsignInfoModule.resx">
       <LastGenOutput>CallsignInfoModule.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>

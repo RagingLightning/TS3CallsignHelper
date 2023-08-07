@@ -117,85 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Direction_In" xml:space="preserve">
-    <value>Arrival</value>
+  <data name="Detail_Post" xml:space="preserve">
+    <value />
   </data>
-  <data name="Direction_Out" xml:space="preserve">
-    <value>Departure</value>
+  <data name="Detail_Pre" xml:space="preserve">
+    <value />
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Plane state info</value>
+    <value>Initialization</value>
   </data>
-  <data name="State_IN_AT_TERMINAL" xml:space="preserve">
-    <value>Has arrived</value>
+  <data name="State_Airlines" xml:space="preserve">
+    <value />
   </data>
-  <data name="State_IN_RAD_LEAVE" xml:space="preserve">
-    <value>With other controller</value>
+  <data name="State_Airplanes" xml:space="preserve">
+    <value />
   </data>
-  <data name="State_IN_RWY_APPROACH" xml:space="preserve">
-    <value>On final approach</value>
+  <data name="State_Frequencies" xml:space="preserve">
+    <value />
   </data>
-  <data name="State_IN_RWY_CLR_LAHS" xml:space="preserve">
-    <value>Has landing (LAHS) clearance</value>
+  <data name="State_Ga" xml:space="preserve">
+    <value />
   </data>
-  <data name="State_IN_RWY_CLR_LAND" xml:space="preserve">
-    <value>Has landing clearance</value>
+  <data name="State_LogFile" xml:space="preserve">
+    <value />
   </data>
-  <data name="State_IN_RWY_CLR_LAPP" xml:space="preserve">
-    <value>Has clearance for low approach</value>
-  </data>
-  <data name="State_IN_RWY_CLR_SAGO" xml:space="preserve">
-    <value>Has clearance for stop and go</value>
-  </data>
-  <data name="State_IN_RWY_CLR_TAGO" xml:space="preserve">
-    <value>Has clearance for touch and go</value>
-  </data>
-  <data name="State_IN_RWY_GO_AROUND" xml:space="preserve">
-    <value>Is going around</value>
-  </data>
-  <data name="State_IN_RWY_WAITING" xml:space="preserve">
-    <value>Waiting for instructions at Runway</value>
-  </data>
-  <data name="State_IN_TAXI_PROGRESS" xml:space="preserve">
-    <value>Taxiing...</value>
-  </data>
-  <data name="State_IN_TAXI_REQUEST" xml:space="preserve">
-    <value>Requesting taxi instructions</value>
-  </data>
-  <data name="State_OUT_DEPARTURE" xml:space="preserve">
-    <value>Has departed</value>
-  </data>
-  <data name="State_OUT_PUSHBACK_PROGRESS" xml:space="preserve">
-    <value>Executing pushback</value>
-  </data>
-  <data name="State_OUT_PUSHBACK_REQUEST" xml:space="preserve">
-    <value>Requesting pushback</value>
-  </data>
-  <data name="State_OUT_RAD_LEAVE" xml:space="preserve">
-    <value>With other controller</value>
-  </data>
-  <data name="State_OUT_RWY_LINE_UP" xml:space="preserve">
-    <value>Lining up</value>
-  </data>
-  <data name="State_OUT_RWY_LINE_UP_BEHIND" xml:space="preserve">
-    <value>Lining up behind arrival</value>
-  </data>
-  <data name="State_OUT_RWY_TAKEOFF" xml:space="preserve">
-    <value>Taking off</value>
-  </data>
-  <data name="State_OUT_RWY_WAITING" xml:space="preserve">
-    <value>Waiting for instructions at Runway</value>
-  </data>
-  <data name="State_OUT_STARTUP_PROGRESS" xml:space="preserve">
-    <value>Executing startup</value>
-  </data>
-  <data name="State_OUT_STARTUP_REQUEST" xml:space="preserve">
-    <value>Requesting startup</value>
-  </data>
-  <data name="State_OUT_TAXI_PROGRESS" xml:space="preserve">
-    <value>Taxiing...</value>
-  </data>
-  <data name="State_OUT_TAXI_REQUEST" xml:space="preserve">
-    <value>Requesting taxi instructions</value>
+  <data name="State_Schedule" xml:space="preserve">
+    <value />
   </data>
 </root>

@@ -28,7 +28,7 @@ public partial class AirportGaService : IAirportGaService {
 
     var gaPlanes = new Dictionary<string, AirportGa>();
 
-    _initializationProgressService.StatusMessage = "Loading GA schedule...";
+    _initializationProgressService.StatusMessage = "State_Ga";
 
     var airport = info.AirportICAO ?? throw new IncompleteGameInfoException(info, nameof(info.AirportICAO));
     var database = info.DatabaseFolder ?? throw new IncompleteGameInfoException(info, nameof(info.DatabaseFolder));

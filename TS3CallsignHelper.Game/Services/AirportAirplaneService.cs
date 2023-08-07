@@ -27,7 +27,7 @@ public partial class AirportAirplaneService : IAirportAirplaneService {
 
     var airplanes = new Dictionary<string, AirportAirplane>();
 
-    _initializationProgressService.StatusMessage = "Loading airplanes...";
+    _initializationProgressService.StatusMessage = "State_Airplanes";
 
     var airplaneSet = info.AirplaneSetFolder ?? throw new IncompleteGameInfoException(info, nameof(info.AirplaneSetFolder));
 

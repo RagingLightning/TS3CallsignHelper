@@ -117,85 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Direction_In" xml:space="preserve">
-    <value>Ankunft</value>
+  <data name="Detail_Post" xml:space="preserve">
+    <value />
   </data>
-  <data name="Direction_Out" xml:space="preserve">
-    <value>Abflug</value>
+  <data name="Detail_Pre" xml:space="preserve">
+    <value>Game:</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Zustandsanzeige</value>
+    <value>Initialization</value>
   </data>
-  <data name="State_IN_AT_TERMINAL" xml:space="preserve">
-    <value>Ist angekommen</value>
+  <data name="State_Airlines" xml:space="preserve">
+    <value>Loading airlines...</value>
   </data>
-  <data name="State_IN_RAD_LEAVE" xml:space="preserve">
-    <value>Ist bei anderem Lotsen</value>
+  <data name="State_Airplanes" xml:space="preserve">
+    <value>Loading airplane types...</value>
   </data>
-  <data name="State_IN_RWY_APPROACH" xml:space="preserve">
-    <value>Ist im Endanflug</value>
+  <data name="State_Frequencies" xml:space="preserve">
+    <value>Loading frequencies...</value>
   </data>
-  <data name="State_IN_RWY_CLR_LAHS" xml:space="preserve">
-    <value>Hat Landefreigabe (LAHS) erhalten</value>
+  <data name="State_Ga" xml:space="preserve">
+    <value>Loading GA-Schedule...</value>
   </data>
-  <data name="State_IN_RWY_CLR_LAND" xml:space="preserve">
-    <value>Hat Landefreigabe erhalten</value>
+  <data name="State_LogFile" xml:space="preserve">
+    <value>Catching up...</value>
   </data>
-  <data name="State_IN_RWY_CLR_LAPP" xml:space="preserve">
-    <value>Hat Freigabe für Tiefanflug</value>
-  </data>
-  <data name="State_IN_RWY_CLR_SAGO" xml:space="preserve">
-    <value>Hat Freigabe für Landung und Durchstarten</value>
-  </data>
-  <data name="State_IN_RWY_CLR_TAGO" xml:space="preserve">
-    <value>Hat Freigabe für Aufsetzen und Durchstarten</value>
-  </data>
-  <data name="State_IN_RWY_GO_AROUND" xml:space="preserve">
-    <value>Startet durch</value>
-  </data>
-  <data name="State_IN_RWY_WAITING" xml:space="preserve">
-    <value>Wartet an der Piste auf Anweisungen</value>
-  </data>
-  <data name="State_IN_TAXI_PROGRESS" xml:space="preserve">
-    <value>Rollt...</value>
-  </data>
-  <data name="State_IN_TAXI_REQUEST" xml:space="preserve">
-    <value>Erbittet Rollanweisungen</value>
-  </data>
-  <data name="State_OUT_DEPARTURE" xml:space="preserve">
-    <value>Ist abgeflogen</value>
-  </data>
-  <data name="State_OUT_PUSHBACK_PROGRESS" xml:space="preserve">
-    <value>Im Pushback</value>
-  </data>
-  <data name="State_OUT_PUSHBACK_REQUEST" xml:space="preserve">
-    <value>Erbittet Pushback</value>
-  </data>
-  <data name="State_OUT_RAD_LEAVE" xml:space="preserve">
-    <value>Ist bei anderem Lotsen</value>
-  </data>
-  <data name="State_OUT_RWY_LINE_UP" xml:space="preserve">
-    <value>Rollt zum Abflugpunkt</value>
-  </data>
-  <data name="State_OUT_RWY_LINE_UP_BEHIND" xml:space="preserve">
-    <value>Rollt zum Abflugpunkt nach Ankunft</value>
-  </data>
-  <data name="State_OUT_RWY_TAKEOFF" xml:space="preserve">
-    <value>Startet...</value>
-  </data>
-  <data name="State_OUT_RWY_WAITING" xml:space="preserve">
-    <value>Wartet an der Piste auf Anweisungen</value>
-  </data>
-  <data name="State_OUT_STARTUP_PROGRESS" xml:space="preserve">
-    <value>Lässt Motoren an</value>
-  </data>
-  <data name="State_OUT_STARTUP_REQUEST" xml:space="preserve">
-    <value>Erbittet Anlasserlaubnis</value>
-  </data>
-  <data name="State_OUT_TAXI_PROGRESS" xml:space="preserve">
-    <value>Rollt...</value>
-  </data>
-  <data name="State_OUT_TAXI_REQUEST" xml:space="preserve">
-    <value>Erbittet Rollanweisungen</value>
+  <data name="State_Schedule" xml:space="preserve">
+    <value>Loading schedule...</value>
   </data>
 </root>

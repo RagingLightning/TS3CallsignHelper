@@ -8,7 +8,7 @@ using TS3CallsignHelper.API;
 using TS3CallsignHelper.API.Dependencies;
 using TS3CallsignHelper.API.Logging;
 using TS3CallsignHelper.Game.LogParsers.DefaultParser;
-using TS3CallsignHelper.Modules.CallsignInfo;
+using TS3CallsignHelper.Modules.CallsignInformation;
 
 namespace TS3CallsignHelper.Wpf.Stores;
 internal class ModuleStore {

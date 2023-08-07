@@ -26,7 +26,7 @@ public partial class AirportFrequencyService : IAirportFrequencyService {
 
     var frequencies = new Dictionary<string, AirportFrequency>();
 
-    _initializationProgressService.StatusMessage = "Loading frequencies...";
+    _initializationProgressService.StatusMessage = "State_Frequencies";
 
     var airport = info.AirportICAO ?? throw new IncompleteGameInfoException(info, nameof(info.AirportICAO));
     var database = info.DatabaseFolder ?? throw new IncompleteGameInfoException(info, nameof(info.DatabaseFolder));

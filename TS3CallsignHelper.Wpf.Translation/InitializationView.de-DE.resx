@@ -117,85 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Direction_In" xml:space="preserve">
+  <data name="Detail_Post" xml:space="preserve">
     <value />
   </data>
-  <data name="Direction_Out" xml:space="preserve">
-    <value />
+  <data name="Detail_Pre" xml:space="preserve">
+    <value>Spiel:</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value />
+    <value>Initialization</value>
   </data>
-  <data name="State_IN_AT_TERMINAL" xml:space="preserve">
-    <value />
+  <data name="State_Airlines" xml:space="preserve">
+    <value>Lade Fluggesellschaften...</value>
   </data>
-  <data name="State_IN_RAD_LEAVE" xml:space="preserve">
-    <value />
+  <data name="State_Airplanes" xml:space="preserve">
+    <value>Lade Flugzeugtypen...</value>
   </data>
-  <data name="State_IN_RWY_APPROACH" xml:space="preserve">
-    <value />
+  <data name="State_Frequencies" xml:space="preserve">
+    <value>Lade Frequenzen...</value>
   </data>
-  <data name="State_IN_RWY_CLR_LAHS" xml:space="preserve">
-    <value />
+  <data name="State_Ga" xml:space="preserve">
+    <value>Lade GA-Flugplan...</value>
   </data>
-  <data name="State_IN_RWY_CLR_LAND" xml:space="preserve">
-    <value />
+  <data name="State_LogFile" xml:space="preserve">
+    <value>Hole auf...</value>
   </data>
-  <data name="State_IN_RWY_CLR_LAPP" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_IN_RWY_CLR_SAGO" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_IN_RWY_CLR_TAGO" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_IN_RWY_GO_AROUND" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_IN_RWY_WAITING" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_IN_TAXI_PROGRESS" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_IN_TAXI_REQUEST" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_DEPARTURE" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_PUSHBACK_PROGRESS" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_PUSHBACK_REQUEST" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_RAD_LEAVE" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_RWY_LINE_UP" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_RWY_LINE_UP_BEHIND" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_RWY_TAKEOFF" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_RWY_WAITING" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_STARTUP_PROGRESS" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_STARTUP_REQUEST" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_TAXI_PROGRESS" xml:space="preserve">
-    <value />
-  </data>
-  <data name="State_OUT_TAXI_REQUEST" xml:space="preserve">
-    <value />
+  <data name="State_Schedule" xml:space="preserve">
+    <value>Lade Flugplan...</value>
   </data>
 </root>

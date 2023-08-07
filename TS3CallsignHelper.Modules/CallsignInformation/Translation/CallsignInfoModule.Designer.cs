@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TS3CallsignHelper.Modules.CallsignInfo.Translation {
+namespace TS3CallsignHelper.Modules.CallsignInformation.Translation {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace TS3CallsignHelper.Modules.CallsignInfo.Translation {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TS3CallsignHelper.Modules.CallsignInfo.Translation.CallsignInfoModule", typeof(CallsignInfoModule).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TS3CallsignHelper.Modules.CallsignInformation.Translation.CallsignInfoModule", typeof(CallsignInfoModule).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
