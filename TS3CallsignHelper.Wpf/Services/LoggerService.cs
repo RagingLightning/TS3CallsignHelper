@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using TS3CallsignHelper.Api.Logging;
+using TS3CallsignHelper.API.Logging;
 
 namespace TS3CallsignHelper.Wpf.Services;
 internal class LoggerService : ILoggerService {

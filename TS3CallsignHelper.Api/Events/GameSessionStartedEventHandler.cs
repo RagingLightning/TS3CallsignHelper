@@ -1,4 +1,4 @@
-﻿namespace TS3CallsignHelper.Api.Events;
+﻿namespace TS3CallsignHelper.API.Events;
 
 public delegate void GameSessionStartedEventHandler(GameSessionStartedEventArgs args);
 public class GameSessionStartedEventArgs {

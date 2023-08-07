@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 
-namespace TS3CallsignHelper.Api;
+namespace TS3CallsignHelper.API;
 public static class ObservableCollectionExtensions {
 
   /// <summary>

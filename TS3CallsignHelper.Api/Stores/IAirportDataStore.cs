@@ -4,9 +4,9 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TS3CallsignHelper.Api;
+using TS3CallsignHelper.API;
 
-namespace TS3CallsignHelper.Api.Stores;
+namespace TS3CallsignHelper.API.Stores;
 public abstract class IAirportDataStore {
   public ImmutableDictionary<string, AirportAirline>? Airlines => _airlines;
   public ImmutableDictionary<string, AirportAirplane>? Airplanes => _airplanes;
@@ -24,7 +24,7 @@ public abstract class IAirportDataStore {
   protected ImmutableDictionary<string, AirportGa>? _gaPlanes;
   protected ImmutableDictionary<string, AirportScheduleEntry>? _schedule;
 
-  public abstract void Load(string installation, string airport, string database, string airplaneSet);
+  public abstract void Load(string installation, GameInfo info);
 
   public virtual void Unload() {
     _airlines = null;

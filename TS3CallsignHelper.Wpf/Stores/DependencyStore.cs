@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TS3CallsignHelper.Api.Dependencies;
+using TS3CallsignHelper.API.Dependencies;
 
 namespace TS3CallsignHelper.Wpf.Stores;
 internal class DependencyStore : IDependencyStore {

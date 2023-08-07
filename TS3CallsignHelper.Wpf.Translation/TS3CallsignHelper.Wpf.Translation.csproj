@@ -28,26 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="CallsignInformationView.resx">
-		  <Generator>PublicResXFileCodeGenerator</Generator>
-		  <LastGenOutput>CallsignInformationView.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<Compile Update="CallsignInformationView.Designer.cs">
-			<DependentUpon>CallsignInformationView.resx</DependentUpon>
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-		</Compile>
-		<EmbeddedResource Update="CallsignInformationView.en-US.resx">
-			<SubType>Designer</SubType>
-			<DependentUpon>CallsignInformationView.resx</DependentUpon>
-		</EmbeddedResource>
-		<EmbeddedResource Update="CallsignInformationView.de-DE.resx">
-			<SubType>Designer</SubType>
-			<DependentUpon>CallsignInformationView.resx</DependentUpon>
-		</EmbeddedResource>
-	</ItemGroup>
-
-	<ItemGroup>
 		<EmbeddedResource Update="CanvasContainerView.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>CanvasContainerView.Designer.cs</LastGenOutput>

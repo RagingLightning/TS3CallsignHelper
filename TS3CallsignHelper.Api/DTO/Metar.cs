@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TS3CallsignHelper.Api;
+namespace TS3CallsignHelper.API;
 public class Metar {
   public string Airport { get; set; } = string.Empty;
   public DateTime? ReportTime { get; set; }

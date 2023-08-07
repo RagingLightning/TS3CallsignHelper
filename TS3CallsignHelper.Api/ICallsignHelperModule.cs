@@ -1,6 +1,7 @@
-﻿using TS3CallsignHelper.Api.Dependencies;
+﻿using System;
+using TS3CallsignHelper.API.Dependencies;
 
-namespace TS3CallsignHelper.Api;
+namespace TS3CallsignHelper.API;
 public interface ICallsignHelperModule {
   void Load(IDependencyStore dependencyStore);
 }

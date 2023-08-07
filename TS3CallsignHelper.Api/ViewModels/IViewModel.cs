@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using TS3CallsignHelper.Api.Dependencies;
+using TS3CallsignHelper.API.Dependencies;
 
-namespace TS3CallsignHelper.Api;
+namespace TS3CallsignHelper.API;
 public abstract class IViewModel : INotifyPropertyChanged {
   public abstract Type Translation { get; }
 	public abstract Type View { get; }

@@ -1,4 +1,4 @@
-﻿namespace TS3CallsignHelper.Api.Dependencies;
+﻿namespace TS3CallsignHelper.API.Dependencies;
 
 /// <summary>
 /// Helper class to wrap all available Dependencies

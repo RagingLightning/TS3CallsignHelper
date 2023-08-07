@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TS3CallsignHelper.Api;
+namespace TS3CallsignHelper.API;
 public class AirportGa {
   public string Writename { get; set; }
   public string Sayname { get; set; }

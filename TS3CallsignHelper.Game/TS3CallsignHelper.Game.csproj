@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TS3CallsignHelper.Api\TS3CallsignHelper.API.csproj" />
+    <ProjectReference Include="..\TS3CallsignHelper.Modules\TS3CallsignHelper.Modules.csproj" />
   </ItemGroup>
 
 </Project>

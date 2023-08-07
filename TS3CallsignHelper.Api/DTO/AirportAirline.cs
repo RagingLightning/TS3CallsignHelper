@@ -1,4 +1,4 @@
-﻿namespace TS3CallsignHelper.Api;
+﻿namespace TS3CallsignHelper.API;
 public class AirportAirline {
   public string Code { get; set; } = string.Empty;
   public string Callsign { get; set; } = string.Empty;

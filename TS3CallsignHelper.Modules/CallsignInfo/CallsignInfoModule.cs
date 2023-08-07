@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
-using TS3CallsignHelper.Api;
-using TS3CallsignHelper.Api.Dependencies;
-using TS3CallsignHelper.Api.Exceptions;
+using TS3CallsignHelper.API;
+using TS3CallsignHelper.API.Dependencies;
+using TS3CallsignHelper.API.Exceptions;
 
 namespace TS3CallsignHelper.Modules.CallsignInfo;
 [Export(typeof(ICallsignHelperModule))]
@@ -12,6 +12,6 @@ public class CallsignInfoModule : ICallsignHelperModule {
   public void Load(IDependencyStore dependencyStore) {
     var viewStore = dependencyStore.TryGet<IViewStore>() ?? throw new MissingDependencyException(typeof(IViewStore));
 
-    viewStore.Register(typeof(Views.CallsignInfoView), typeof(ViewModels.CallsignInfoViewModel), typeof(Translation.CallsignInfoModule));
+    viewStore.Register(typeof(CallsignInfoView), typeof(CallsignInfoViewModel), typeof(Translation.CallsignInfoModule));
   }
 }

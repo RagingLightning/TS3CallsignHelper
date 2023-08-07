@@ -13,7 +13,6 @@
 	  <None Remove="appsettings.json" />
 	  <None Remove="Resources\Flags\de-DE.png" />
 	  <None Remove="Resources\Flags\en-US.png" />
-	  <None Remove="Resources\Fonts\DSEG7Classic-BoldItalic.ttf" />
 	  <None Remove="Resources\icon_addView.png" />
 	  <None Remove="Resources\icon_closeContainer.png" />
 	  <None Remove="Resources\icon_decreaseScale.png" />
@@ -43,9 +42,6 @@
 	  <Resource Include="Resources\icon_increaseZIndex.png" />
 	  <Resource Include="Resources\icon_resizeContainer.png" />
 	  <Resource Include="Resources\icon_settings.png" />
-	  <Resource Include="Resources\Fonts\DSEG7Classic-BoldItalic.ttf">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </Resource>
 	  <EmbeddedResource Include="serilog.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
@@ -70,12 +66,6 @@
 	  <ProjectReference Include="..\TS3CallsignHelper.Game\TS3CallsignHelper.Game.csproj" />
 	  <ProjectReference Include="..\TS3CallsignHelper.Modules\TS3CallsignHelper.Modules.csproj" />
 	  <ProjectReference Include="..\TS3CallsignHelper.Wpf.Translation\TS3CallsignHelper.Wpf.Translation.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="Resources\Fonts\DSEG7-License.txt">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </None>
 	</ItemGroup>
 
 </Project>

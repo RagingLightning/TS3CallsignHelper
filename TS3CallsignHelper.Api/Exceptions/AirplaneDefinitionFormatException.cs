@@ -1,5 +1,5 @@
 ﻿using System;
-namespace TS3CallsignHelper.Api.Exceptions;
+namespace TS3CallsignHelper.API.Exceptions;
 
 /// <summary>
 /// Indicates that the definition of an airplane type has an incorrect format

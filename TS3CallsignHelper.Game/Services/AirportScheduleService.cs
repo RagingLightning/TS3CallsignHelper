@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
-using TS3CallsignHelper.Api;
-using TS3CallsignHelper.Api.Dependencies;
-using TS3CallsignHelper.Api.Exceptions;
-using TS3CallsignHelper.Api.Logging;
+using TS3CallsignHelper.API;
+using TS3CallsignHelper.API.Dependencies;
+using TS3CallsignHelper.API.Exceptions;
+using TS3CallsignHelper.API.Logging;
 using TS3CallsignHelper.Game.Exceptions;
 
 namespace TS3CallsignHelper.Game.Services;
@@ -23,12 +23,17 @@ public partial class AirportScheduleService : IAirportScheduleService {
     _initializationProgressService = dependencyStore.TryGet<IInitializationProgressService>() ?? throw new MissingDependencyException(typeof(IInitializationProgressService));
   }
 
-  public ImmutableDictionary<string, AirportScheduleEntry> Load(string installation, string airport, string database,
+  public ImmutableDictionary<string, AirportScheduleEntry> Load(string installation, GameInfo info,
     ImmutableDictionary<string, AirportAirplane> airplanes, ImmutableDictionary<string, AirportAirline> airlines) {
 
     var schedule = new Dictionary<string, AirportScheduleEntry>();
 
     _initializationProgressService.StatusMessage = "Loading schedule...";
+
+    var airport = info.AirportICAO ?? throw new IncompleteGameInfoException(info, nameof(info.AirportICAO));
+    var database = info.DatabaseFolder ?? throw new IncompleteGameInfoException(info, nameof(info.DatabaseFolder));
+    var startTime = info.StartHour ?? throw new IncompleteGameInfoException(info, nameof(info.StartHour));
+
     var configFile = Path.Combine(installation, "Airports", airport, "databases", database, "schedule.csv");
     _logger.LogDebug("Loading airport schedule from {Config}", configFile);
     var stream = File.Open(configFile, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -38,7 +43,10 @@ public partial class AirportScheduleService : IAirportScheduleService {
       _logger.LogTrace("Parsing schedule information from {Line}", line);
       var groups = Parser().Match(line).Groups;
       if (groups.Count == 1) throw new ScheduleDefinitionFormatException(line);
+
       if (!MakeScheduleEntry(groups, airlines, airplanes, out var entry) || entry.Operator is null) continue;
+      if (entry.Arrival?.Hour < startTime-1) continue;
+      if (entry.Departure?.Hour < startTime - 1) continue;
 
       try {
         schedule.Add(entry.Operator.Code + entry.FlightNumber, entry);

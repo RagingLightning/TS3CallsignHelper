@@ -1,5 +1,5 @@
 ﻿using System;
-using TS3CallsignHelper.Api;
+using TS3CallsignHelper.API;
 using TS3CallsignHelper.Wpf.Commands;
 using TS3CallsignHelper.Wpf.Views;
 

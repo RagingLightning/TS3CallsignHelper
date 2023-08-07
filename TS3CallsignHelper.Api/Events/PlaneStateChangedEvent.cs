@@ -1,11 +1,11 @@
-﻿namespace TS3CallsignHelper.Api.Events;
+﻿namespace TS3CallsignHelper.API.Events;
 
 public delegate void PlaneStateChangedEvent(PlaneStateChangedEventArgs args);
 public class PlaneStateChangedEventArgs {
   public string Callsign { get; }
-  public PlaneState State { get; }
+  public PlaneStateInfo State { get; }
 
-  public PlaneStateChangedEventArgs(string callsign, PlaneState state) {
+  public PlaneStateChangedEventArgs(string callsign, PlaneStateInfo state) {
     Callsign = callsign;
     State = state;
   }

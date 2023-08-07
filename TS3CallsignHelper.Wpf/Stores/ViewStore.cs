@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using TS3CallsignHelper.Api.DTO;
-using TS3CallsignHelper.Api;
+using TS3CallsignHelper.API.DTO;
+using TS3CallsignHelper.API;
 
 namespace TS3CallsignHelper.Wpf.Stores;
 internal class ViewStore : IViewStore {

@@ -1,5 +1,5 @@
 ﻿using System;
-using TS3CallsignHelper.Api;
+using TS3CallsignHelper.API;
 
 namespace TS3CallsignHelper.Wpf.Stores;
 public class NavigationStore {

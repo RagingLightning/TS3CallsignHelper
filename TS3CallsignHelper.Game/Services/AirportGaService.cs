@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
-using TS3CallsignHelper.Api;
-using TS3CallsignHelper.Api.Dependencies;
-using TS3CallsignHelper.Api.Exceptions;
-using TS3CallsignHelper.Api.Logging;
+using TS3CallsignHelper.API;
+using TS3CallsignHelper.API.Dependencies;
+using TS3CallsignHelper.API.Exceptions;
+using TS3CallsignHelper.API.Logging;
 using TS3CallsignHelper.Game.Exceptions;
 
 namespace TS3CallsignHelper.Game.Services;
@@ -23,12 +23,17 @@ public partial class AirportGaService : IAirportGaService {
     _initializationProgressService = dependencyStore.TryGet<IInitializationProgressService>() ?? throw new MissingDependencyException(typeof(IInitializationProgressService));
   }
 
-  public ImmutableDictionary<string, AirportGa> Load(string installation, string airport, string database,
+  public ImmutableDictionary<string, AirportGa> Load(string installation, GameInfo info,
     ImmutableDictionary<string, AirportAirplane> airplanes) {
 
     var gaPlanes = new Dictionary<string, AirportGa>();
 
     _initializationProgressService.StatusMessage = "Loading GA schedule...";
+
+    var airport = info.AirportICAO ?? throw new IncompleteGameInfoException(info, nameof(info.AirportICAO));
+    var database = info.DatabaseFolder ?? throw new IncompleteGameInfoException(info, nameof(info.DatabaseFolder));
+    var startTime = info.StartHour ?? throw new IncompleteGameInfoException(info, nameof(info.StartHour));
+
     var configFile = Path.Combine(installation, "Airports", airport, "databases", database, "ga.csv");
     _logger?.LogDebug("Loading ga schedule from {Config}", configFile);
     var stream = File.Open(configFile, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -40,6 +45,8 @@ public partial class AirportGaService : IAirportGaService {
       if (groups.Count == 1) throw new GaDefinitionFormatException(line);
 
       if (!MakeGaPlane(groups, airplanes, out var gaPlane)) continue;
+      if (gaPlane.Departure?.Hour < startTime-1) continue;
+      if (gaPlane.Arrival?.Hour < startTime-1) continue;
 
       try {
         gaPlanes.Add(gaPlane.Writename, gaPlane);

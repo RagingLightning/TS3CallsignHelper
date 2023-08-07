@@ -1,4 +1,4 @@
-﻿namespace TS3CallsignHelper.Api;
+﻿namespace TS3CallsignHelper.API;
 public class AirportFrequency {
   public AirportFrequencyType Type { get; set; }
   public string Frequency { get; set; } = string.Empty;

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:TS3CallsignHelper.Wpf.Views"
-             xmlns:api="clr-namespace:TS3CallsignHelper.Api;assembly=TS3CallsignHelper.Api"
+             xmlns:api="clr-namespace:TS3CallsignHelper.API;assembly=TS3CallsignHelper.Api"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              lex:LocalizeDictionary.DesignCulture="en-US"
              lex:ResxLocalizationProvider.DefaultAssembly="{Binding Path=(api:IViewModel.TranslationAssembly)}"

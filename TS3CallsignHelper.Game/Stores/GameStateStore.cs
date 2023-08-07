@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
-using TS3CallsignHelper.Api;
-using TS3CallsignHelper.Api.Dependencies;
-using TS3CallsignHelper.Api.Events;
-using TS3CallsignHelper.Api.Exceptions;
-using TS3CallsignHelper.Api.Logging;
-using TS3CallsignHelper.Api.Stores;
-using TS3CallsignHelper.Game.Enums;
+using TS3CallsignHelper.API;
+using TS3CallsignHelper.API.Dependencies;
+using TS3CallsignHelper.API.Events;
+using TS3CallsignHelper.API.Exceptions;
+using TS3CallsignHelper.API.Logging;
+using TS3CallsignHelper.API.LogParsing;
+using TS3CallsignHelper.API.Stores;
 using TS3CallsignHelper.Game.Exceptions;
 using TS3CallsignHelper.Game.LogParsers;
 using TS3CallsignHelper.Game.Services;
@@ -16,7 +16,6 @@ public class GameStateStore : IGameStateStore {
   private readonly ILogger<GameStateStore>? _logger;
   private readonly IInitializationProgressService _initializationProgressService;
 
-  private readonly IGameLogParser _logParser;
   private string? _installationPath;
 
   public event PlayerPositionChangedEvent? ActivePositionChanged;
@@ -49,76 +48,29 @@ public class GameStateStore : IGameStateStore {
   public ImmutableDictionary<string, AirportFrequency>? TowerFrequencies => _airportDataStore.TowerFrequencies;
   public ImmutableDictionary<string, AirportFrequency>? DepartureFrequencies => _airportDataStore.DepartureFrequencies;
 
-  private readonly Dictionary<string, PlaneState> _planeStates = new();
-  public ImmutableDictionary<string, PlaneState> PlaneStates => _planeStates.ToImmutableDictionary();
+  private readonly Dictionary<string, PlaneStateInfo> _planeStates = new();
+  public ImmutableDictionary<string, PlaneStateInfo> PlaneStates => _planeStates.ToImmutableDictionary();
 
   private readonly List<PlayerPosition> _playerPositions = new();
   public ImmutableList<PlayerPosition> PlayerPositions => _playerPositions.ToImmutableList();
 
   /// <summary>
   /// Requires <seealso cref="IInitializationProgressService"/>, <seealso cref="IGameLogParser"/>, <seealso cref="IAirportDataStore"/>
+  /// Adds <seealso cref="IGameLogParser"/>
   /// </summary>
   /// <param name="dependencyStore"></param>
   /// <exception cref="MissingDependencyException"></exception>
-  public GameStateStore(IDependencyStore dependencyStore) {
+  internal GameStateStore(IDependencyStore dependencyStore) {
     _logger = dependencyStore.TryGet<ILoggerService>()?.GetLogger<GameStateStore>();
     _initializationProgressService = dependencyStore.TryGet<IInitializationProgressService>() ?? throw new MissingDependencyException(typeof(IInitializationProgressService));
-    _logParser = dependencyStore.TryGet<IGameLogParser>() ?? throw new MissingDependencyException(typeof(IGameLogParser));
     _airportDataStore = dependencyStore.TryGet<IAirportDataStore>() ?? throw new MissingDependencyException(typeof(IAirportDataStore));
-
-    _logger?.LogInformation("Initializing with log parser {$Parser}", _logParser);
-
-    _logger?.LogDebug("Registering log reader event handlers");
-    _logParser.InstallDirDetermined += OnInstallDirDetermined;
-    _logger?.LogTrace("{Method} registered", nameof(OnInstallDirDetermined));
-    _logParser.GameSessionSarted += OnGameSessionStarted;
-    _logger?.LogTrace("{Method} registered", nameof(OnGameSessionStarted));
-    _logParser.GameSessionEnded += OnGameSessionEnded;
-    _logger?.LogTrace("{Method} registered", nameof(OnGameSessionEnded));
-    _logParser.NewPlaneState += OnNewPlaneState;
-    _logger?.LogTrace("{Method} registered", nameof(OnNewPlaneState));
-    _logParser.NewActivePlane += OnNewActivePlane;
-    _logger?.LogTrace("{Method} registered", nameof(OnNewActivePlane));
   }
 
   public void Dispose() {
     _airportDataStore?.Unload();
-
-    _logger?.LogDebug("Unregistering log reader event handlers");
-    _logParser.InstallDirDetermined -= OnInstallDirDetermined;
-    _logger?.LogTrace("{Method} unregistered", nameof(OnInstallDirDetermined));
-    _logParser.GameSessionSarted -= OnGameSessionStarted;
-    _logger?.LogTrace("{Method} unregistered", nameof(OnGameSessionStarted));
-    _logParser.GameSessionEnded -= OnGameSessionEnded;
-    _logger?.LogTrace("{Method} unregistered", nameof(OnGameSessionEnded));
-    _logParser.NewPlaneState -= OnNewPlaneState;
-    _logger?.LogTrace("{Method} unregistered", nameof(OnNewPlaneState));
-    _logParser.NewActivePlane -= OnNewActivePlane;
-    _logger?.LogTrace("{Method} registered", nameof(OnNewActivePlane));
   }
 
-  private void OnNewActivePlane(string airplane) {
-    if (string.IsNullOrEmpty(airplane)) return;
-    _logger?.LogDebug("Recieved NewActivePlane event for {Airplane}", airplane);
-    CurrentAirplane = airplane;
-  }
-
-  /**
-   * Sets the state of the airplane
-   * 
-   * <param name="airplane">airplane</param>
-   * <param name="state">state to set</param>
-   * <exception cref="InvalidPlaneStateException"><paramref name="state"/> is not valid for <paramref name="airplane"/></exception>
-   */
-  private void SetPlaneState(string airplane, PlaneState state) {
-    if (_logParser.State != ParserState.INIT_CATCHUP && !ValidatePlaneState(airplane, state)) return;
-    _logger?.LogDebug("State of {Airplane} changed to {State}", airplane, state);
-    _planeStates[airplane] = state;
-    PlaneStateChanged?.Invoke(new PlaneStateChangedEventArgs(airplane, state));
-  }
-
-  private void OnInstallDirDetermined(string installDir) {
-    _logger?.LogDebug("Recieved {Event} with {Installation}", nameof(OnInstallDirDetermined)[2..], installDir);
+  internal void SetInstallDir(string installDir) {
     if (!string.IsNullOrEmpty(_installationPath))
       _logger?.LogWarning("Installation directory was changed during runtime! {OldInstallation} -> {NewInstallation}", _installationPath, installDir);
     else
@@ -126,8 +78,9 @@ public class GameStateStore : IGameStateStore {
     _installationPath = installDir;
   }
 
-  private void OnGameSessionStarted(GameInfo info) {
-    _logger?.LogDebug("Recieved {Event} with {@GameInfo}", nameof(OnGameSessionStarted)[2..], info);
+  public void StartGame(GameInfo info) {
+    _logger?.LogDebug("Starting game session {@GameInfo}", info);
+    _initializationProgressService.Details = $"Loading Game session {info.AirportICAO}@{info.StartHour}:00 / {info.DatabaseFolder}";
     CurrentAirplane = "";
     _planeStates.Clear();
 
@@ -149,17 +102,17 @@ public class GameStateStore : IGameStateStore {
     }
 
     _logger?.LogInformation("Starting new game session for {Airport} / {Database}", info.AirportICAO, info.DatabaseFolder);
-    _airportDataStore.Load(_installationPath, info.AirportICAO, info.DatabaseFolder, info.AirplaneSetFolder);
-
-    _initializationProgressService.Completed = true;
+    _airportDataStore.Load(_installationPath, info);
+    _initializationProgressService.StatusMessage = "Catching up on the game log...";
 
     CurrentGameInfo = info;
     _logger?.LogDebug("Raising {Event}", nameof(GameSessionStarted));
     GameSessionStarted?.Invoke(new GameSessionStartedEventArgs(info));
   }
 
-  private void OnGameSessionEnded() {
-    _logger?.LogDebug("Received {Event}", nameof(OnGameSessionEnded)[2..]);
+  public void EndGame() {
+    _logger?.LogDebug("Ending game session");
+    _initializationProgressService.Details = "";
     CurrentGameInfo = null;
     CurrentAirplane = "";
     _planeStates.Clear();
@@ -170,35 +123,41 @@ public class GameStateStore : IGameStateStore {
     GameSessionEnded?.Invoke();
   }
 
-  private void OnNewPlaneState(string airplane, PlaneState state) {
-    _logger?.LogDebug("Recieved {Event} for {Airplane}, new state: {State}", nameof(OnNewPlaneState)[2..], airplane, state);
-    SetPlaneState(airplane, state);
+  /// <inheritdoc/>
+  public void SetPlaneState(string callsign, PlaneStateInfo state) {
+    if (!ValidatePlaneState(callsign, state)) return;
+    _logger?.LogDebug("State of {Airplane} changed to {State}", callsign, state);
+    _planeStates[callsign] = state;
+    PlaneStateChanged?.Invoke(new PlaneStateChangedEventArgs(callsign, state));
   }
 
-  /**
-   * Validates the rough validity of a plane state
-   * this takes into account the active positions and restrictions for initial contact
-   * 
-   * <param name="airplane">airplane</param>
-   * <param name="state">state to validate</param>
-   * 
-   * <returns><c>true</c>, if the assignment is valid, <c>false</c> otherwise</returns>
-   */
-  private bool ValidatePlaneState(string airplane, PlaneState state) {
-    if (_playerPositions.Contains(PlayerPosition.Ground) && (state & PlaneState.IS_GND) != 0)
-      if (_planeStates.ContainsKey(airplane) || (state & PlaneState.IS_GND_INIT) != 0)
+  internal void ForcePlaneState(string callsign, PlaneStateInfo state) {
+    _logger?.LogDebug("State of {Airplane} changed to {State}", callsign, state);
+    _planeStates[callsign] = state;
+    PlaneStateChanged?.Invoke(new PlaneStateChangedEventArgs(callsign, state));
+  }
+
+  /// <summary>
+  /// Validates the rough validity of a plane state
+  /// this takes into account the active positions and restrictions for initial contact
+  /// </summary>
+  /// <param name="airplane">airplane</param>
+  /// <param name="stateInfo">state to validate</param>
+  /// <returns><c>true</c>, if the assignment is valid, <c>false</c> otherwise</returns>
+  private bool ValidatePlaneState(string airplane, PlaneStateInfo stateInfo) {
+    foreach (var position in _playerPositions) {
+      if (stateInfo.State.Is(position) && (_planeStates.ContainsKey(airplane) || stateInfo.State.IsInitial(position)))
         return true;
-    if (_playerPositions.Contains(PlayerPosition.Tower) && (state & PlaneState.IS_TWR) != 0)
-      if (_planeStates.ContainsKey(airplane) || (state & PlaneState.IS_TWR_INIT) != 0)
-        return true;
-    if (_playerPositions.Contains(PlayerPosition.Departure) && (state & PlaneState.IS_DEP) != 0)
-      if (_planeStates.ContainsKey(airplane) || (state & PlaneState.IS_DEP_INIT) != 0)
-        return true;
-    _logger?.LogWarning("Airplane {Airplane} state {State} is not valid with {@Positions} selected", airplane, state, _playerPositions);
+    }
+    _logger?.LogWarning("Airplane {Airplane} state {State} is not valid with {@Positions} selected", airplane, stateInfo, _playerPositions);
     return false;
   }
 
   public void SetPlayerPosition(PlayerPosition position, bool active) {
-    throw new NotImplementedException();
+    if (active == _playerPositions.Contains(position)) return;
+    if (active)
+      _playerPositions.Add(position);
+    else
+      _playerPositions.Remove(position);
   }
 }

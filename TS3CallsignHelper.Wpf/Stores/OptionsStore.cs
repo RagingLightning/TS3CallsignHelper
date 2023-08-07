@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using TS3CallsignHelper.Api.Dependencies;
+using TS3CallsignHelper.API.Dependencies;
 using TS3CallsignHelper.Wpf.Services;
 
 namespace TS3CallsignHelper.Wpf.Stores;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Globalization;
-using TS3CallsignHelper.Api.Dependencies;
+using TS3CallsignHelper.API.Dependencies;
 using TS3CallsignHelper.Wpf.Services;
 using TS3CallsignHelper.Wpf.ViewModels;
 using WPFLocalizeExtension.Engine;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TS3CallsignHelper.Api.Exceptions;
+namespace TS3CallsignHelper.API.Exceptions;
 
 /// <summary>
 /// Indicates that

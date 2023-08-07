@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
-using TS3CallsignHelper.Api;
-using TS3CallsignHelper.Api.Dependencies;
-using TS3CallsignHelper.Api.Exceptions;
-using TS3CallsignHelper.Api.Stores;
+using TS3CallsignHelper.API;
+using TS3CallsignHelper.API.Dependencies;
+using TS3CallsignHelper.API.Exceptions;
+using TS3CallsignHelper.API.Stores;
 using TS3CallsignHelper.Game.Services;
 
 namespace TS3CallsignHelper.Game.Stores;
@@ -25,16 +25,16 @@ public class AirportDataStore : IAirportDataStore {
     _scheduleService = dependencyStore.TryGet<IAirportScheduleService>() ?? throw new MissingDependencyException(typeof(IAirportScheduleService));
   }
 
-  public override void Load(string installation, string airport, string database, string airplaneSet) {
-    _airlines = _airlineService.Load(installation, airport, database);
-    _airplanes = _airplaneService.Load(installation, airplaneSet);
-    _gaPlanes = _gaService.Load(installation, airport, database, _airplanes);
-    _schedule = _scheduleService.Load(installation, airport, database, _airplanes, _airlines);
+  public override void Load(string installation, GameInfo info) {
+    _airlines = _airlineService.Load(installation, info);
+    _airplanes = _airplaneService.Load(installation, info);
+    _gaPlanes = _gaService.Load(installation, info, _airplanes);
+    _schedule = _scheduleService.Load(installation, info, _airplanes, _airlines);
 
     var departureFrequencies = new Dictionary<string, AirportFrequency>();
     var towerFrequencies = new Dictionary<string, AirportFrequency>();
     var groundFrequencies = new Dictionary<string, AirportFrequency>();
-    foreach (var entry in _frequencyService.Load(installation, airport, database)) {
+    foreach (var entry in _frequencyService.Load(installation, info)) {
       switch (entry.Value.Type) {
         case AirportFrequencyType.DEPARTURE: departureFrequencies.Add(entry.Key, entry.Value); break;
         case AirportFrequencyType.TOWER: towerFrequencies.Add(entry.Key, entry.Value); break;

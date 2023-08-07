@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="FrequencyInformation\Resources\DSEG7Classic-BoldItalic.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hjson" Version="3.0.0" />
     <PackageReference Include="MathConverter" Version="2.2.0" />
     <PackageReference Include="System.ComponentModel.Composition" Version="7.0.0" />
     <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
@@ -22,23 +27,23 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="CallsignInfo\Views\CallsignInfoView.xaml.cs">
+    <Compile Update="CallsignInfo\CallsignInfoView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="FrequencyInfo\Translation\FrequencyInfoModule.Designer.cs">
+    <Compile Update="FrequencyInformation\Translation\FrequencyInfoModule.Designer.cs">
       <DependentUpon>FrequencyInfoModule.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="FrequencyInfo\Views\FrequencyInfoView.xaml.cs">
+    <Compile Update="FrequencyInformation\FrequencyInfoView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="PlaneState\Translation\PlaneStateModule.Designer.cs">
+    <Compile Update="PlaneStateInformation\Translation\PlaneStateModule.Designer.cs">
       <DependentUpon>PlaneStateModule.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="PlaneState\Views\PlaneStateView.xaml.cs">
+    <Compile Update="PlaneStateInformation\PlaneStateView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -48,20 +53,26 @@
       <LastGenOutput>CallsignInfoModule.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="FrequencyInfo\Translation\FrequencyInfoModule.resx">
+    <EmbeddedResource Update="FrequencyInformation\Translation\FrequencyInfoModule.resx">
       <LastGenOutput>FrequencyInfoModule.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="PlaneState\Translation\PlaneStateModule.de-DE.resx">
+    <EmbeddedResource Update="PlaneStateInformation\Translation\PlaneStateModule.de-DE.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PlaneState\Translation\PlaneStateModule.en-US.resx">
+    <EmbeddedResource Update="PlaneStateInformation\Translation\PlaneStateModule.en-US.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PlaneState\Translation\PlaneStateModule.resx">
+    <EmbeddedResource Update="PlaneStateInformation\Translation\PlaneStateModule.resx">
       <LastGenOutput>PlaneStateModule.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="FrequencyInformation\Resources\DSEG7Classic-BoldItalic.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

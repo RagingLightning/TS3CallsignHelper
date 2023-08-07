@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 
-namespace TS3CallsignHelper.Api;
+namespace TS3CallsignHelper.API;
 public class AirportAirplane {
   public string Code { get; private set; } = string.Empty;
   public string Name { get; private set; } = string.Empty;

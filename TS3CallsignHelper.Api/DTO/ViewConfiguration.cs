@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TS3CallsignHelper.Api.DTO;
+namespace TS3CallsignHelper.API.DTO;
 public class ViewConfiguration {
   public Type ViewType { get; }
   public Type ViewModelType { get; }

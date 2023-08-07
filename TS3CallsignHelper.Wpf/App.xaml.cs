@@ -9,9 +9,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
-using TS3CallsignHelper.Api;
-using TS3CallsignHelper.Api.Stores;
-using TS3CallsignHelper.Api.Logging;
+using TS3CallsignHelper.API;
+using TS3CallsignHelper.API.Stores;
+using TS3CallsignHelper.API.Logging;
 using TS3CallsignHelper.Game.LogParsers;
 using TS3CallsignHelper.Game.Services;
 using TS3CallsignHelper.Game.Stores;
@@ -21,6 +21,9 @@ using TS3CallsignHelper.Wpf.Services;
 using TS3CallsignHelper.Wpf.Stores;
 using TS3CallsignHelper.Wpf.ViewModels;
 using WPFLocalizeExtension.Engine;
+using System.Runtime.CompilerServices;
+using TS3CallsignHelper.API.Exceptions;
+using TS3CallsignHelper.API.LogParsing;
 
 namespace TS3CallsignHelper.Wpf;
 /// <summary>
@@ -94,11 +97,9 @@ public partial class App : Application {
       dependencyStore.Add<IAirportScheduleService>(new AirportScheduleService(dependencyStore));
       dependencyStore.Add<IAirportDataStore>(new AirportDataStore(dependencyStore));
 
-      Log.Debug("Initializing GameLogParser");
-      var gameLogParser = dependencyStore.Add<IGameLogParser>(new GameLogParserPlacesTwo(dependencyStore));
-
       Log.Debug("Initializing GameStateStore");
-      dependencyStore.Add<IGameStateStore>(new GameStateStore(dependencyStore));
+      var gameStateStore = dependencyStore.Add<IGameStateStore>(new GameStateStore(dependencyStore));
+      GameLogParserPlacesTwo gameLogParser = (GameLogParserPlacesTwo) dependencyStore.Add<IGameLogParser>(new GameLogParserPlacesTwo(dependencyStore));
 
       Log.Debug("Initializing NavigationStore");
       var navigationStore = dependencyStore.Add<NavigationStore>(new NavigationStore());

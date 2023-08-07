@@ -1,12 +1,11 @@
 ﻿using Moq;
-using TS3CallsignHelper.Api;
-using TS3CallsignHelper.Api.Dependencies;
-using TS3CallsignHelper.Api.Events;
-using TS3CallsignHelper.Api.Exceptions;
-using TS3CallsignHelper.Api.Stores;
-using TS3CallsignHelper.Game.Enums;
+using TS3CallsignHelper.API;
+using TS3CallsignHelper.API.Dependencies;
+using TS3CallsignHelper.API.Events;
+using TS3CallsignHelper.API.Exceptions;
+using TS3CallsignHelper.API.LogParsing;
+using TS3CallsignHelper.API.Stores;
 using TS3CallsignHelper.Game.Exceptions;
-using TS3CallsignHelper.Game.LogParsers;
 using TS3CallsignHelper.Game.Services;
 using TS3CallsignHelper.Game.Stores;
 
@@ -19,7 +18,7 @@ internal class GameStateStoreTests {
   Mock<IInitializationProgressService> _initializationProgressServiceMock;
   Mock<IDependencyStore> _dependencyStoreMock;
 
-  IGameStateStore _storeToTest;
+  GameStateStore _storeToTest;
 
   AirplaneChangedEventArgs? _currentAirplaneChangedArgs;
   PlaneStateChangedEventArgs? _planeStateChangedArgs;
@@ -34,12 +33,13 @@ internal class GameStateStoreTests {
     _initializationProgressServiceMock = new Mock<IInitializationProgressService>();
     _dependencyStoreMock = new Mock<IDependencyStore>();
 
-
-    string installationDir = "install", airport = "EDDV", database = "testDb", airplaneSet = "testAp";
-    _airportDataStoreMock.Setup(s => s.Load(installationDir, airport, database, airplaneSet)).Callback(() => _airportDataStoreLoaded = true);
+    string installationDir = "install";
+    GameInfo gameInfo = new GameInfo { AirportICAO = "EDDV", DatabaseFolder = "testDb", AirplaneSetFolder = "testAp", InstrumentSetFolder="testIs", StartHour=12};
+    _airportDataStoreMock.Setup(s => s.Load(installationDir, gameInfo)).Callback(() => _airportDataStoreLoaded = true);
     _airportDataStoreMock.Setup(s => s.Unload()).Callback(() => _airportDataStoreUnloaded = true);
 
     _storeToTest = new GameStateStore(_dependencyStoreMock.Object);
+    _storeToTest.SetInstallDir(installationDir);
 
     _currentAirplaneChangedArgs = null;
     _planeStateChangedArgs = null;
@@ -56,8 +56,7 @@ internal class GameStateStoreTests {
 
   [Test]
   public void OnInstallationDirDetermined_DuringRuntime() {
-    _gameLogParserMock.Raise(s => s.InstallDirDetermined += null, "install");
-    _gameLogParserMock.Raise(s => s.InstallDirDetermined += null, "install2");
+    _storeToTest.SetInstallDir("install2");
   }
 
   [Test]
@@ -67,8 +66,7 @@ internal class GameStateStoreTests {
     string installationDir = "install", airport = "EDDV", database = "testDb", airplaneSet = "testAp", instruments = "TestUi";
     GameInfo gameInfo = new GameInfo { AirportICAO = airport, DatabaseFolder = database, AirplaneSetFolder = airplaneSet, InstrumentSetFolder = instruments };
     // Act
-    _gameLogParserMock.Raise(s => s.InstallDirDetermined += null, installationDir);
-    _gameLogParserMock.Raise(s => s.GameSessionSarted += null, gameInfo);
+    _storeToTest.StartGame(gameInfo);
 
     // Assert
     Assert.Multiple(() => {
@@ -84,8 +82,7 @@ internal class GameStateStoreTests {
     GameInfo gameInfo = new GameInfo { AirportICAO = null, DatabaseFolder = database, AirplaneSetFolder = airplaneSet, InstrumentSetFolder = instruments };
 
     // Act
-    _gameLogParserMock.Raise(s => s.InstallDirDetermined += null, installationDir);
-    IncompleteGameInfoException exception = Assert.Throws<IncompleteGameInfoException>(() => _gameLogParserMock.Raise(s => s.GameSessionSarted += null, gameInfo));
+    IncompleteGameInfoException exception = Assert.Throws<IncompleteGameInfoException>(() => _storeToTest.StartGame(gameInfo));
     
     // Assert
     Assert.Multiple(() => {
@@ -102,8 +99,7 @@ internal class GameStateStoreTests {
     GameInfo gameInfo = new GameInfo { AirportICAO = airport, DatabaseFolder = null, AirplaneSetFolder = airplaneSet, InstrumentSetFolder = instruments };
 
     // Act
-    _gameLogParserMock.Raise(s => s.InstallDirDetermined += null, installationDir);
-    IncompleteGameInfoException exception = Assert.Throws<IncompleteGameInfoException>(() => _gameLogParserMock.Raise(s => s.GameSessionSarted += null, gameInfo));
+    IncompleteGameInfoException exception = Assert.Throws<IncompleteGameInfoException>(() => _storeToTest.StartGame(gameInfo));
 
     // Assert
     Assert.Multiple(() => {
@@ -120,8 +116,7 @@ internal class GameStateStoreTests {
     GameInfo gameInfo = new GameInfo { AirportICAO = airport, DatabaseFolder = database, AirplaneSetFolder = null, InstrumentSetFolder = instruments };
 
     // Act
-    _gameLogParserMock.Raise(s => s.InstallDirDetermined += null, installationDir);
-    IncompleteGameInfoException exception = Assert.Throws<IncompleteGameInfoException>(() => _gameLogParserMock.Raise(s => s.GameSessionSarted += null, gameInfo));
+    IncompleteGameInfoException exception = Assert.Throws<IncompleteGameInfoException>(() => _storeToTest.StartGame(gameInfo));
 
     // Assert
     Assert.Multiple(() => {
@@ -138,8 +133,7 @@ internal class GameStateStoreTests {
     GameInfo gameInfo = new GameInfo { AirportICAO = airport, DatabaseFolder = database, AirplaneSetFolder = airplaneSet, InstrumentSetFolder = null };
 
     // Act
-    _gameLogParserMock.Raise(s => s.InstallDirDetermined += null, installationDir);
-    _gameLogParserMock.Raise(s => s.GameSessionSarted += null, gameInfo);
+    _storeToTest.StartGame(gameInfo);
 
     // Assert
     Assert.Multiple(() => {
@@ -149,37 +143,13 @@ internal class GameStateStoreTests {
   }
 
   [Test]
-  public void OnGameSessionStart_MissingInstallation() {
-    // Arrange
-    string installationDir = "install", airport = "EDDV", database = "testDb", airplaneSet = "testAp", instruments = "TestUi";
-    GameInfo gameInfo = new GameInfo { AirportICAO = airport, DatabaseFolder = database, AirplaneSetFolder = airplaneSet, InstrumentSetFolder = instruments };
-
-    // Act
-    IncompleteGameInfoException exception = Assert.Throws<IncompleteGameInfoException>(() => _gameLogParserMock.Raise(s => s.GameSessionSarted += null, gameInfo));
-
-    // Assert
-    Assert.Multiple(() => {
-      Assert.That(_airportDataStoreLoaded, Is.False);
-      Assert.That(_airportDataStoreUnloaded, Is.False);
-      Assert.That(exception.Property, Is.EqualTo("Installation"));
-    });
-  }
-
-  [Test]
   public void OnGameSessionEnded() {
     OnGameSessionStart_WithFullInformation();
 
-    _gameLogParserMock.Raise(s => s.GameSessionEnded += null);
+    _storeToTest.EndGame();
 
     Assert.That(_storeToTest.CurrentGameInfo, Is.Null);
     Assert.That(_gameSessionEndedRaised);
-  }
-
-  [Test]
-  public void OnNewActivePlane() {
-    _gameLogParserMock.Raise(s => s.NewActivePlane += null, "airplane");
-
-    Assert.That(_storeToTest.CurrentAirplane, Is.EqualTo("airplane"));
   }
 
   [Test]
@@ -212,9 +182,9 @@ internal class GameStateStoreTests {
     _gameLogParserMock.Setup(s => s.State).Returns(ParserState.INIT_CATCHUP);
     _storeToTest.SetPlayerPosition(pos, true);
 
-    _gameLogParserMock.Raise(s => s.NewPlaneState += null, "callsign", state);
+    _storeToTest.SetPlaneState("callsign", new PlaneStateInfo() { State = state });
 
-    Assert.That(_storeToTest.PlaneStates["callsign"], Is.EqualTo(state));
+    Assert.That(_storeToTest.PlaneStates["callsign"].State, Is.EqualTo(state));
   }
 
   [Test]
@@ -223,9 +193,9 @@ internal class GameStateStoreTests {
     _gameLogParserMock.Setup(s => s.State).Returns(ParserState.RUNNING);
     _storeToTest.SetPlayerPosition(pos, true);
 
-    _gameLogParserMock.Raise(s => s.NewPlaneState += null, "callsign", state);
+    _storeToTest.SetPlaneState("callsign", new PlaneStateInfo() { State = state });
 
-    Assert.That(_storeToTest.PlaneStates["callsign"], Is.EqualTo(state));
+    Assert.That(_storeToTest.PlaneStates["callsign"].State, Is.EqualTo(state));
   }
 
   [Test]
@@ -234,27 +204,8 @@ internal class GameStateStoreTests {
     _gameLogParserMock.Setup(s => s.State).Returns(ParserState.RUNNING);
     _storeToTest.SetPlayerPosition(pos, true);
 
-    Assert.Throws<InvalidPlaneStateException>(() =>_gameLogParserMock.Raise(s => s.NewPlaneState += null, "callsign", state));
+    _storeToTest.SetPlaneState("callsign", new PlaneStateInfo() { State = state });
 
-    Assert.That(_storeToTest.PlaneStates.ContainsKey("callsign"), Is.False);
-  }
-
-  [Test]
-  public void Dispose() {
-    _storeToTest.Dispose();
-
-    _gameLogParserMock.Raise(s => s.InstallDirDetermined += null, "install");
-    _gameLogParserMock.Raise(s => s.NewActivePlane += null, "callsign");
-    _gameLogParserMock.Raise(s => s.MetarUpdated += null, new Metar());
-    _gameLogParserMock.Raise(s => s.GameSessionEnded += null);
-    _gameLogParserMock.Raise(s => s.GameSessionSarted += null, new GameInfo());
-    _gameLogParserMock.Raise(s => s.NewPlaneState += null, "callsign", PlaneState.UNKNOWN);
-
-    Assert.Multiple(() => {
-      Assert.That(_airportDataStoreUnloaded);
-      Assert.That(_gameSessionEndedRaised, Is.False);
-      Assert.That(_gameSessionStartedArgs, Is.Null);
-      Assert.That(_planeStateChangedArgs, Is.Null);
-    });
+    Assert.That(_storeToTest.PlaneStates["callsign"].State, Is.EqualTo(state));
   }
 }

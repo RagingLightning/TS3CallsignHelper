@@ -1,5 +1,5 @@
-﻿using TS3CallsignHelper.Api;
-using TS3CallsignHelper.Api.Stores;
+﻿using TS3CallsignHelper.API;
+using TS3CallsignHelper.API.Stores;
 using TS3CallsignHelper.Game.Stores;
 
 namespace TS3CallsignHelper.Wpf.Commands;

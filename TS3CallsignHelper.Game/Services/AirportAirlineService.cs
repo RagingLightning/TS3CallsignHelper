@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
-using TS3CallsignHelper.Api;
-using TS3CallsignHelper.Api.Dependencies;
-using TS3CallsignHelper.Api.Exceptions;
-using TS3CallsignHelper.Api.Logging;
+using TS3CallsignHelper.API;
+using TS3CallsignHelper.API.Dependencies;
+using TS3CallsignHelper.API.Exceptions;
+using TS3CallsignHelper.API.Logging;
+using TS3CallsignHelper.Game.Exceptions;
 
 namespace TS3CallsignHelper.Game.Services;
 public partial class AirportAirlineService : IAirportAirlineService {
@@ -23,11 +24,15 @@ public partial class AirportAirlineService : IAirportAirlineService {
     _initializationProgressService = dependencyStore.TryGet<IInitializationProgressService>() ?? throw new MissingDependencyException(typeof(IInitializationProgressService));
   }
 
-  public ImmutableDictionary<string, AirportAirline> Load(string installation, string airport, string database) {
+  public ImmutableDictionary<string, AirportAirline> Load(string installation, GameInfo info) {
 
     var airlines = new Dictionary<string, AirportAirline>();
 
     _initializationProgressService.StatusMessage = "Loading airlines...";
+
+    var airport = info.AirportICAO ?? throw new IncompleteGameInfoException(info, nameof(info.AirportICAO));
+    var database = info.DatabaseFolder ?? throw new IncompleteGameInfoException(info, nameof(info.DatabaseFolder));
+
     var configFile = Path.Combine(installation, "Airports", airport, "databases", database, "airlines.csv");
     _logger.LogDebug("Loading airlines from {Config}", configFile);
     var stream = File.Open(configFile, FileMode.Open, FileAccess.Read, FileShare.Read);

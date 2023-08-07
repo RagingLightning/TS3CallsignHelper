@@ -14,11 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projektmappenelemente", "Pr
 		.runsettings = .runsettings
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.Game.Tests", "TS3CallsignHelper.Game.Tests\TS3CallsignHelper.Game.Tests.csproj", "{F723FEFD-CAE4-4788-A9BB-21BEEEEED334}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.Tests", "TS3CallsignHelper.Game.Tests\TS3CallsignHelper.Tests.csproj", "{F723FEFD-CAE4-4788-A9BB-21BEEEEED334}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.API", "TS3CallsignHelper.Api\TS3CallsignHelper.API.csproj", "{E583EAB5-3EFE-41BE-B60C-9A6A436C1A3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TS3CallsignHelper.Modules", "TS3CallsignHelper.Modules\TS3CallsignHelper.Modules.csproj", "{249C27D3-0356-4BAA-8573-57AD37C2B6EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TS3CallsignHelper.Modules", "TS3CallsignHelper.Modules\TS3CallsignHelper.Modules.csproj", "{F47D54E5-36AF-42FF-8BD5-29EED1FF98B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +46,10 @@ Global
 		{E583EAB5-3EFE-41BE-B60C-9A6A436C1A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E583EAB5-3EFE-41BE-B60C-9A6A436C1A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E583EAB5-3EFE-41BE-B60C-9A6A436C1A3D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{249C27D3-0356-4BAA-8573-57AD37C2B6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{249C27D3-0356-4BAA-8573-57AD37C2B6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{249C27D3-0356-4BAA-8573-57AD37C2B6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{249C27D3-0356-4BAA-8573-57AD37C2B6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F47D54E5-36AF-42FF-8BD5-29EED1FF98B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F47D54E5-36AF-42FF-8BD5-29EED1FF98B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F47D54E5-36AF-42FF-8BD5-29EED1FF98B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F47D54E5-36AF-42FF-8BD5-29EED1FF98B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
