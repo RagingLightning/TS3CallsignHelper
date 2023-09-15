@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RunSettings>
-	<RunMsCodeCoverage>true</RunMsCodeCoverage>
-	<NUnit>
-		<UseParentFQNForParametrizedTests>true</UseParentFQNForParametrizedTests>
-		<UseNUnitIdforTestCaseId>true</UseNUnitIdforTestCaseId>
-		<Verbosity>5</Verbosity>
-	</NUnit>
-</RunSettings>
