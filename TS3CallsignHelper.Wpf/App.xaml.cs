@@ -103,6 +103,7 @@ public partial class App : Application {
 
       Log.Debug("Initializing NavigationStore");
       var navigationStore = dependencyStore.Add<NavigationStore>(new NavigationStore());
+      var navigationService = dependencyStore.Add<INavigationService>(new NavigationService(navigationStore));
       var guiMessageService = (GuiMessageService) dependencyStore.Add<IGuiMessageService>(new GuiMessageService());
       navigationStore.RootContent = new InitializationViewModel(dependencyStore, guiMessageService);
 

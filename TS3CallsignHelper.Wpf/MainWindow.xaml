@@ -15,6 +15,9 @@
         <DataTemplate DataType="{x:Type vms:InitializationViewModel}">
             <views:InitializationView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vms:UpdateNotificationViewModel}">
+            <views:UpdateNotificationView/>
+        </DataTemplate>
     </Window.Resources>
     <ContentControl Content="{Binding RootContent}"/>
 </Window>

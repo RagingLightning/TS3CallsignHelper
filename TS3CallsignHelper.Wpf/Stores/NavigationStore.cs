@@ -2,12 +2,12 @@
 using TS3CallsignHelper.API;
 
 namespace TS3CallsignHelper.Wpf.Stores;
-public class NavigationStore {
+internal class NavigationStore {
 
   public event Action? RootContentChanged;
 
   private IViewModel? _rootContent;
-  public IViewModel? RootContent {
+  internal IViewModel? RootContent {
     get => _rootContent;
     set {
       if (_rootContent is IViewModel)

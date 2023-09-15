@@ -49,7 +49,10 @@ internal class InitializationViewModel : IViewModel {
   private void OnProgressChanged(Progress progress) {
     if (progress.Completed) {
       _logger?.LogInformation("{LoadingState}", "Complete");
-      _navigationStore.RootContent = new MainViewModel(_dependencyStore, _guiMessageService);
+      if (UpdateCheckerService.HasUpdate() is string newVersion)
+        _navigationStore.RootContent = new UpdateNotificationViewModel(UpdateCheckerService.VERSION, newVersion, _dependencyStore);
+      else
+        _navigationStore.RootContent = new MainViewModel(_dependencyStore, _guiMessageService);
       Dispose();
     }
 

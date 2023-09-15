@@ -11,6 +11,7 @@ using TS3CallsignHelper.API.Dependencies;
 using TS3CallsignHelper.API.Events;
 using TS3CallsignHelper.API.Exceptions;
 using TS3CallsignHelper.API.Logging;
+using TS3CallsignHelper.API.Services;
 using TS3CallsignHelper.API.Stores;
 using TS3CallsignHelper.Wpf.Commands;
 using TS3CallsignHelper.Wpf.Models;
@@ -35,7 +36,7 @@ public class MainViewModel : IViewModel {
   internal MainViewModel(IDependencyStore dependencyStore, GuiMessageService guiMessageService) {
     _logger = dependencyStore.TryGet<ILoggerService>()?.GetLogger<MainViewModel>() ?? throw new MissingDependencyException(typeof(ILoggerService));
     _gameStateStore = dependencyStore.TryGet<IGameStateStore>() ?? throw new MissingDependencyException(typeof(IGameStateStore));
-    var navigationStore = dependencyStore.TryGet<NavigationStore>() ?? throw new MissingDependencyException(typeof(NavigationStore));
+    var navigationService = dependencyStore.TryGet<INavigationService>() ?? throw new MissingDependencyException(typeof(INavigationService));
     var viewStore = dependencyStore.TryGet<IViewStore>() ?? throw new MissingDependencyException(typeof(IViewStore));
 
     guiMessageService.ViewModel = this;
@@ -43,7 +44,7 @@ public class MainViewModel : IViewModel {
     _activeViews = new ObservableCollection<IViewModel>();
 
     DonateCommand = new PayPalDonateCommand();
-    SettingsCommand = new NavigateCommand(() => throw new NotImplementedException(), navigationStore);
+    SettingsCommand = new NavigateCommand(() => throw new NotImplementedException(), navigationService);
 
     SetGroundPosCommand = new SetPositionCommand(_gameStateStore, PlayerPosition.Ground);
     SetTowerPosCommand = new SetPositionCommand(_gameStateStore, PlayerPosition.Tower);
