@@ -6,6 +6,7 @@ using TS3CallsignHelper.API.Exceptions;
 using TS3CallsignHelper.API.Logging;
 using TS3CallsignHelper.Game.DTO;
 using TS3CallsignHelper.Game.Services;
+using TS3CallsignHelper.Wpf.Services;
 using TS3CallsignHelper.Wpf.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
@@ -14,6 +15,7 @@ internal class InitializationViewModel : IViewModel {
   private readonly NavigationStore _navigationStore;
   private readonly IInitializationProgressService _initializationProgressService;
   private readonly IDependencyStore _dependencyStore;
+  private readonly GuiMessageService _guiMessageService;
   public override Type Translation => typeof(Translation.InitializationView);
   public override Type View => throw new NotImplementedException();
   public override double InitialWidth => throw new NotImplementedException();
@@ -24,8 +26,9 @@ internal class InitializationViewModel : IViewModel {
   /// </summary>
   /// <param name="dependencyStore"></param>
   /// <exception cref="MissingDependencyException"></exception>
-  public InitializationViewModel(IDependencyStore dependencyStore) {
+  public InitializationViewModel(IDependencyStore dependencyStore, GuiMessageService guiMessageService) {
     _logger = dependencyStore.TryGet<ILoggerService>()?.GetLogger<InitializationViewModel>();
+    _guiMessageService = guiMessageService;
 
     _logger?.LogDebug("Initializing");
     _navigationStore = dependencyStore.TryGet<NavigationStore>() ?? throw new MissingDependencyException(typeof(NavigationStore));
@@ -33,7 +36,7 @@ internal class InitializationViewModel : IViewModel {
     _dependencyStore = dependencyStore;
 
     _logger?.LogInformation("{LoadingState}", "State_LogFile");
-    Progress = "0%";
+    Progress = $"{0.0:.00}%";
     Status = "State_LogFile";
 
     _initializationProgressService.ProgressChanged += OnProgressChanged;
@@ -46,7 +49,7 @@ internal class InitializationViewModel : IViewModel {
   private void OnProgressChanged(Progress progress) {
     if (progress.Completed) {
       _logger?.LogInformation("{LoadingState}", "Complete");
-      _navigationStore.RootContent = new MainViewModel(_dependencyStore);
+      _navigationStore.RootContent = new MainViewModel(_dependencyStore, _guiMessageService);
       Dispose();
     }
 

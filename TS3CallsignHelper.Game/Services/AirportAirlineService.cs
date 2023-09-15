@@ -9,7 +9,7 @@ using TS3CallsignHelper.Game.Exceptions;
 
 namespace TS3CallsignHelper.Game.Services;
 public partial class AirportAirlineService : IAirportAirlineService {
-  [GeneratedRegex("^(?<q0>\"?)(?<airline>[A-Z]{3})\\k<q0>,(?<q1>\"?)(?<callsign>.+?)\\k<q1>,(?<q2>\"?)(?<name>.+?)\\k<q2>,(?<q3>\"?)(?<country>.+?)\\k<q3>$")]
+  [GeneratedRegex("^(?<q0>\"?)(?<airline>[A-Z0-9]{3})\\k<q0>,(?<q1>\"?)(?<callsign>.+?)\\k<q1>,(?<q2>\"?)(?<name>.+?)\\k<q2>,(?<q3>\"?)(?<country>.+?)\\k<q3>$")]
   private static partial Regex Parser();
   private readonly ILogger<AirportAirlineService>? _logger;
   private readonly IInitializationProgressService _initializationProgressService;

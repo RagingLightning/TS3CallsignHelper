@@ -30,6 +30,11 @@
     <Compile Update="CallsignInformation\CallsignInfoView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="CommandSuggestion\Translation\CommandSuggestionModule.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandSuggestionModule.resx</DependentUpon>
+    </Compile>
     <Compile Update="FrequencyInformation\Translation\FrequencyInfoModule.Designer.cs">
       <DependentUpon>FrequencyInfoModule.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -52,6 +57,16 @@
     <EmbeddedResource Update="CallsignInformation\Translation\CallsignInfoModule.resx">
       <LastGenOutput>CallsignInfoModule.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CommandSuggestion\Translation\CommandSuggestionModule.en-US.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CommandSuggestion\Translation\CommandSuggestionModule.de-DE.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="CommandSuggestion\Translation\CommandSuggestionModule.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommandSuggestionModule.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="FrequencyInformation\Translation\FrequencyInfoModule.resx">
       <LastGenOutput>FrequencyInfoModule.Designer.cs</LastGenOutput>

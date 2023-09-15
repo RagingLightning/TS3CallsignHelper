@@ -21,9 +21,8 @@ using TS3CallsignHelper.Wpf.Services;
 using TS3CallsignHelper.Wpf.Stores;
 using TS3CallsignHelper.Wpf.ViewModels;
 using WPFLocalizeExtension.Engine;
-using System.Runtime.CompilerServices;
-using TS3CallsignHelper.API.Exceptions;
 using TS3CallsignHelper.API.LogParsing;
+using TS3CallsignHelper.API.Services;
 
 namespace TS3CallsignHelper.Wpf;
 /// <summary>
@@ -75,6 +74,7 @@ public partial class App : Application {
   protected override void OnStartup(StartupEventArgs e) {
     Log.Information("Application startup");
     try {
+      base.OnStartup(e);
       if (_host is null) throw new Exception(".Net hosting failed to initialize");
       _host.Start();
       DependencyStore dependencyStore = new DependencyStore();
@@ -99,11 +99,12 @@ public partial class App : Application {
 
       Log.Debug("Initializing GameStateStore");
       var gameStateStore = dependencyStore.Add<IGameStateStore>(new GameStateStore(dependencyStore));
-      GameLogParserPlacesTwo gameLogParser = (GameLogParserPlacesTwo) dependencyStore.Add<IGameLogParser>(new GameLogParserPlacesTwo(dependencyStore));
+      GameLogParser gameLogParser = (GameLogParser) dependencyStore.Add<IGameLogParser>(new GameLogParser(dependencyStore));
 
       Log.Debug("Initializing NavigationStore");
       var navigationStore = dependencyStore.Add<NavigationStore>(new NavigationStore());
-      navigationStore.RootContent = new InitializationViewModel(dependencyStore);
+      var guiMessageService = (GuiMessageService) dependencyStore.Add<IGuiMessageService>(new GuiMessageService());
+      navigationStore.RootContent = new InitializationViewModel(dependencyStore, guiMessageService);
 
       Log.Debug("Preparing Localization");
       LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
@@ -112,21 +113,21 @@ public partial class App : Application {
       else
         LocalizeDictionary.Instance.Culture = new CultureInfo("en-US");
 
-      Log.Debug("Loading Modules");
+      Log.Debug("Initializing ModuleStore");
       dependencyStore.Add<IViewStore>(new ViewStore());
       var moduleStore = dependencyStore.Add(new ModuleStore(dependencyStore));
-      moduleStore.LoadModules();
 
       Log.Debug("Opening the main window");
-      var mainWindow = new MainWindow() { DataContext = new RootViewModel(dependencyStore) };
+      var mainWindow = dependencyStore.Add<Window>(new MainWindow() { DataContext = new RootViewModel(dependencyStore) });
       mainWindow.Show();
+
+      Log.Debug("Loading Modules");
+      moduleStore.LoadModules();
 
       var logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow"), "FeelThere Inc_\\Tower! Simulator 3");
       Log.Debug("Starting log parser at {Path}", logFolder);
       gameLogParser.Init(logFolder);
       gameLogParser.Start();
-
-      base.OnStartup(e);
     }
     catch (Exception ex) {
       Log.Fatal(ex, "An exception occurred during application startup");

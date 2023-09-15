@@ -22,13 +22,13 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="888 . 888" TextAlignment="Center" FontSize="{Binding ConverterParameter=14*x, Path=(api:IViewModel.Scale), Converter={StaticResource Math}}" FontFamily="{StaticResource DSEG7Classic}" Foreground="#ddd"/>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Frequency}" TextAlignment="Center" FontSize="{Binding ConverterParameter=14*x, Path=(api:IViewModel.Scale), Converter={StaticResource Math}}" FontFamily="{StaticResource DSEG7Classic}" Foreground="DarkGreen"/>
-                <Rectangle Grid.Row="0" Grid.Column="1" Width="{Binding ConverterParameter=1*x, Path=(api:IViewModel.Scale), Converter={StaticResource Math}}" Fill="LightGray"/>
-                <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Name}" TextAlignment="Center" FontSize="{Binding ConverterParameter=10*x, Path=(api:IViewModel.Scale), Converter={StaticResource Math}}"/>
-                <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="{Binding ConverterParameter=1*x, Path=(api:IViewModel.Scale), Converter={StaticResource Math}}" Fill="LightGray"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Area}" TextAlignment="Center" FontSize="{Binding ConverterParameter=7*x, Path=(api:IViewModel.Scale), Converter={StaticResource Math}}"/>
-                <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Height="{Binding ConverterParameter=3*x, Path=(api:IViewModel.Scale), Converter={StaticResource Math}}" Fill="LightGray"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="888 . 888" TextAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, ConverterParameter=14*x, Path=DataContext.(api:IViewModel.Scale), Converter={StaticResource Math}}" FontFamily="{StaticResource DSEG7Classic}" Foreground="#ddd"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Frequency}" TextAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, ConverterParameter=14*x, Path=DataContext.(api:IViewModel.Scale), Converter={StaticResource Math}}" FontFamily="{StaticResource DSEG7Classic}" Foreground="DarkGreen"/>
+                <Rectangle Grid.Row="0" Grid.Column="1" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, ConverterParameter=1*x, Path=DataContext.(api:IViewModel.Scale), Converter={StaticResource Math}}" Fill="LightGray"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Name}" TextAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, ConverterParameter=10*x, Path=DataContext.(api:IViewModel.Scale), Converter={StaticResource Math}}"/>
+                <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, ConverterParameter=1*x, Path=DataContext.(api:IViewModel.Scale), Converter={StaticResource Math}}" Fill="LightGray"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Area}" TextAlignment="Center" FontSize="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, ConverterParameter=7*x, Path=DataContext.(api:IViewModel.Scale), Converter={StaticResource Math}}"/>
+                <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, ConverterParameter=3*x, Path=DataContext.(api:IViewModel.Scale), Converter={StaticResource Math}}" Fill="LightGray"/>
             </Grid>
         </DataTemplate>
         <Style x:Key="FrequencyContainerStyle" TargetType="ListViewItem">

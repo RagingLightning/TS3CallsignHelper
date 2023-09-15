@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,11 +32,13 @@ public class MainViewModel : IViewModel {
   private readonly ObservableCollection<IViewModel> _activeViews;
   public IEnumerable<IViewModel> ActiveViews => _activeViews;
 
-  public MainViewModel(IDependencyStore dependencyStore) {
+  internal MainViewModel(IDependencyStore dependencyStore, GuiMessageService guiMessageService) {
     _logger = dependencyStore.TryGet<ILoggerService>()?.GetLogger<MainViewModel>() ?? throw new MissingDependencyException(typeof(ILoggerService));
     _gameStateStore = dependencyStore.TryGet<IGameStateStore>() ?? throw new MissingDependencyException(typeof(IGameStateStore));
     var navigationStore = dependencyStore.TryGet<NavigationStore>() ?? throw new MissingDependencyException(typeof(NavigationStore));
     var viewStore = dependencyStore.TryGet<IViewStore>() ?? throw new MissingDependencyException(typeof(IViewStore));
+
+    guiMessageService.ViewModel = this;
 
     _activeViews = new ObservableCollection<IViewModel>();
 
@@ -69,6 +72,8 @@ public class MainViewModel : IViewModel {
     _logger?.LogDebug("Unegistering event handlers");
     _gameStateStore.GameSessionStarted -= OnGameSessionStarted;
     _logger?.LogTrace("{Method} unregistered", nameof(OnGameSessionStarted));
+    _gameStateStore.GameSessionEnded -= OnGameSessionEnded;
+    _logger?.LogTrace("{Method} unregistered", nameof(OnGameSessionEnded));
   }
 
   public void RemoveView(CanvasContainerViewModel viewContainer) {
@@ -143,6 +148,28 @@ public class MainViewModel : IViewModel {
     set {
       _currentDatabase = value;
       OnPropertyChanged(nameof(CurrentDatabase));
+    }
+  }
+
+  private string _statusText  = string.Empty;
+  public string StatusText {
+    get {
+      return _statusText;
+    }
+    set {
+      _statusText = value;
+      OnPropertyChanged(nameof(StatusText));
+    }
+  }
+
+  private Brush _statusBrush = Brushes.Black;
+  public Brush StatusBrush {
+    get {
+      return _statusBrush;
+    }
+    set {
+      _statusBrush = value;
+      OnPropertyChanged(nameof(StatusBrush));
     }
   }
 

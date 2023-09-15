@@ -5,18 +5,17 @@ using TS3CallsignHelper.API.Dependencies;
 using TS3CallsignHelper.API.Events;
 using TS3CallsignHelper.API.Exceptions;
 using TS3CallsignHelper.API.Logging;
-using TS3CallsignHelper.API.LogParsing;
+using TS3CallsignHelper.API.Services;
 using TS3CallsignHelper.API.Stores;
 using TS3CallsignHelper.Game.Exceptions;
-using TS3CallsignHelper.Game.LogParsers;
 using TS3CallsignHelper.Game.Services;
+using TS3CallsignHelper.Wpf.Translation;
 
 namespace TS3CallsignHelper.Game.Stores;
 public class GameStateStore : IGameStateStore {
   private readonly ILogger<GameStateStore>? _logger;
+  private readonly IGuiMessageService? _guiMessageService;
   private readonly IInitializationProgressService _initializationProgressService;
-
-  private string? _installationPath;
 
   public event PlayerPositionChangedEvent? ActivePositionChanged;
   public event AirplaneChangedEvent? CurrentAirplaneChanged;
@@ -29,7 +28,8 @@ public class GameStateStore : IGameStateStore {
     get => _currentAirplane;
     set {
       _currentAirplane = value;
-      CurrentAirplaneChanged?.Invoke(new AirplaneChangedEventArgs(value));
+      if (value != string.Empty)
+        CurrentAirplaneChanged?.Invoke(new AirplaneChangedEventArgs(value));
     }
   }
 
@@ -37,6 +37,18 @@ public class GameStateStore : IGameStateStore {
   public GameInfo? CurrentGameInfo {
     get => _gameInfo;
     set => _gameInfo = value;
+  }
+  private string _installDir = string.Empty;
+  public string InstallDir {
+    get => _installDir;
+    set {
+      if (!string.IsNullOrEmpty(_installDir)) {
+        _logger?.LogError("Attempted to change install location {OldInstallation} -> {NewInstallation}", _installDir, value);
+        return;
+      }
+      _logger?.LogInformation("Tower Simulator installation directory: {Installation}", value);
+      _installDir = value;
+    }
   }
 
   private readonly IAirportDataStore _airportDataStore;
@@ -55,27 +67,19 @@ public class GameStateStore : IGameStateStore {
   public ImmutableList<PlayerPosition> PlayerPositions => _playerPositions.ToImmutableList();
 
   /// <summary>
-  /// Requires <seealso cref="IInitializationProgressService"/>, <seealso cref="IGameLogParser"/>, <seealso cref="IAirportDataStore"/>
-  /// Adds <seealso cref="IGameLogParser"/>
+  /// Requires <seealso cref="IInitializationProgressService"/>, <seealso cref="IAirportDataStore"/>
   /// </summary>
   /// <param name="dependencyStore"></param>
   /// <exception cref="MissingDependencyException"></exception>
   internal GameStateStore(IDependencyStore dependencyStore) {
     _logger = dependencyStore.TryGet<ILoggerService>()?.GetLogger<GameStateStore>();
+    _guiMessageService = dependencyStore.TryGet<IGuiMessageService>();
     _initializationProgressService = dependencyStore.TryGet<IInitializationProgressService>() ?? throw new MissingDependencyException(typeof(IInitializationProgressService));
     _airportDataStore = dependencyStore.TryGet<IAirportDataStore>() ?? throw new MissingDependencyException(typeof(IAirportDataStore));
   }
 
   public void Dispose() {
     _airportDataStore?.Unload();
-  }
-
-  internal void SetInstallDir(string installDir) {
-    if (!string.IsNullOrEmpty(_installationPath))
-      _logger?.LogWarning("Installation directory was changed during runtime! {OldInstallation} -> {NewInstallation}", _installationPath, installDir);
-    else
-      _logger?.LogInformation("Tower Simulator installation directory: {Installation}", installDir);
-    _installationPath = installDir;
   }
 
   public void StartGame(GameInfo info) {
@@ -87,32 +91,64 @@ public class GameStateStore : IGameStateStore {
     _initializationProgressService.GaProgress = 0;
     _initializationProgressService.ScheduleProgress = 0;
     CurrentAirplane = "";
+    CurrentGameInfo = null;
     _planeStates.Clear();
 
-    if (string.IsNullOrEmpty(_installationPath)) {
+    if (string.IsNullOrEmpty(InstallDir)) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_Installation);
       _logger?.LogError("Tower Simulator installation not located yet");
-      throw new IncompleteGameInfoException(info, "Installation");
+      return;
     }
     if (string.IsNullOrEmpty(info.AirportICAO)) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_Icao);
       _logger?.LogError("Game info is missing ICAO code of airport");
-      throw new IncompleteGameInfoException(info, nameof(info.AirportICAO));
+      return;
     }
     if (string.IsNullOrEmpty(info.DatabaseFolder)) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_Database);
       _logger?.LogError("Game info is missing selected database");
-      throw new IncompleteGameInfoException(info, nameof(info.DatabaseFolder));
+      return;
     }
     if (string.IsNullOrEmpty(info.AirplaneSetFolder)) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_AirplaneSet);
       _logger?.LogError("Game info is missing selected airplane set");
-      throw new IncompleteGameInfoException(info, nameof(info.AirplaneSetFolder));
+      return;
     }
 
     _logger?.LogInformation("Starting new game session for {Airport} / {Database}", info.AirportICAO, info.DatabaseFolder);
-    _airportDataStore.Load(_installationPath, info);
-    _initializationProgressService.StatusMessage = "State_LogFile";
+    try {
+      _airportDataStore.Load(InstallDir, info);
 
-    CurrentGameInfo = info;
-    _logger?.LogDebug("Raising {Event}", nameof(GameSessionStarted));
-    GameSessionStarted?.Invoke(new GameSessionStartedEventArgs(info));
+      _initializationProgressService.StatusMessage = "State_LogFile";
+
+      CurrentGameInfo = info;
+      _logger?.LogDebug("Raising {Event}", nameof(GameSessionStarted));
+      GameSessionStarted?.Invoke(new GameSessionStartedEventArgs(info));
+    }
+    catch (AirlineDefinitionFormatException ex) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_Airlines);
+      _logger?.LogError(ex, "Failed to load airlines");
+    }
+    catch (AirplaneDefinitionFormatException ex) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_Airplanes);
+      _logger?.LogError(ex, "Failed to load airplanes");
+    }
+    catch (GaDefinitionFormatException ex) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_Ga);
+      _logger?.LogError(ex, "Failed to load ga schedule");
+    }
+    catch (ScheduleDefinitionFormatException ex) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_Schedule);
+      _logger?.LogError(ex, "Failed to load schedule");
+    }
+    catch (FrequencyDefinitionFormatException ex) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_Frequencies);
+      _logger?.LogError(ex, "Failed to load frequencies");
+    }
+    catch (Exception ex) {
+      _guiMessageService?.ShowError(ExceptionMessages.GameStart_Unknown);
+      _logger?.LogError(ex, "Failed to handle game start");
+    }
   }
 
   public void EndGame() {

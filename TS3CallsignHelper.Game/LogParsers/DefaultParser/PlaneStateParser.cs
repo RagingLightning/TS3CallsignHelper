@@ -33,7 +33,7 @@ internal class PlaneStateParser : ILogEntryParser {
     else if (logLine.StartsWith("ADD TTS to Acapela: "))
       ParseTTS(logLine, parserState);
   }
-  
+
   private void ParseCommand(string logLine) {
     string plane = logLine[9..].Split(" ")[0];
 
@@ -55,8 +55,12 @@ internal class PlaneStateParser : ILogEntryParser {
       _planeStateInfo.TaxiVia = line[viaIdx..].ToList();
     if (line.GetIndex("INTERSECTION OF TAXIWAY") is int intersectionIdx)
       _planeStateInfo.TaxiIntersection = (line[intersectionIdx], line[intersectionIdx + 2]);
-    if (line.GetIndex("TAXI TO") is int targetIdx)
-      _planeStateInfo.TaxiIntersection = (line[targetIdx], string.Empty);
+    if (line.GetIndex("TAXI TO") is int targetIdx) {
+      if (line[targetIdx] == "TERMINAL" || line[targetIdx] == "APRON" || line[targetIdx] == "RAMP")
+        _planeStateInfo.TaxiIntersection = (_planeStateInfo.Gate ?? line[targetIdx], string.Empty);
+      else
+        _planeStateInfo.TaxiIntersection = (line[targetIdx], string.Empty);
+    }
     if (line.GetIndex("HOLD SHORT OF") is int holdShortIdx) {
       if (line[holdShortIdx] == "TAXIWAY" || line[holdShortIdx] == "RUNWAY")
         _planeStateInfo.TaxiIntersection = (line[holdShortIdx + 1], string.Empty);
@@ -73,7 +77,7 @@ internal class PlaneStateParser : ILogEntryParser {
       _logger?.LogDebug("New Acapela hash for {newPlane}", plane);
     _plane = plane;
   }
-  
+
   private void ParseTTS(string logLine, ParserState parserState) {
     if (string.IsNullOrEmpty(_plane)) {
       _logger?.LogWarning("Tried to parse Acapela TTS without known callsign");
@@ -166,7 +170,7 @@ internal class PlaneStateParser : ILogEntryParser {
     planeStateInfo.State = planeState;
     if (parserState == ParserState.INIT_CATCHUP)
       _gameStateStore.ForcePlaneState(_plane, planeStateInfo);
-    else 
+    else
       _gameStateStore.SetPlaneState(_plane, planeStateInfo);
     _planeStateInfo = null;
     _plane = null;

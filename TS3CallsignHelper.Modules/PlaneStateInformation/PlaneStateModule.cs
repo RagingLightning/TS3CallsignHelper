@@ -13,6 +13,6 @@ public class PlaneStateModule : ICallsignHelperModule {
   public void Load(IDependencyStore dependencyStore) {
     var viewStore = dependencyStore.TryGet<IViewStore>() ?? throw new MissingDependencyException(typeof(IViewStore));
 
-    viewStore.Register(typeof(PlaneStateView), typeof(PlaneStateViewModel), typeof(Translation.PlaneStateModule));
+    viewStore.Register<PlaneStateView, PlaneStateViewModel, Translation.PlaneStateModule>();
   }
 }

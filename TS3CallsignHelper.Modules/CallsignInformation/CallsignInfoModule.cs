@@ -12,6 +12,6 @@ public class CallsignInfoModule : ICallsignHelperModule {
   public void Load(IDependencyStore dependencyStore) {
     var viewStore = dependencyStore.TryGet<IViewStore>() ?? throw new MissingDependencyException(typeof(IViewStore));
 
-    viewStore.Register(typeof(CallsignInfoView), typeof(CallsignInfoViewModel), typeof(Translation.CallsignInfoModule));
+    viewStore.Register<CallsignInfoView, CallsignInfoViewModel, Translation.CallsignInfoModule>();
   }
 }

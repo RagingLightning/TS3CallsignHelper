@@ -8,6 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Update="ExceptionMessages.en-US.resx">
+		  <Generator></Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="ExceptionMessages.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="InitializationView.de-DE.resx">
 		  <Generator></Generator>
 		</EmbeddedResource>
@@ -15,10 +22,10 @@
 			<LastGenOutput>MainView.Designer.cs</LastGenOutput>
 			<Generator>PublicResXFileCodeGenerator</Generator>
 		</EmbeddedResource>
-		<Compile Update="InitializationView.Designer.cs">
+		<Compile Update="ExceptionMessages.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
-		  <DependentUpon>InitializationView.resx</DependentUpon>
+		  <DependentUpon>ExceptionMessages.resx</DependentUpon>
 		</Compile>
 		<Compile Update="MainView.Designer.cs">
 			<DependentUpon>MainView.resx</DependentUpon>
@@ -59,6 +66,19 @@
 		<EmbeddedResource Update="InitializationView.resx">
 		  <Generator>PublicResXFileCodeGenerator</Generator>
 		  <LastGenOutput>InitializationView.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<Compile Update="InitializationView.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>InitializationView.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="InitializationView.en-US.resx">
+			<SubType>Designer</SubType>
+			<DependentUpon>InitializationView.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="InitializationView.de-DE.resx">
+			<SubType>Designer</SubType>
+			<DependentUpon>InitializationView.resx</DependentUpon>
 		</EmbeddedResource>
 	</ItemGroup>
 

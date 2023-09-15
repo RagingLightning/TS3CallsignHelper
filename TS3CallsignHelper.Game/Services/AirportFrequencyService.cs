@@ -61,19 +61,19 @@ public partial class AirportFrequencyService : IAirportFrequencyService {
     var controlArea = groups["controlarea"].Value;
 
     var typeCheck = writename.ToUpper();
-    AirportFrequencyType type;
+    PlayerPosition position;
     if (typeCheck.Contains("DEPARTURE") || typeCheck.Contains("CENTER"))
-      type = AirportFrequencyType.DEPARTURE;
+      position = PlayerPosition.Departure;
     else if (typeCheck.Contains("TOWER"))
-      type = AirportFrequencyType.TOWER;
+      position = PlayerPosition.Tower;
     else if (typeCheck.Contains("GROUND") || typeCheck.Contains("APRON"))
-      type = AirportFrequencyType.GROUND;
+      position = PlayerPosition.Ground;
     else {
-      _logger.LogWarning("Could not determine frequency type: {Frequency}", writename);
+      _logger?.LogWarning("Could not determine frequency type: {Frequency}", writename);
       return false;
     }
 
-    result.Type = type;
+    result.Position = position;
     result.Frequency = frequency;
     result.Writename = writename;
     result.Sayname = sayname;

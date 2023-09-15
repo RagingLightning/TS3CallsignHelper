@@ -26,23 +26,34 @@ public class AirportDataStore : IAirportDataStore {
   }
 
   public override void Load(string installation, GameInfo info) {
-    _airlines = _airlineService.Load(installation, info);
-    _airplanes = _airplaneService.Load(installation, info);
-    _gaPlanes = _gaService.Load(installation, info, _airplanes);
-    _schedule = _scheduleService.Load(installation, info, _airplanes, _airlines);
+    try {
+      _airlines = _airlineService.Load(installation, info);
+      _airplanes = _airplaneService.Load(installation, info);
+      _gaPlanes = _gaService.Load(installation, info, _airplanes);
+      _schedule = _scheduleService.Load(installation, info, _airplanes, _airlines);
 
-    var departureFrequencies = new Dictionary<string, AirportFrequency>();
-    var towerFrequencies = new Dictionary<string, AirportFrequency>();
-    var groundFrequencies = new Dictionary<string, AirportFrequency>();
-    foreach (var entry in _frequencyService.Load(installation, info)) {
-      switch (entry.Value.Type) {
-        case AirportFrequencyType.DEPARTURE: departureFrequencies.Add(entry.Key, entry.Value); break;
-        case AirportFrequencyType.TOWER: towerFrequencies.Add(entry.Key, entry.Value); break;
-        case AirportFrequencyType.GROUND: groundFrequencies.Add(entry.Key, entry.Value); break;
+      var departureFrequencies = new Dictionary<string, AirportFrequency>();
+      var towerFrequencies = new Dictionary<string, AirportFrequency>();
+      var groundFrequencies = new Dictionary<string, AirportFrequency>();
+      foreach (var entry in _frequencyService.Load(installation, info)) {
+        switch (entry.Value.Position) {
+          case PlayerPosition.Departure: departureFrequencies.Add(entry.Key, entry.Value); break;
+          case PlayerPosition.Tower: towerFrequencies.Add(entry.Key, entry.Value); break;
+          case PlayerPosition.Ground: groundFrequencies.Add(entry.Key, entry.Value); break;
+        }
       }
+      _departureFrequencies = departureFrequencies.ToImmutableDictionary();
+      _towerFrequencies = towerFrequencies.ToImmutableDictionary();
+      _groundFrequencies = groundFrequencies.ToImmutableDictionary();
+    } catch(FormatException ex) {
+      _airlines = null;
+      _airplanes = null;
+      _gaPlanes = null;
+      _schedule = null;
+      _departureFrequencies = null;
+      _towerFrequencies = null;
+      _groundFrequencies = null;
+      throw;
     }
-    _departureFrequencies = departureFrequencies.ToImmutableDictionary();
-    _towerFrequencies = towerFrequencies.ToImmutableDictionary();
-    _groundFrequencies = groundFrequencies.ToImmutableDictionary();
   }
 }

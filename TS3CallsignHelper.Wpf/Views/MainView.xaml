@@ -11,20 +11,10 @@
              lex:ResxLocalizationProvider.DefaultDictionary="{Binding Path=(api:IViewModel.TranslationDictionary)}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <!--<UserControl.Resources>-->
-    <!--    <DataTemplate DataType="{x:Type vms:CanvasContainerViewModel}">-->
-    <!--        <views:CanvasContainerView/>-->
-    <!--    </DataTemplate>-->
-    <!--    <DataTemplate DataType="{x:Type vms:FrequencyInfoViewModel}">-->
-    <!--        <views:FrequencyInfoView/>-->
-    <!--    </DataTemplate>-->
-    <!--    <DataTemplate DataType="{x:Type vms:PlaneStateViewModel}">-->
-    <!--        <views:PlaneStateView/>-->
-    <!--    </DataTemplate>-->
-    <!--</UserControl.Resources>-->
     <DockPanel>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -53,12 +43,13 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal">
+            <TextBlock Grid.Row="0" Grid.Column="3" TextAlignment="Center" Text="{Binding StatusText}" Foreground="{Binding StatusBrush}"/>
+            <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Horizontal">
                 <CheckBox Content="Ground" VerticalAlignment="Center" Command="{Binding SetGroundPosCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Margin="5,0"/>
                 <CheckBox Content="Tower" VerticalAlignment="Center" Command="{Binding SetTowerPosCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Margin="5,0"/>
                 <!--<CheckBox Content="Ground" VerticalAlignment="Center" Command="SetDeparturePosCommand" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"/>-->
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Horizontal">
+            <StackPanel Grid.Row="0" Grid.Column="5" Orientation="Horizontal">
                 <Button Width="20" Height="20" ToolTip="{lex:Loc Header_Donate}" Command="{Binding DonateCommand}" Margin="3,0">
                     <Image Source="/Resources/icon_donate.png"/>
                 </Button>
@@ -77,7 +68,7 @@
                     <Image Source="/Resources/icon_settings.png"/>
                 </Button>
             </StackPanel>
-            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Fill="LightGray" Height="5"/>
+            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Fill="LightGray" Height="5"/>
         </Grid>
         <ItemsControl x:Name="canvasParent" ItemsSource="{Binding ActiveViews}">
             <ItemsControl.ItemsPanel>

@@ -39,6 +39,8 @@ internal class GameLogReader {
     Thread.CurrentThread.IsBackground = true;
     _initializationProgress.StatusMessage = "State_LogFile";
 
+    Thread.Sleep(1000);
+
     var logStream = new FileStream(Path.Combine(_logPath, "Player.log"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
     using var logReader = new StreamReader(logStream);
     while (true) {

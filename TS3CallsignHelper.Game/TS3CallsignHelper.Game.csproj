@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TS3CallsignHelper.Api\TS3CallsignHelper.API.csproj" />
     <ProjectReference Include="..\TS3CallsignHelper.Modules\TS3CallsignHelper.Modules.csproj" />
+    <ProjectReference Include="..\TS3CallsignHelper.Wpf.Translation\TS3CallsignHelper.Wpf.Translation.csproj" />
   </ItemGroup>
 
 </Project>

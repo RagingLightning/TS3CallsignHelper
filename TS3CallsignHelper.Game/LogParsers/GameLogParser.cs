@@ -9,8 +9,8 @@ using TS3CallsignHelper.Game.Services;
 using TS3CallsignHelper.Game.Stores;
 
 namespace TS3CallsignHelper.Game.LogParsers;
-internal class GameLogParserPlacesTwo : IGameLogParser {
-  private readonly ILogger<GameLogParserPlacesTwo>? _logger;
+internal class GameLogParser : IGameLogParser {
+  private readonly ILogger<GameLogParser>? _logger;
   private readonly IInitializationProgressService _initializationProgressService;
   private readonly GameStateStore _gameStateStore;
 
@@ -21,11 +21,11 @@ internal class GameLogParserPlacesTwo : IGameLogParser {
   private readonly List<ILogEntryParser> _parsers = new();
 
   /// <summary>
-  /// Requires <seealso cref="IInitializationProgressService"/>, <seealso cref="IAirportDataStore"/>
+  /// Requires <seealso cref="IInitializationProgressService"/>
   /// </summary>
   /// <param name="dependencyStore"></param>
-  internal GameLogParserPlacesTwo(IDependencyStore dependencyStore) {
-    _logger = dependencyStore.TryGet<ILoggerService>()?.GetLogger<GameLogParserPlacesTwo>();
+  internal GameLogParser(IDependencyStore dependencyStore) {
+    _logger = dependencyStore.TryGet<ILoggerService>()?.GetLogger<GameLogParser>();
     _initializationProgressService = dependencyStore.TryGet<IInitializationProgressService>() ?? throw new MissingDependencyException(typeof(IInitializationProgressService));
     _gameStateStore = (GameStateStore) (dependencyStore.TryGet<IGameStateStore>() ?? throw new MissingDependencyException(typeof(IGameStateStore)));
 
@@ -70,14 +70,18 @@ internal class GameLogParserPlacesTwo : IGameLogParser {
     _logger?.LogTrace("Start parsing of {line}", logLine);
     if (logLine.StartsWith("Mono config path = ") && _state == ParserState.INIT_START)
       ParseInstallationDir(logLine);
-    foreach (var parser in _parsers)
-      if (parser.CanParse(logLine, State)) parser.Parse(logLine, State);
+    foreach (var parser in _parsers) {
+      if (parser.CanParse(logLine, State)) {
+        _logger?.LogDebug("{Parser} parses {Line}", parser.GetType().FullName, logLine);
+        parser.Parse(logLine, State);
+      }
+    }
   }
 
   private void ParseInstallationDir(string logLine) {
     string installDir = logLine[20..].Replace("/MonoBleedingEdge/etc'", string.Empty);
     _logger?.LogDebug("Raising InstallDirDetermined for {installDir}", installDir);
-    _gameStateStore.SetInstallDir(installDir);
+    _gameStateStore.InstallDir = installDir;
     _state = ParserState.INIT_CATCHUP;
   }
 }

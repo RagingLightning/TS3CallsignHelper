@@ -14,6 +14,6 @@ public class FrequencyInfoModule : ICallsignHelperModule {
   public void Load(IDependencyStore dependencyStore) {
     var viewStore = dependencyStore.TryGet<IViewStore>() ?? throw new MissingDependencyException(typeof(IViewStore));
 
-    viewStore.Register(typeof(FrequencyInfoView), typeof(FrequencyInfoViewModel), typeof(Translation.FrequencyInfoModule));
+    viewStore.Register<FrequencyInfoView, FrequencyInfoViewModel, Translation.FrequencyInfoModule>();
   }
 }

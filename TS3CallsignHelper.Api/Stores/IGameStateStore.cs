@@ -7,6 +7,7 @@ public interface IGameStateStore {
   ImmutableDictionary<string, AirportAirline>? Airlines { get; }
   ImmutableDictionary<string, AirportAirplane>? Airplanes { get; }
   string CurrentAirplane { get; set; }
+  string InstallDir { get; set; }
   GameInfo? CurrentGameInfo { get; }
   ImmutableDictionary<string, AirportFrequency>? DepartureFrequencies { get; }
   ImmutableDictionary<string, AirportGa>? GaPlanes { get; }

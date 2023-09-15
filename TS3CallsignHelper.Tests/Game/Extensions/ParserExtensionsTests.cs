@@ -1,7 +1,7 @@
 ﻿using NuGet.Frameworks;
 using TS3CallsignHelper.Game.Extensions;
 
-namespace TS3CallsignHelper.Game.Tests.Extensions;
+namespace TS3CallsignHelper.Tests.Game.Extensions;
 public class ParserExtensionsTests {
 
   [Test]

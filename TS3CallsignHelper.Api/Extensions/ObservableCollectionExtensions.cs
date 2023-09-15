@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace TS3CallsignHelper.API;
@@ -12,7 +13,7 @@ public static class ObservableCollectionExtensions {
   /// <param name="collection">Collection to add item to</param>
   /// <param name="item">Item to add</param>
   public static void AddSafe<T>(this ObservableCollection<T> collection, T item) {
-    Dispatcher.CurrentDispatcher.Invoke(() => collection.Add(item));
+    Application.Current.Dispatcher.Invoke(() => collection.Add(item));
   }
 
   /// <summary>
@@ -22,7 +23,7 @@ public static class ObservableCollectionExtensions {
   /// <param name="collection">Collection to remove item from</param>
   /// <param name="item">Item to remove</param>
   public static void RemoveSafe<T>(this ObservableCollection<T> collection, T item) {
-    Dispatcher.CurrentDispatcher.Invoke(() => collection.Remove(item));
+    Application.Current.Dispatcher.Invoke(() => collection.Remove(item));
   }
 
   /// <summary>
@@ -31,7 +32,7 @@ public static class ObservableCollectionExtensions {
   /// <typeparam name="T">Type of the items in the <seealso cref="ObservableCollection{T}"/></typeparam>
   /// <param name="collection">Collection to clear</param>
   public static void ClearSafe<T>(this ObservableCollection<T> collection) {
-    Dispatcher.CurrentDispatcher.Invoke(() => collection.Clear());
+    Application.Current.Dispatcher.Invoke(() => collection.Clear());
   }
 
   /// <summary>
@@ -41,7 +42,7 @@ public static class ObservableCollectionExtensions {
   /// <param name="collection">Collection to add items to</param>
   /// <param name="items">Items to add</param>
   public static void AddRangeSafe<T>(this ObservableCollection<T> collection, IEnumerable<T> items) {
-    Dispatcher.CurrentDispatcher.Invoke(() => {
+    Application.Current.Dispatcher.Invoke(() => {
       foreach (T item in items)
         collection.Add(item);
     });
