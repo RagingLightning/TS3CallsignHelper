@@ -153,4 +153,7 @@
   <data name="GameStart.Unknown" xml:space="preserve">
     <value />
   </data>
+  <data name="NotImplemented" xml:space="preserve">
+    <value />
+  </data>
 </root>

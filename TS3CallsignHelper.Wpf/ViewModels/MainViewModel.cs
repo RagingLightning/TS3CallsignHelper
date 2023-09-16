@@ -16,6 +16,7 @@ using TS3CallsignHelper.API.Stores;
 using TS3CallsignHelper.Wpf.Commands;
 using TS3CallsignHelper.Wpf.Models;
 using TS3CallsignHelper.Wpf.Services;
+using TS3CallsignHelper.Wpf.Translation;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 public class MainViewModel : IViewModel {
@@ -43,7 +44,7 @@ public class MainViewModel : IViewModel {
     _activeViews = new ObservableCollection<IViewModel>();
 
     DonateCommand = new PayPalDonateCommand();
-    SettingsCommand = new NavigateCommand(() => throw new NotImplementedException(), navigationService);
+    SettingsCommand = new CallFunctionCommand(() => guiMessageService.ShowWarning(ExceptionMessages.NotImplemented));
 
     SetGroundPosCommand = new SetPositionCommand(_gameStateStore, PlayerPosition.Ground);
     SetTowerPosCommand = new SetPositionCommand(_gameStateStore, PlayerPosition.Tower);

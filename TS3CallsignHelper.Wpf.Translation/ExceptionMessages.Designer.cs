@@ -167,5 +167,14 @@ namespace TS3CallsignHelper.Wpf.Translation {
                 return ResourceManager.GetString("GameStart.Unknown", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        public static string NotImplemented {
+            get {
+                return ResourceManager.GetString("NotImplemented", resourceCulture);
+            }
+        }
     }
 }

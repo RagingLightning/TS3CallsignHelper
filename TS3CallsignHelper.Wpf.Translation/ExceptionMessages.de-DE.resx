@@ -153,4 +153,7 @@
   <data name="GameStart.Unknown" xml:space="preserve">
     <value>Unbekannter Fehler!</value>
   </data>
+  <data name="NotImplemented" xml:space="preserve">
+    <value>Diese Funktion ist WIP!</value>
+  </data>
 </root>
