@@ -55,6 +55,11 @@ public class MainViewModel : IViewModel {
     _gameStateStore.GameSessionEnded += OnGameSessionEnded;
     _logger?.LogTrace("{Method} registered", nameof(OnGameSessionEnded));
 
+    if (_gameStateStore.CurrentGameInfo is GameInfo info) {
+      CurrentAirport = info.AirportICAO ?? string.Empty;
+      CurrentDatabase = info.DatabaseFolder ?? string.Empty;
+    }
+
     _availableViews = new ObservableCollection<ViewConfigurationModel>();
     foreach (var view in viewStore.RegisteredViews) {
       (object key, DataTemplate template) = DataTemplateService.CreateTemplate(view.ViewModelType, view.ViewType);
