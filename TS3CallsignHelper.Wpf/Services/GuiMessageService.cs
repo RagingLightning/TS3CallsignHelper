@@ -6,7 +6,7 @@ using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf.Services;
 internal class GuiMessageService : IGuiMessageService {
-  internal static IGuiMessageService Instance { get; private set; }
+  internal static IGuiMessageService? Instance { get; private set; }
   internal MainViewModel? ViewModel { private get; set; }
 
   public GuiMessageService() { Instance = this; }

@@ -63,6 +63,24 @@ namespace TS3CallsignHelper.Wpf.Translation {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
+        public static string AddView_Exception {
+            get {
+                return ResourceManager.GetString("AddView.Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        public static string AddView_MissingDependency {
+            get {
+                return ResourceManager.GetString("AddView.MissingDependency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
         public static string GameStart_Airlines {
             get {
                 return ResourceManager.GetString("GameStart.Airlines", resourceCulture);
