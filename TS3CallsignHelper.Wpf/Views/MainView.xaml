@@ -43,7 +43,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
-            <TextBlock Grid.Row="0" Grid.Column="3" TextAlignment="Center" Text="{Binding StatusText}" Foreground="{Binding StatusBrush}"/>
+            <TextBlock Grid.Row="0" Grid.Column="3" TextAlignment="Center" Text="{Binding StatusText}" Foreground="{Binding StatusFg}" Background="{Binding StatusBg}"/>
             <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Horizontal">
                 <CheckBox Content="Ground" VerticalAlignment="Center" Command="{Binding SetGroundPosCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Margin="5,0"/>
                 <CheckBox Content="Tower" VerticalAlignment="Center" Command="{Binding SetTowerPosCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}" Margin="5,0"/>

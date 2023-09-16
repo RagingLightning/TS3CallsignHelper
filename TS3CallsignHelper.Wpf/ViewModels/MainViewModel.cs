@@ -166,14 +166,25 @@ public class MainViewModel : IViewModel {
     }
   }
 
-  private Brush _statusBrush = Brushes.Black;
-  public Brush StatusBrush {
+  private Brush _statusFg = Brushes.Black;
+  public Brush StatusFg {
     get {
-      return _statusBrush;
+      return _statusFg;
     }
     set {
-      _statusBrush = value;
-      OnPropertyChanged(nameof(StatusBrush));
+      _statusFg = value;
+      OnPropertyChanged(nameof(StatusFg));
+    }
+  }
+
+  private Brush _statusBg = Brushes.Transparent;
+  public Brush StatusBg {
+    get {
+      return _statusBg;
+    }
+    set {
+      _statusBg = value;
+      OnPropertyChanged(nameof(StatusBg));
     }
   }
 

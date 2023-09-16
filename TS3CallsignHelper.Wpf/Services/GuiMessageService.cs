@@ -22,27 +22,27 @@ internal class GuiMessageService : IGuiMessageService {
 
   public void ShowError(string message, TimeSpan? duration = null) {
     Error = message;
-    ShowMessage(message, Brushes.Red, duration);
+    ShowMessage(message, Brushes.Black, Brushes.OrangeRed, duration ?? TimeSpan.FromSeconds(10));
   }
 
   public void ShowWarning(string message, TimeSpan? duration = null) {
     Warning = message;
-    ShowMessage(message, Brushes.OrangeRed, duration);
+    ShowMessage(message, Brushes.Black, Brushes.Orange, duration ?? TimeSpan.FromSeconds(5));
   }
 
   public void ShowInfo(string message, TimeSpan? duration = null) {
-    ShowMessage(message, Brushes.Black, duration);
+    ShowMessage(message, Brushes.Black, Brushes.Transparent, duration ?? TimeSpan.FromSeconds(5));
   }
 
-  public void ShowMessage(string message, Brush brush, TimeSpan? duration = null) {
+  public void ShowMessage(string message, Brush foreground, Brush background, TimeSpan duration) {
     if (_viewModel is null) {
-      MessageQueue = () => ShowMessage(message, brush, duration);
+      MessageQueue = () => ShowMessage(message, foreground, background, duration);
       return;
     }
-    _viewModel.StatusBrush = brush;
+    _viewModel.StatusFg = foreground;
+    _viewModel.StatusBg = background;
     _viewModel.StatusText = message;
-    if (duration == null) return;
-    Task.Delay(((TimeSpan) duration).Milliseconds).ContinueWith(t => ClearMessage());
+    Task.Delay(duration).ContinueWith(t => ClearMessage());
   }
 
   public void ClearMessage() {
@@ -51,6 +51,7 @@ internal class GuiMessageService : IGuiMessageService {
       return;
     }
     _viewModel.StatusText = string.Empty;
+    _viewModel.StatusBg = Brushes.Transparent;
     Warning = string.Empty;
     Error = string.Empty;
   }
