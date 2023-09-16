@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using TS3CallsignHelper.API;
 using TS3CallsignHelper.API.Dependencies;
 using TS3CallsignHelper.API.Events;
@@ -16,7 +16,6 @@ using TS3CallsignHelper.API.Stores;
 using TS3CallsignHelper.Wpf.Commands;
 using TS3CallsignHelper.Wpf.Models;
 using TS3CallsignHelper.Wpf.Services;
-using TS3CallsignHelper.Wpf.Stores;
 
 namespace TS3CallsignHelper.Wpf.ViewModels;
 public class MainViewModel : IViewModel {
@@ -85,6 +84,9 @@ public class MainViewModel : IViewModel {
   }
 
   public void AddView(IViewModel view) {
+    CurrentAirport = "EDDF";
+    CurrentDatabase = "NyergesDesign";
+    GuiMessageService.Instance.ShowWarning("Demo Warning");
     _logger?.LogInformation("Adding new {$view}", view);
 
     var container = new CanvasContainerViewModel(this, view);

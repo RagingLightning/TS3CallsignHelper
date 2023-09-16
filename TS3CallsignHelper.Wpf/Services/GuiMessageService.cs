@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Drawing;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using TS3CallsignHelper.API.Services;
 using TS3CallsignHelper.Wpf.ViewModels;
 
 namespace TS3CallsignHelper.Wpf.Services;
 internal class GuiMessageService : IGuiMessageService {
+  internal static IGuiMessageService Instance { get; private set; }
   internal MainViewModel? ViewModel { private get; set; }
+
+  public GuiMessageService() { Instance = this; }
 
   public void ShowError(string message, TimeSpan? duration = null) {
     ShowMessage(message, Brushes.Red, duration);
