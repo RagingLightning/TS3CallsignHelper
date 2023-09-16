@@ -37,6 +37,7 @@ public class AirportDataStore : IAirportDataStore {
       var groundFrequencies = new Dictionary<string, AirportFrequency>();
       foreach (var entry in _frequencyService.Load(installation, info)) {
         switch (entry.Value.Position) {
+          case PlayerPosition.Unknown: departureFrequencies.Add(entry.Key, entry.Value); break;
           case PlayerPosition.Departure: departureFrequencies.Add(entry.Key, entry.Value); break;
           case PlayerPosition.Tower: towerFrequencies.Add(entry.Key, entry.Value); break;
           case PlayerPosition.Ground: groundFrequencies.Add(entry.Key, entry.Value); break;

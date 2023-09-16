@@ -5,6 +5,7 @@ using TS3CallsignHelper.API;
 using TS3CallsignHelper.API.Dependencies;
 using TS3CallsignHelper.API.Exceptions;
 using TS3CallsignHelper.API.Logging;
+using TS3CallsignHelper.API.Services;
 using TS3CallsignHelper.Game.Exceptions;
 
 namespace TS3CallsignHelper.Game.Services;
@@ -13,6 +14,7 @@ public partial class AirportFrequencyService : IAirportFrequencyService {
   private static partial Regex Parser();
   private readonly ILogger<AirportFrequencyService>? _logger;
   private readonly IInitializationProgressService _initializationProgressService;
+  private readonly IGuiMessageService? _messageService;
 
   /// <summary>
   /// Requires <seealso cref="IInitializationProgressService"/>
@@ -21,6 +23,7 @@ public partial class AirportFrequencyService : IAirportFrequencyService {
   public AirportFrequencyService(IDependencyStore dependencyStore) {
     _logger = dependencyStore.TryGet<ILoggerService>()?.GetLogger<AirportFrequencyService>();
     _initializationProgressService = dependencyStore.TryGet<IInitializationProgressService>() ?? throw new MissingDependencyException(typeof(IInitializationProgressService));
+    _messageService = dependencyStore.TryGet<IGuiMessageService>();
   }
   public ImmutableDictionary<string, AirportFrequency> Load(string installation, GameInfo info) {
 
@@ -62,7 +65,7 @@ public partial class AirportFrequencyService : IAirportFrequencyService {
 
     var typeCheck = writename.ToUpper();
     PlayerPosition position;
-    if (typeCheck.Contains("DEPARTURE") || typeCheck.Contains("CENTER"))
+    if (typeCheck.Contains("DEPARTURE") || typeCheck.Contains("CENTER") || typeCheck.Contains("RADAR"))
       position = PlayerPosition.Departure;
     else if (typeCheck.Contains("TOWER"))
       position = PlayerPosition.Tower;
@@ -70,7 +73,7 @@ public partial class AirportFrequencyService : IAirportFrequencyService {
       position = PlayerPosition.Ground;
     else {
       _logger?.LogWarning("Could not determine frequency type: {Frequency}", writename);
-      return false;
+      position = PlayerPosition.Unknown;
     }
 
     result.Position = position;

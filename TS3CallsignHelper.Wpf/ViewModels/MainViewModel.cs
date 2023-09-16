@@ -84,11 +84,6 @@ public class MainViewModel : IViewModel {
   }
 
   public void AddView(IViewModel view) {
-    CurrentAirport = "EDDF";
-    CurrentDatabase = "NyergesDesign";
-    GuiMessageService.Instance.ShowWarning("Demo Warning");
-    _logger?.LogInformation("Adding new {$view}", view);
-
     var container = new CanvasContainerViewModel(this, view);
     var contentControl = new ContentControl {
       Content = container

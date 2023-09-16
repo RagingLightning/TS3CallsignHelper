@@ -8,6 +8,7 @@ public class FrequencyModel {
   public string Area { get; }
 
   public FrequencyModel(IViewModel viewModel, AirportFrequency frequency, bool useSayNames) {
+    if (frequency.Position == PlayerPosition.Unknown) return;
     ViewModel = viewModel;
     var leading = frequency.Frequency.Split('.')[0].PadLeft(3,'!');
     var trailing = frequency.Frequency.Split('.')[1].PadRight(3,'!');

@@ -63,6 +63,15 @@ namespace TS3CallsignHelper.Modules.FrequencyInformation.Translation {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
         /// </summary>
+        public static string E_FrequencyPositionUnknown {
+            get {
+                return ResourceManager.GetString("E_FrequencyPositionUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
         public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
