@@ -3,7 +3,7 @@ using System.Net;
 
 namespace TS3CallsignHelper.Wpf.Services;
 internal class UpdateCheckerService {
-  public static string VERSION = "2.0.0";
+  public static string VERSION = "2.0.1";
 
   public static string? HasUpdate() {
     WebRequest UpdateRequest = WebRequest.Create("https://raw.githubusercontent.com/RagingLightning/TS3CallsignHelper/deploy/version.dat");
