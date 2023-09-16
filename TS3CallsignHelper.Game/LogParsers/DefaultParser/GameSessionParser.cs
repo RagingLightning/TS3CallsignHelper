@@ -25,8 +25,8 @@ internal class GameSessionParser : ILogEntryParser {
   public void Parse(string logLine, ParserState parserState) {
     if (_parsingGameStart || logLine.StartsWith("GAME START"))
       ParseGameStart(logLine, parserState);
-    //else if (logLine.StartsWith("UnloadTime: ") && parserState >= ParserState.INIT_CATCHUP)
-      //_gameStateStore.EndGame();
+    else if (logLine.StartsWith("UnloadTime: ") && parserState >= ParserState.INIT_CATCHUP)
+      _gameStateStore.EndGame();
   }
 
   private void ParseGameStart(string logLine, ParserState parserState) {
