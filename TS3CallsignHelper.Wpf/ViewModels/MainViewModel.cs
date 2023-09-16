@@ -38,7 +38,7 @@ public class MainViewModel : IViewModel {
     var navigationService = dependencyStore.TryGet<INavigationService>() ?? throw new MissingDependencyException(typeof(INavigationService));
     var viewStore = dependencyStore.TryGet<IViewStore>() ?? throw new MissingDependencyException(typeof(IViewStore));
 
-    guiMessageService.ViewModel = this;
+    guiMessageService.SetViewModel(this);
 
     _activeViews = new ObservableCollection<IViewModel>();
 

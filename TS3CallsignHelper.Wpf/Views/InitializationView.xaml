@@ -39,7 +39,7 @@
             <TextBlock Grid.Row="0" Grid.Column="1" Margin="5,0" VerticalAlignment="Bottom" TextAlignment="Left" Text="{lex:Loc {Binding Status}}" Style="{StaticResource Big}"/>
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="5,10" VerticalAlignment="Top">
                 <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" TextAlignment="Left" Text="{lex:Loc Detail_Pre}" Style="{StaticResource Small}" Visibility="{Binding HasDetails, Converter={StaticResource BTVConv}}"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5,0" VerticalAlignment="Top" TextAlignment="Left" Text="{Binding Details}" Style="{StaticResource Small}" Visibility="{Binding HasDetails, Converter={StaticResource BTVConv}}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="5,0" VerticalAlignment="Top" TextAlignment="Left" Text="{Binding Details}" Style="{StaticResource Small}" Visibility="{Binding HasDetailsOrError, Converter={StaticResource BTVConv}}" Foreground="{Binding DetailsBrush}"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" TextAlignment="Left" Text="{lex:Loc Detail_Post}" Style="{StaticResource Small}" Visibility="{Binding HasDetails, Converter={StaticResource BTVConv}}"/>
             </StackPanel>
         </Grid>

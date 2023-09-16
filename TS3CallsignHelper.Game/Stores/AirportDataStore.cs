@@ -46,7 +46,7 @@ public class AirportDataStore : IAirportDataStore {
       _departureFrequencies = departureFrequencies.ToImmutableDictionary();
       _towerFrequencies = towerFrequencies.ToImmutableDictionary();
       _groundFrequencies = groundFrequencies.ToImmutableDictionary();
-    } catch(FormatException ex) {
+    } catch(FormatException) {
       _airlines = null;
       _airplanes = null;
       _gaPlanes = null;

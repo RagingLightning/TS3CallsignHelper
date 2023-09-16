@@ -119,8 +119,6 @@ public class GameStateStore : IGameStateStore {
     try {
       _airportDataStore.Load(InstallDir, info);
 
-      _initializationProgressService.StatusMessage = "State_LogFile";
-
       CurrentGameInfo = info;
       _logger?.LogDebug("Raising {Event}", nameof(GameSessionStarted));
       GameSessionStarted?.Invoke(new GameSessionStartedEventArgs(info));
@@ -148,6 +146,13 @@ public class GameStateStore : IGameStateStore {
     catch (Exception ex) {
       _guiMessageService?.ShowError(ExceptionMessages.GameStart_Unknown);
       _logger?.LogError(ex, "Failed to handle game start");
+    } finally {
+      _initializationProgressService.StatusMessage = "State_LogFile";
+      _initializationProgressService.AirlineProgess = 1;
+      _initializationProgressService.AirplaneProgress = 1;
+      _initializationProgressService.GaProgress = 1;
+      _initializationProgressService.ScheduleProgress = 1;
+      _initializationProgressService.FrequencyProgress = 1;
     }
   }
 

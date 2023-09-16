@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Windows.Media;
 using TS3CallsignHelper.API;
 using TS3CallsignHelper.API.Dependencies;
 using TS3CallsignHelper.API.Exceptions;
@@ -35,7 +36,7 @@ internal class InitializationViewModel : IViewModel {
     _initializationProgressService = dependencyStore.TryGet<IInitializationProgressService>() ?? throw new MissingDependencyException(typeof(IInitializationProgressService));
     _dependencyStore = dependencyStore;
 
-    _logger?.LogInformation("{LoadingState}", "State_LogFile");
+    _logger?.LogInformation("Loading state: {LoadingState}", "State_LogFile");
     Progress = $"{0.0:.00}%";
     Status = "State_LogFile";
 
@@ -48,7 +49,7 @@ internal class InitializationViewModel : IViewModel {
 
   private void OnProgressChanged(Progress progress) {
     if (progress.Completed) {
-      _logger?.LogInformation("{LoadingState}", "Complete");
+      _logger?.LogInformation("Loading state: {LoadingState}", "Complete");
       if (UpdateCheckerService.HasUpdate() is string newVersion)
         _navigationStore.RootContent = new UpdateNotificationViewModel(UpdateCheckerService.VERSION, newVersion, _dependencyStore);
       else
@@ -58,9 +59,19 @@ internal class InitializationViewModel : IViewModel {
 
     Progress = $"{progress.Value * 100:0.00}%";
     if (progress.Status != Status)
-      _logger?.LogInformation("{LoadingState}", progress.Status);
+      _logger?.LogInformation("Loading state: {LoadingState}", progress.Status);
     Status = progress.Status;
-    Details = progress.Details;
+    if (!string.IsNullOrEmpty(_guiMessageService?.Error)) {
+      HasDetails = false;
+      HasDetailsOrError = true;
+      DetailsBrush = Brushes.Red;
+      Details = _guiMessageService?.Error;  
+    } else {
+      HasDetails = !string.IsNullOrEmpty(progress.Details);
+      HasDetailsOrError = !string.IsNullOrEmpty(progress.Details);
+      DetailsBrush = Brushes.Black;
+      Details = progress.Details;
+    }
   }
 
   private string? _progress;
@@ -94,8 +105,22 @@ internal class InitializationViewModel : IViewModel {
       _details = value;
       OnPropertyChanged(nameof(Details));
       OnPropertyChanged(nameof(HasDetails));
+      OnPropertyChanged(nameof(HasDetailsOrError));
     }
   }
 
-  public bool HasDetails => !string.IsNullOrEmpty(_details);
+  private Brush _detailsBrush;
+  public Brush DetailsBrush {
+    get {
+      return _detailsBrush;
+    }
+    set {
+      _detailsBrush = value;
+      OnPropertyChanged(nameof(DetailsBrush));
+    }
+  }
+
+  public bool HasDetails { get; private set; }
+
+  public bool HasDetailsOrError { get; private set; }
 }

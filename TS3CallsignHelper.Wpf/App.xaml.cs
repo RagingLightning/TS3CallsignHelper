@@ -88,6 +88,7 @@ public partial class App : Application {
       _serilogConfig?.CleanFolder(filesToKeep);
 
       dependencyStore.Add<IInitializationProgressService>(new InitializationProgressService());
+      var guiMessageService = (GuiMessageService) dependencyStore.Add<IGuiMessageService>(new GuiMessageService());
 
       Log.Debug("Initializing AirportDataStore");
       dependencyStore.Add<IAirportAirlineService>(new AirportAirlineService(dependencyStore));
@@ -104,7 +105,6 @@ public partial class App : Application {
       Log.Debug("Initializing NavigationStore");
       var navigationStore = dependencyStore.Add<NavigationStore>(new NavigationStore());
       var navigationService = dependencyStore.Add<INavigationService>(new NavigationService(navigationStore));
-      var guiMessageService = (GuiMessageService) dependencyStore.Add<IGuiMessageService>(new GuiMessageService());
       navigationStore.RootContent = new InitializationViewModel(dependencyStore, guiMessageService);
 
       Log.Debug("Preparing Localization");
