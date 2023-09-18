@@ -68,13 +68,13 @@ class FrequencyInfoViewModel : IViewModel {
   private void OnGameSessionStarted(GameSessionStartedEventArgs args) {
     IEnumerable<FrequencyModel>? groundFrequencies = _airportDataStore.GroundFrequencies?.Select(i => new FrequencyModel(this, i.Value, false));
     if (groundFrequencies != null)
-      _groundFrequencies.AddRangeSafe(groundFrequencies);
+      _groundFrequencies.AddRangeSafe(groundFrequencies.OrderBy(p => p.Frequency));
     IEnumerable<FrequencyModel>? towerFrequencies = _airportDataStore.TowerFrequencies?.Select(i => new FrequencyModel(this, i.Value, false));
     if (towerFrequencies != null)
-      _towerFrequencies.AddRangeSafe(towerFrequencies);
+      _towerFrequencies.AddRangeSafe(towerFrequencies.OrderBy(p => p.Frequency));
     IEnumerable<FrequencyModel>? departureFrequencies = _airportDataStore.DepartureFrequencies?.Select(i => new FrequencyModel(this, i.Value, false));
     if (departureFrequencies != null)
-      _departureFrequencies.AddRangeSafe(departureFrequencies);
+      _departureFrequencies.AddRangeSafe(departureFrequencies.OrderBy(p => p.Frequency));
 
     if (_airportDataStore.DepartureFrequencies?.Any(p => p.Value.Position == PlayerPosition.Unknown) == true) {
       var freq = _airportDataStore.DepartureFrequencies?.First(p => p.Value.Position == PlayerPosition.Unknown).Value;
