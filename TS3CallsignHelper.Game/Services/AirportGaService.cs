@@ -59,6 +59,7 @@ public partial class AirportGaService : IAirportGaService {
     }
     _initializationProgressService.GaProgress = 1;
 
+    _logger?.LogInformation("Loaded ga schedule from {Config}", configFile);
     return gaPlanes.ToImmutableDictionary();
   }
 

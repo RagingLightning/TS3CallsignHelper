@@ -41,31 +41,43 @@ internal class PlaneStateParser : ILogEntryParser {
     if (line.Length == 1) return;
     line = line[1].Split(' ');
 
-    _planeStateInfo = new PlaneStateInfo(_gameStateStore.PlaneStates.GetValueOrDefault(plane, null));
+    _planeStateInfo = new PlaneStateInfo(_gameStateStore.PlaneStates.GetValueOrDefault(plane, new()));
 
     if (line.GetIndex("RUNWAY", "HOLD SHORT OF", "CROSS", "VACATE") is int runwayIdx) {
       _planeStateInfo.Runway = line[runwayIdx];
       _planeStateInfo.RunwayIntersection = null;
       _planeStateInfo.TaxiVia.Clear();
       _planeStateInfo.TaxiIntersection = null;
+      _logger?.LogInformation("Runway assignment of {Airplane}: {Runway}", plane, line[runwayIdx]);
     }
-    if (line.GetIndex("AT", "WIND IS ?") is int atIdx)
+    if (line.GetIndex("AT", "WIND IS ?") is int atIdx) {
       _planeStateInfo.RunwayIntersection = line[atIdx];
-    if (line.GetIndex("VIA") is int viaIdx)
+      _logger?.LogInformation("Runway intersection of {Airplane}: {Intersection}", plane, line[atIdx]);
+    }
+    if (line.GetIndex("VIA") is int viaIdx) {
       _planeStateInfo.TaxiVia = line[viaIdx..].ToList();
-    if (line.GetIndex("INTERSECTION OF TAXIWAY") is int intersectionIdx)
+      _logger?.LogInformation("Taxi routing of {Airplane}: {Route}", plane, _planeStateInfo.TaxiVia);
+    }
+    if (line.GetIndex("INTERSECTION OF TAXIWAY") is int intersectionIdx) {
       _planeStateInfo.TaxiIntersection = (line[intersectionIdx], line[intersectionIdx + 2]);
+      _logger?.LogInformation("Target intersection of {Airplane}: {TwxiwayA} x {TaxiwayB}", plane, line[intersectionIdx], line[intersectionIdx + 2]);
+    }
     if (line.GetIndex("TAXI TO") is int targetIdx) {
-      if (line[targetIdx] == "TERMINAL" || line[targetIdx] == "APRON" || line[targetIdx] == "RAMP")
-        _planeStateInfo.TaxiIntersection = (_planeStateInfo.Gate ?? line[targetIdx], string.Empty);
-      else
+      if (line[targetIdx] == "TERMINAL" || line[targetIdx] == "APRON" || line[targetIdx] == "RAMP") {
+        _planeStateInfo.TaxiIntersection = null;
+        _logger?.LogInformation("{Airplane} Taxi to {Target}", plane, "TERMINAL");
+      }
+      else {
         _planeStateInfo.TaxiIntersection = (line[targetIdx], string.Empty);
+        _logger?.LogInformation("{Airplane} Taxi to {Target}", plane, line[targetIdx]);
+      }
     }
     if (line.GetIndex("HOLD SHORT OF") is int holdShortIdx) {
       if (line[holdShortIdx] == "TAXIWAY" || line[holdShortIdx] == "RUNWAY")
-        _planeStateInfo.TaxiIntersection = (line[holdShortIdx + 1], string.Empty);
+        _planeStateInfo.HoldShort = line[holdShortIdx + 1];
       else
-        _planeStateInfo.TaxiIntersection = (line[holdShortIdx], string.Empty);
+        _planeStateInfo.HoldShort = line[holdShortIdx];
+      _logger?.LogInformation("Hold short for {Airplane}: {HoldShort}", plane, _planeStateInfo.HoldShort);
     }
   }
 
@@ -164,6 +176,7 @@ internal class PlaneStateParser : ILogEntryParser {
 
     if (planeState == PlaneState.UNKNOWN) {
       _logger?.LogWarning("Failed to identify state for {Callsign} from {Readback}", _plane, logLine);
+      _plane = null;
       return;
     }
     var planeStateInfo = _planeStateInfo ?? _gameStateStore.PlaneStates.GetValueOrDefault(_plane, new PlaneStateInfo());

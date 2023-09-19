@@ -28,10 +28,6 @@ internal class PlaneStateViewModel : IViewModel {
     _gameStateStore = dependencyStore.TryGet<IGameStateStore>() ?? throw new MissingDependencyException(typeof(IGameStateStore));
     _airportDataStore = dependencyStore.TryGet<IAirportDataStore>() ?? throw new MissingDependencyException(typeof(IAirportDataStore));
 
-    _callsign = string.Empty;
-    _state = string.Empty;
-    _direction = string.Empty;
-
     _logger?.LogDebug("Registering event handlers");
     _gameStateStore.CurrentAirplaneChanged += OnCurrentAirplaneChanged;
     _logger?.LogTrace("{Method} registered", nameof(OnCurrentAirplaneChanged));
@@ -48,10 +44,14 @@ internal class PlaneStateViewModel : IViewModel {
   }
 
   private void OnCurrentAirplaneChanged(AirplaneChangedEventArgs args) {
+    _logger?.LogInformation("Updating plane state for {Airplane} because of new selection", args.Callsign);
     if (args.Callsign == string.Empty || !_gameStateStore.PlaneStates.ContainsKey(args.Callsign)) {
       Callsign = string.Empty;
-      Direction = string.Empty;
       State = string.Empty;
+      Direction = string.Empty;
+      Origin = string.Empty;
+      Destination = string.Empty;
+      Command = string.Empty;
       return;
     }
     Callsign = args.Callsign;
@@ -60,6 +60,7 @@ internal class PlaneStateViewModel : IViewModel {
   }
 
   private void OnPlaneStateChanged(PlaneStateChangedEventArgs args) {
+    _logger?.LogInformation("Updating plane state for {Airplane} because of state change", args.Callsign);
     if (args.Callsign != _gameStateStore.CurrentAirplane) return;
     if (args.Callsign == string.Empty) {
       Callsign = string.Empty;
@@ -95,6 +96,10 @@ internal class PlaneStateViewModel : IViewModel {
         if (intersection.B != string.Empty)
           Destination += $"x{intersection.B}";
       }
+      else {
+        if (planeStateInfo.Gate is string gate) Destination += gate;
+        else Destination += "Gate";
+      }
     }
     var commandList = new List<string>();
     if (planeStateInfo.TaxiVia.Count > 0)
@@ -107,7 +112,7 @@ internal class PlaneStateViewModel : IViewModel {
     State = $"State_{_gameStateStore.PlaneStates[Callsign].State}";
   }
 
-  private string _callsign;
+  private string _callsign = string.Empty;
   public string Callsign {
     get {
       return _callsign;
@@ -118,7 +123,7 @@ internal class PlaneStateViewModel : IViewModel {
     }
   }
 
-  private string _state;
+  private string _state = string.Empty;
   public string State {
     get {
       return _state;
@@ -129,7 +134,7 @@ internal class PlaneStateViewModel : IViewModel {
     }
   }
 
-  private string _direction;
+  private string _direction = string.Empty;
   public string Direction {
     get {
       return _direction;
@@ -140,7 +145,7 @@ internal class PlaneStateViewModel : IViewModel {
     }
   }
 
-  private string _origin;
+  private string _origin = string.Empty;
   public string Origin {
     get {
       return _origin;
@@ -151,7 +156,7 @@ internal class PlaneStateViewModel : IViewModel {
     }
   }
 
-  private string _destination;
+  private string _destination = string.Empty;
   public string Destination {
     get {
       return _destination;
@@ -162,7 +167,7 @@ internal class PlaneStateViewModel : IViewModel {
     }
   }
 
-  private string _command;
+  private string _command = string.Empty;
   public string Command {
     get {
       return _command;

@@ -60,6 +60,7 @@ public partial class AirportScheduleService : IAirportScheduleService {
     }
     _initializationProgressService.ScheduleProgress = 1;
 
+    _logger?.LogInformation("Loaded airport schedule from {Config}", configFile);
     return schedule.ToImmutableDictionary();
   }
 

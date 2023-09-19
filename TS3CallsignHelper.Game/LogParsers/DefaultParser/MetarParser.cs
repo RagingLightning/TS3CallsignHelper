@@ -11,7 +11,7 @@ using TS3CallsignHelper.API.Stores;
 
 namespace TS3CallsignHelper.Game.LogParsers;
 internal partial class MetarParser : ILogEntryParser {
-  [GeneratedRegex(@"^(?<icao>[A-Z]{4}) (?<time>\d{6})[zZ] (?<auto>AUTO )?(?<wind>[0-9G]+?)KT (?<var>[0-9V] )?(?<vis>.+) (?<temp>[\dM]+?)/(?<dew>[\dM]+?) (?<qnh>[AQ][\d.]+)$")]
+  [GeneratedRegex(@"^(?<icao>[A-Z]{4}) (?<time>\d{6})[zZ] (?<auto>AUTO )?(?<wind>[0-9G]+?)KT (?<var>[0-9V] )?(?<vis>.+) (?<temp>[\dM]+?)/(?<dew>[\dM]+?) (?<qnh>[AQ][\d.]+)(?<tempo>.*)$")]
   private partial Regex Metar();
   private readonly ILogger<MetarParser>? _logger;
   private readonly IGameStateStore _gameStateStore;

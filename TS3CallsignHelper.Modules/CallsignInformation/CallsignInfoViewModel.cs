@@ -64,7 +64,7 @@ class CallsignInfoViewModel : IViewModel
             Sayname = ga.FormatSayname();
             WeightClass = ga.AirplaneType.WeightClass.ToString();
         }
-        _logger?.LogDebug("New callsign info: {Callsign} / {WeightClass} for {Airplane}", Sayname, WeightClass, Writename);
+        _logger?.LogInformation("New callsign info: {Callsign} / {WeightClass} for {Airplane}", Sayname, WeightClass, Writename);
     }
 
     private string _sayname;

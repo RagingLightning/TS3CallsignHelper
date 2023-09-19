@@ -34,7 +34,7 @@ public partial class AirportAirlineService : IAirportAirlineService {
     var database = info.DatabaseFolder ?? throw new IncompleteGameInfoException(info, nameof(info.DatabaseFolder));
 
     var configFile = Path.Combine(installation, "Airports", airport, "databases", database, "airlines.csv");
-    _logger.LogDebug("Loading airlines from {Config}", configFile);
+    _logger?.LogDebug("Loading airlines from {Config}", configFile);
     var stream = File.Open(configFile, FileMode.Open, FileAccess.Read, FileShare.Read);
     using var reader = new StreamReader(stream);
     reader.ReadLine(); // first line contains headers
@@ -49,6 +49,7 @@ public partial class AirportAirlineService : IAirportAirlineService {
     }
     _initializationProgressService.AirlineProgess = 1;
 
+    _logger?.LogInformation("Loaded airplanes from {Config}", configFile);
     return airlines.ToImmutableDictionary();
   }
 

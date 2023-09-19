@@ -57,6 +57,7 @@ public partial class AirportFrequencyService : IAirportFrequencyService {
     }
     _initializationProgressService.FrequencyProgress = 1;
 
+    _logger?.LogInformation("Loaded frequencies from {Config}", configFile);
     return frequencies.ToImmutableDictionary();
   }
 

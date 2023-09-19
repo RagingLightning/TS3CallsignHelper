@@ -25,6 +25,7 @@ internal class GateAssignmentParser : ILogEntryParser {
       var parent = logLine.Split("incoming: ")[1].Split(' ')[0];
       var child = logLine.Split("outgoing: ")[1].Split(' ')[0];
       _restarters[parent] = child;
+      _logger?.LogInformation("Restarter: {ParentAirplane} -> {ChildAirplane}", parent, child);
     }
     else if (logLine.Contains(" => Terminal locked: ")) { // SERVER only
       var plane = logLine.Split(" => Terminal locked: ")[0].Split(' ')[^1];
@@ -32,11 +33,13 @@ internal class GateAssignmentParser : ILogEntryParser {
 
       var planeState = _gameStateStore.PlaneStates.GetValueOrDefault(plane, new PlaneStateInfo());
       planeState.Gate = gate.Replace("gate_", "Gate ");
+      _logger?.LogInformation("Gate of {Airplane} is {Gate}", plane, gate);
       _gameStateStore.SetPlaneState(plane, planeState);
 
       if (_restarters.TryGetValue(plane, out var child)) {
         var childState = _gameStateStore.PlaneStates.GetValueOrDefault(child, new PlaneStateInfo());
-        childState.Gate = gate.Replace("gate_", "Gate "); ;
+        childState.Gate = gate.Replace("gate_", "Gate ");
+        _logger?.LogInformation("Gate of {Airplane} is {Gate}", child, gate);
         _gameStateStore.SetPlaneState(child, childState);
       }
     }
@@ -46,7 +49,8 @@ internal class GateAssignmentParser : ILogEntryParser {
       var gate = logLine.Split(" te: ")[1].Split(" * ")[0];
 
       var planeState = _gameStateStore.PlaneStates.GetValueOrDefault(plane, new PlaneStateInfo());
-      planeState.Gate = gate.Replace("gate_", "Gate "); ;
+      planeState.Gate = gate.Replace("gate_", "Gate ");
+      _logger?.LogInformation("Gate of {Airplane} is {Gate}", plane, gate);
       _gameStateStore.SetPlaneState(plane, planeState);
     }
   }

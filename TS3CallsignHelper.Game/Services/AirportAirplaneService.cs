@@ -50,6 +50,7 @@ public partial class AirportAirplaneService : IAirportAirplaneService {
     }
     _initializationProgressService.AirplaneProgress = 1;
 
+    _logger?.LogInformation("Loaded airplane set from {Config}", configFolder);
     return airplanes.ToImmutableDictionary();
   }
 

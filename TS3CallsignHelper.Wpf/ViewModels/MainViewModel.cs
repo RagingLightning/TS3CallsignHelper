@@ -90,6 +90,7 @@ public class MainViewModel : IViewModel {
   }
 
   public void AddView(IViewModel view) {
+    _logger?.LogInformation("Adding new view of type {$viewType}", view.GetType().Name);
     var container = new CanvasContainerViewModel(this, view);
     var contentControl = new ContentControl {
       Content = container

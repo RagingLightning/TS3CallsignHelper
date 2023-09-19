@@ -14,7 +14,7 @@ public class DefaultParserModule : ICallsignHelperModule {
     var gameLogParser = dependencyStore.TryGet<IGameLogParser>() ?? throw new MissingDependencyException(typeof(IGameLogParser));
     gameLogParser.Register(new GameSessionParser(dependencyStore));
     gameLogParser.Register(new GateAssignmentParser(dependencyStore));
-    gameLogParser.Register(new MetarParser(dependencyStore));
+    //gameLogParser.Register(new MetarParser(dependencyStore));
     gameLogParser.Register(new PlaneSelectionParser(dependencyStore));
     gameLogParser.Register(new PlaneStateParser(dependencyStore));
   }

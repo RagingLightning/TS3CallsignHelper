@@ -36,15 +36,19 @@ public class CommandSuggestionViewModel : IViewModel {
   }
 
   private void OnCurrentAirplaneChanged(AirplaneChangedEventArgs args) {
+    _logger?.LogInformation("Updating command list for {Airplane} because of new selection", args.Callsign);
     UpdateCommands(_gameStateStore.PlaneStates.GetValueOrDefault(args.Callsign, new PlaneStateInfo()));
   }
 
   private void OnPlaneStateChanged(PlaneStateChangedEventArgs args) {
-    if (args.Callsign == _gameStateStore.CurrentAirplane)
+    if (args.Callsign == _gameStateStore.CurrentAirplane) {
+      _logger?.LogInformation("Updating command list for {Airplane} because of state change", args.Callsign);
       UpdateCommands(args.State);
+    }
   }
 
   private void OnActivePositionsChanged(PlayerPositionChangedEventArgs args) {
+    _logger?.LogInformation("Updating command list for {Airplane} because of position change", _gameStateStore.CurrentAirplane);
     UpdateCommands(_gameStateStore.PlaneStates.GetValueOrDefault(_gameStateStore.CurrentAirplane, new PlaneStateInfo()));
   }
 
