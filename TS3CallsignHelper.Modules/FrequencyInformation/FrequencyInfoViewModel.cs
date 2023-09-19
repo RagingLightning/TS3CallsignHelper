@@ -15,6 +15,7 @@ using TS3CallsignHelper.Modules.FrequencyInformation.Models;
 
 namespace TS3CallsignHelper.Modules.FrequencyInformation;
 class FrequencyInfoViewModel : IViewModel {
+
   private readonly ILogger<FrequencyInfoViewModel>? _logger;
   private readonly IGuiMessageService? _guiMessageService;
   private readonly IGameStateStore _gameStateStore;

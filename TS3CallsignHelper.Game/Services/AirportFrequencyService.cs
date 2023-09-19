@@ -12,6 +12,11 @@ namespace TS3CallsignHelper.Game.Services;
 public partial class AirportFrequencyService : IAirportFrequencyService {
   [GeneratedRegex("^(?<q0>\"?)(?<frequency>[0-9.]+?)\\k<q0>,(?<q1>\"?)(?<writename>.+?)\\k<q1>,(?<q2>\"?)(?<sayname>.+?)\\k<q2>,(?<q3>\"?)(?<readback>.+?)\\k<q3>,(?<q4>\"?)(?<controlarea>.+?)\\k<q4>$")]
   private static partial Regex Parser();
+
+  private static readonly string[] GROUND_KEYWORDS = new[] { "GROUND", "APRON" };
+  private static readonly string[] TOWER_KEYWORDS = new[] { "TOWER" };
+  private static readonly string[] DEPARTURE_KEYWORDS = new[] { "DEPARTURE", "CENTER", "RADAR", "CONTROL" };
+
   private readonly ILogger<AirportFrequencyService>? _logger;
   private readonly IInitializationProgressService _initializationProgressService;
   private readonly IGuiMessageService? _messageService;
@@ -65,12 +70,12 @@ public partial class AirportFrequencyService : IAirportFrequencyService {
 
     var typeCheck = writename.ToUpper();
     PlayerPosition position;
-    if (typeCheck.Contains("DEPARTURE") || typeCheck.Contains("CENTER") || typeCheck.Contains("RADAR"))
-      position = PlayerPosition.Departure;
-    else if (typeCheck.Contains("TOWER"))
-      position = PlayerPosition.Tower;
-    else if (typeCheck.Contains("GROUND") || typeCheck.Contains("APRON"))
+    if (GROUND_KEYWORDS.Any(typeCheck.Contains))
       position = PlayerPosition.Ground;
+    else if (TOWER_KEYWORDS.Any(typeCheck.Contains))
+      position = PlayerPosition.Tower;
+    else if (DEPARTURE_KEYWORDS.Any(typeCheck.Contains))
+      position = PlayerPosition.Departure;
     else {
       _logger?.LogWarning("Could not determine frequency type: {Frequency}", writename);
       position = PlayerPosition.Unknown;
