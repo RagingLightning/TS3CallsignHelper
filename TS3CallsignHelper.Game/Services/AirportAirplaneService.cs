@@ -9,7 +9,7 @@ using TS3CallsignHelper.Game.Exceptions;
 
 namespace TS3CallsignHelper.Game.Services;
 public partial class AirportAirplaneService : IAirportAirplaneService {
-  [GeneratedRegex("^(?<q0>\"?)(?<property>.+?)\\k<q0>,(?<q1>\"?)(?<value>.+?)\\k<q1>,(?<information>.+)?$")]
+  [GeneratedRegex("^(?<q0>\"?) *(?<property>.+?) *\\k<q0>,(?<q1>\"?) *(?<value>.+?) *\\k<q1>,(?<information>.+)?$")]
   private static partial Regex Parser();
   private readonly ILogger<AirportAirplaneService>? _logger;
   private readonly IInitializationProgressService _initializationProgressService;

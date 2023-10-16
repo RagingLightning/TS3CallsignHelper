@@ -10,7 +10,7 @@ using TS3CallsignHelper.Game.Exceptions;
 
 namespace TS3CallsignHelper.Game.Services;
 public partial class AirportFrequencyService : IAirportFrequencyService {
-  [GeneratedRegex("^(?<q0>\"?)(?<frequency>[0-9.]+?)\\k<q0>,(?<q1>\"?)(?<writename>.+?)\\k<q1>,(?<q2>\"?)(?<sayname>.+?)\\k<q2>,(?<q3>\"?)(?<readback>.+?)\\k<q3>,(?<q4>\"?)(?<controlarea>.+?)\\k<q4>$")]
+  [GeneratedRegex("^(?<q0>\"?) *(?<frequency>[0-9.]+?) *\\k<q0>,(?<q1>\"?) *(?<writename>.+?) *\\k<q1>,(?<q2>\"?) *(?<sayname>.+?) *\\k<q2>,(?<q3>\"?) *(?<readback>.+?) *\\k<q3>,(?<q4>\"?) *(?<controlarea>.+?) *\\k<q4>$")]
   private static partial Regex Parser();
 
   private static readonly string[] GROUND_KEYWORDS = new[] { "GROUND", "APRON" };

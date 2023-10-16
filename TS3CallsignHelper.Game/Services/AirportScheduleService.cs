@@ -9,7 +9,7 @@ using TS3CallsignHelper.Game.Exceptions;
 
 namespace TS3CallsignHelper.Game.Services;
 public partial class AirportScheduleService : IAirportScheduleService {
-  [GeneratedRegex("^(?<q0>\"?)(?<operator>[A-Z0-9]{3}|Default)\\k<q0>,(?<q1>\"?)(?<airline>[A-Z0-9]{3})\\k<q1>,(?<q2>\"?)(?<flightnumber>.+?)\\k<q2>,(?<q3>\"?)(?<airplanetype>.+?)\\k<q3>,(?<q4>\"?)(?<from>[A-Z0-9]{4})\\k<q4>,(?<q5>\"?)(?<to>[A-Z0-9]{4})\\k<q5>,(?<q6>\"?)(?<arrival>[0-9:]*?)\\k<q6>,(?<q7>\"?)(?<departure>[0-9:]*?)\\k<q7>,(?<q8>\"?)(?<approachaltitude>\\d*?)\\k<q7>,(?<q8>\"?)(?<special>.*?)\\k<q8>$")]
+  [GeneratedRegex("^(?<q0>\"?) *(?<operator>[A-Z0-9]{3}|Default) *\\k<q0>,(?<q1>\"?) *(?<airline>[A-Z0-9]{3}) *\\k<q1>,(?<q2>\"?) *(?<flightnumber>.+?) *\\k<q2>,(?<q3>\"?) *(?<airplanetype>.+?) *\\k<q3>,(?<q4>\"?) *(?<from>[A-Z0-9]{4}) *\\k<q4>,(?<q5>\"?) *(?<to>[A-Z0-9]{4}) *\\k<q5>,(?<q6>\"?) *(?<arrival>[0-9:]*?) *\\k<q6>,(?<q7>\"?) *(?<departure>[0-9:]*?) *\\k<q7>,(?<q8>\"?) *(?<approachaltitude>\\d*?) *\\k<q7>,(?<q8>\"?) *(?<special>.*?) *\\k<q8>$")]
   private static partial Regex Parser();
   private readonly ILogger<AirportScheduleService>? _logger;
   private readonly IInitializationProgressService _initializationProgressService;
